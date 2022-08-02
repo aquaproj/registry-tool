@@ -49,6 +49,7 @@ func (runner *Runner) Run(ctx context.Context, args ...string) error {
 			runner.newGenerateRegistryCommand(),
 			runner.newCompletionCommand(),
 			runner.newVersionCommand(),
+			runner.newInitCommand(),
 		},
 	}
 

@@ -10,6 +10,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/aquaproj/registry-tool/pkg/initcmd"
 	"gopkg.in/yaml.v3"
 )
 
@@ -47,8 +48,8 @@ e.g. $ aqua-registry create-pr-new-pkg cli/cli`)
 	}...), "\n")
 	pkgName := pkgNames[0]
 	branch := "feat/" + pkgName
-	if err := initAquaDevYAML(ctx); err != nil {
-		return err
+	if err := initcmd.Init(ctx); err != nil {
+		return err //nolint:wrapcheck
 	}
 	if err := command(ctx, "git", "checkout", "-b", branch); err != nil {
 		return err
@@ -64,19 +65,6 @@ e.g. $ aqua-registry create-pr-new-pkg cli/cli`)
 		return err
 	}
 	if err := command(ctx, "aqua", "-c", "aqua-dev.yaml", "exec", "--", "gh", "pr", "create", "-w", "-t", "feat: add "+pkgName, "-b", body); err != nil {
-		return err
-	}
-	return nil
-}
-
-func initAquaDevYAML(ctx context.Context) error {
-	if _, err := os.Stat("aqua-dev.yaml"); err == nil {
-		return nil
-	}
-	if err := command(ctx, "aqua", "init", "aqua-dev.yaml"); err != nil {
-		return err
-	}
-	if err := command(ctx, "aqua", "-c", "aqua-dev.yaml", "g", "-i", "cli/cli"); err != nil {
 		return err
 	}
 	return nil

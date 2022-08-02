@@ -11,12 +11,10 @@ import (
 	"strings"
 
 	genrg "github.com/aquaproj/registry-tool/pkg/generate-registry"
+	"github.com/aquaproj/registry-tool/pkg/initcmd"
 )
 
-const (
-	dirPermission  os.FileMode = 0o775
-	filePermission os.FileMode = 0o644
-)
+const dirPermission os.FileMode = 0o775
 
 func Scaffold(ctx context.Context, pkgNames ...string) error {
 	if len(pkgNames) != 1 {
@@ -37,8 +35,8 @@ e.g. $ go run ./cmd/scaffold cli/cli`)
 	if err := genrg.GenerateRegistry(); err != nil {
 		return fmt.Errorf("update registry.yaml: %w", err)
 	}
-	if err := createAquaYAML(); err != nil {
-		return err
+	if err := initcmd.Init(ctx); err != nil {
+		return err //nolint:wrapcheck
 	}
 	if err := aquaG(ctx, pkgName); err != nil {
 		return err
@@ -64,24 +62,6 @@ func aquaGR(ctx context.Context, pkgName, rgFilePath string) error {
 	cmd.Stderr = os.Stderr
 	if err := cmd.Run(); err != nil {
 		return fmt.Errorf("execute a command: %w", err)
-	}
-	return nil
-}
-
-func createAquaYAML() error {
-	if _, err := os.Stat("aqua.yaml"); err == nil {
-		return nil
-	}
-	if err := os.WriteFile("aqua.yaml", []byte(`---
-# aqua - Declarative CLI Version Manager
-# https://aquaproj.github.io/
-registries:
-  - name: standard
-    type: local
-    path: registry.yaml
-packages:
-`), filePermission); err != nil {
-		return fmt.Errorf("create aqua.yaml: %w", err)
 	}
 	return nil
 }
