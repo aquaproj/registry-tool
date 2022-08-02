@@ -4,4 +4,7 @@
     "github>suzuki-shunsuke/renovate-config",
     "github>aquaproj/aqua-renovate-config#1.2.0",
   ],
+  prHourlyLimit: 0,
+  prConcurrentLimit: 0,
+  branchConcurrentLimit: 0,
 }
