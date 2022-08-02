@@ -12,8 +12,6 @@ on:
 jobs:
   default:
     runs-on: ubuntu-latest
-    env:
-      AQUA_CONFIG: aqua-ci.yaml
     steps:
       - uses: actions/checkout@v3
       - uses: aquaproj/aqua-installer@v1.0.0
