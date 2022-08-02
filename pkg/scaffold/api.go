@@ -11,17 +11,17 @@ import (
 	"path/filepath"
 	"strings"
 
-	genrg "github.com/aquaproj/registry-tool/internal/generate-registry"
+	genrg "github.com/aquaproj/registry-tool/pkg/generate-registry"
 )
 
 const dirPermission os.FileMode = 0o775
 
-func Scaffold(ctx context.Context, args ...string) error {
-	if len(args) != 2 { //nolint:gomnd
+func Scaffold(ctx context.Context, pkgNames ...string) error {
+	if len(pkgNames) != 1 {
 		return errors.New(`usage: $ go run ./cmd/scaffold <pkgname>
 e.g. $ go run ./cmd/scaffold cli/cli`)
 	}
-	pkgName := os.Args[1]
+	pkgName := pkgNames[0]
 	pkgDir := filepath.Join(append([]string{"pkgs"}, strings.Split(pkgName, "/")...)...)
 	pkgFile := filepath.Join(pkgDir, "pkg.yaml")
 	rgFile := filepath.Join(pkgDir, "registry.yaml")

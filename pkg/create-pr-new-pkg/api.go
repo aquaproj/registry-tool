@@ -13,12 +13,11 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-func CreatePRNewPkgs(ctx context.Context) error {
-	if len(os.Args) < 2 { //nolint:gomnd
-		return errors.New(`usage: $ go run ./cmd/create-pr-new-pkg <pkgname>...
-e.g. $ go run ./cmd/create-pr-new-pkg cli/cli`)
+func CreatePRNewPkgs(ctx context.Context, pkgNames ...string) error {
+	if len(pkgNames) == 0 {
+		return errors.New(`usage: $ aqua-registry create-pr-new-pkg <pkgname>...
+e.g. $ aqua-registry create-pr-new-pkg cli/cli`)
 	}
-	pkgNames := os.Args[1:]
 	bodies := make([]string, len(pkgNames))
 	for i, pkgName := range pkgNames {
 		pkgDir := filepath.Join(append([]string{"pkgs"}, strings.Split(pkgName, "/")...)...)

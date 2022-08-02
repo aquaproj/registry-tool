@@ -1,0 +1,20 @@
+---
+project_name: registry-tool
+archives:
+- name_template: "{{.ProjectName}}_{{.Os}}_{{.Arch}}"
+builds:
+- binary: aqua-registry
+  main: cmd/aqua-registry/main.go
+  env:
+  - CGO_ENABLED=0
+  goos:
+  - windows
+  - darwin
+  - linux
+  goarch:
+  - amd64
+  - arm64
+release:
+  prerelease: true
+  header: |
+    [Pull Requests](https://github.com/aquaproj/registry-tool/pulls?q=is%3Apr+milestone%3A{{.Tag}}) | [Issues](https://github.com/aquaproj/registry-tool/issues?q=is%3Aissue+milestone%3A{{.Tag}}) | https://github.com/aquaproj/registry-tool/compare/{{.PreviousTag}}...{{.Tag}}

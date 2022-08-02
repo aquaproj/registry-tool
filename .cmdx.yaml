@@ -19,3 +19,13 @@ tasks:
     description: lint the go code
     usage: lint the go code
     script: golangci-lint run
+  - name: test
+    short: t
+    description: test
+    usage: test
+    script: go test ./... -race -covermode=atomic
+  - name: vet
+    short: v
+    description: go vet
+    usage: go vet
+    script: go vet ./...
