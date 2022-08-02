@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	genrg "github.com/aquaproj/aqua-registry/internal/generate-registry"
+	genrg "github.com/aquaproj/registry-tool/internal/generate-registry"
 )
 
 func main() {

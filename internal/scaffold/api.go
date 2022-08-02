@@ -11,7 +11,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	genrg "github.com/aquaproj/aqua-registry/internal/generate-registry"
+	genrg "github.com/aquaproj/registry-tool/internal/generate-registry"
 )
 
 const dirPermission os.FileMode = 0o775
