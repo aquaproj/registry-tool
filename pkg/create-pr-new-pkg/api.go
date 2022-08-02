@@ -13,7 +13,7 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-func CreatePRNewPkgs(ctx context.Context, pkgNames ...string) error {
+func CreatePRNewPkgs(ctx context.Context, pkgNames ...string) error { //nolint:cyclop
 	if len(pkgNames) == 0 {
 		return errors.New(`usage: $ aqua-registry create-pr-new-pkg <pkgname>...
 e.g. $ aqua-registry create-pr-new-pkg cli/cli`)
@@ -45,8 +45,11 @@ e.g. $ aqua-registry create-pr-new-pkg cli/cli`)
 		"```",
 		"",
 	}...), "\n")
-	pkgName := os.Args[1]
+	pkgName := pkgNames[0]
 	branch := "feat/" + pkgName
+	if err := initAquaDevYAML(ctx); err != nil {
+		return err
+	}
 	if err := command(ctx, "git", "checkout", "-b", branch); err != nil {
 		return err
 	}
@@ -60,7 +63,20 @@ e.g. $ aqua-registry create-pr-new-pkg cli/cli`)
 	if err := command(ctx, "git", "push", "origin", branch); err != nil {
 		return err
 	}
-	if err := command(ctx, "aqua", "-c", "aqua-all.yaml", "exec", "--", "gh", "pr", "create", "-w", "-t", "feat: add "+pkgName, "-b", body); err != nil {
+	if err := command(ctx, "aqua", "-c", "aqua-dev.yaml", "exec", "--", "gh", "pr", "create", "-w", "-t", "feat: add "+pkgName, "-b", body); err != nil {
+		return err
+	}
+	return nil
+}
+
+func initAquaDevYAML(ctx context.Context) error {
+	if _, err := os.Stat("aqua-dev.yaml"); err == nil {
+		return nil
+	}
+	if err := command(ctx, "aqua", "init", "aqua-dev.yaml"); err != nil {
+		return err
+	}
+	if err := command(ctx, "aqua", "-c", "aqua-dev.yaml", "g", "-i", "cli/cli"); err != nil {
 		return err
 	}
 	return nil

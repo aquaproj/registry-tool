@@ -5,7 +5,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"io"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -14,7 +13,10 @@ import (
 	genrg "github.com/aquaproj/registry-tool/pkg/generate-registry"
 )
 
-const dirPermission os.FileMode = 0o775
+const (
+	dirPermission  os.FileMode = 0o775
+	filePermission os.FileMode = 0o644
+)
 
 func Scaffold(ctx context.Context, pkgNames ...string) error {
 	if len(pkgNames) != 1 {
@@ -70,18 +72,16 @@ func createAquaYAML() error {
 	if _, err := os.Stat("aqua.yaml"); err == nil {
 		return nil
 	}
-	outFile, err := os.Create("aqua.yaml")
-	if err != nil {
+	if err := os.WriteFile("aqua.yaml", []byte(`---
+# aqua - Declarative CLI Version Manager
+# https://aquaproj.github.io/
+registries:
+  - name: standard
+    type: local
+    path: registry.yaml
+packages:
+`), filePermission); err != nil {
 		return fmt.Errorf("create aqua.yaml: %w", err)
-	}
-	defer outFile.Close()
-	srcFile, err := os.Open("aqua.yaml.tmpl")
-	if err != nil {
-		return fmt.Errorf("open aqua.yaml.tmpl: %w", err)
-	}
-	defer srcFile.Close()
-	if _, err := io.Copy(outFile, srcFile); err != nil {
-		return fmt.Errorf("copy aqua.yaml.tmpl to aqua.yaml: %w", err)
 	}
 	return nil
 }
