@@ -1,19 +1,19 @@
 ---
 project_name: registry-tool
 archives:
-- name_template: "{{.ProjectName}}_{{.Os}}_{{.Arch}}"
+  - name_template: "{{.ProjectName}}_{{.Os}}_{{.Arch}}"
 builds:
-- binary: aqua-registry
-  main: cmd/aqua-registry/main.go
-  env:
-  - CGO_ENABLED=0
-  goos:
-  - windows
-  - darwin
-  - linux
-  goarch:
-  - amd64
-  - arm64
+  - binary: aqua-registry
+    main: cmd/aqua-registry/main.go
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - windows
+      - darwin
+      - linux
+    goarch:
+      - amd64
+      - arm64
 release:
   prerelease: true
   header: |
