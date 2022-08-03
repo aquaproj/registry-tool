@@ -1,6 +1,6 @@
 module github.com/aquaproj/registry-tool
 
-go 1.18
+go 1.19
 
 require (
 	github.com/mattn/go-colorable v0.1.12
