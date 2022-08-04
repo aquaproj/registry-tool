@@ -14,12 +14,15 @@ import (
 	"github.com/aquaproj/registry-tool/pkg/initcmd"
 )
 
-const dirPermission os.FileMode = 0o775
+const (
+	dirPermission  os.FileMode = 0o775
+	filePermission os.FileMode = 0o644
+)
 
 func Scaffold(ctx context.Context, pkgNames ...string) error {
 	if len(pkgNames) != 1 {
-		return errors.New(`usage: $ go run ./cmd/scaffold <pkgname>
-e.g. $ go run ./cmd/scaffold cli/cli`)
+		return errors.New(`usage: $ aqua-registry scaffold <pkgname>
+e.g. $ aqua-registry scaffold cli/cli`)
 	}
 	pkgName := pkgNames[0]
 	pkgDir := filepath.Join(append([]string{"pkgs"}, strings.Split(pkgName, "/")...)...)
@@ -38,7 +41,7 @@ e.g. $ go run ./cmd/scaffold cli/cli`)
 	if err := initcmd.Init(ctx); err != nil {
 		return err //nolint:wrapcheck
 	}
-	if err := aquaG(ctx, pkgName); err != nil {
+	if err := aquaG(ctx, "local,"+pkgName); err != nil {
 		return err
 	}
 	if err := createPkgFile(ctx, pkgName, pkgFile); err != nil {
@@ -56,7 +59,7 @@ func aquaGR(ctx context.Context, pkgName, rgFilePath string) error {
 		return fmt.Errorf("create a file %s: %w", rgFilePath, err)
 	}
 	defer outFile.Close()
-	fmt.Fprintf(os.Stderr, "+ aqua gr %s\n", pkgName)
+	fmt.Fprintf(os.Stderr, "+ aqua gr %s\n >> registry.yaml", pkgName)
 	cmd := exec.CommandContext(ctx, "aqua", "gr", pkgName)
 	cmd.Stdout = outFile
 	cmd.Stderr = os.Stderr
@@ -67,10 +70,15 @@ func aquaGR(ctx context.Context, pkgName, rgFilePath string) error {
 }
 
 func aquaG(ctx context.Context, pkgName string) error {
-	fmt.Fprintf(os.Stderr, "+ aqua g -i %s\n", pkgName)
-	cmd := exec.CommandContext(ctx, "aqua", "g", "-i", pkgName)
+	outFile, err := os.OpenFile("aqua-local.yaml", os.O_APPEND|os.O_CREATE|os.O_WRONLY, filePermission)
+	if err != nil {
+		return fmt.Errorf("open aqua-local.yaml: %w", err)
+	}
+	defer outFile.Close()
+	fmt.Fprintf(os.Stderr, "+ aqua g %s >> aqua-local.yaml\n", pkgName)
+	cmd := exec.CommandContext(ctx, "aqua", "g", pkgName)
 	cmd.Stdin = os.Stdin
-	cmd.Stdout = os.Stdout
+	cmd.Stdout = outFile
 	cmd.Stderr = os.Stderr
 	if err := cmd.Run(); err != nil {
 		return fmt.Errorf("execute a command: %w", err)
@@ -79,8 +87,8 @@ func aquaG(ctx context.Context, pkgName string) error {
 }
 
 func aquaI(ctx context.Context) error {
-	fmt.Fprintln(os.Stderr, "+ aqua i")
-	cmd := exec.CommandContext(ctx, "aqua", "i")
+	fmt.Fprintln(os.Stderr, "+ aqua i --test")
+	cmd := exec.CommandContext(ctx, "aqua", "i", "--test")
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
@@ -100,7 +108,7 @@ func createPkgFile(ctx context.Context, pkgName, pkgFilePath string) error {
 		return fmt.Errorf("write a string to file %s: %w", pkgFilePath, err)
 	}
 	buf := &bytes.Buffer{}
-	fmt.Fprintf(os.Stderr, "+ aqua g %s\n", pkgName)
+	fmt.Fprintf(os.Stderr, "+ aqua g %s >> %s\n", pkgFilePath, pkgName)
 	cmd := exec.CommandContext(ctx, "aqua", "g", pkgName)
 	cmd.Stdout = buf
 	cmd.Stderr = os.Stderr
