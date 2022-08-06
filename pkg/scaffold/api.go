@@ -108,7 +108,7 @@ func createPkgFile(ctx context.Context, pkgName, pkgFilePath string) error {
 		return fmt.Errorf("write a string to file %s: %w", pkgFilePath, err)
 	}
 	buf := &bytes.Buffer{}
-	fmt.Fprintf(os.Stderr, "+ aqua g %s >> %s\n", pkgFilePath, pkgName)
+	fmt.Fprintf(os.Stderr, "+ aqua g %s >> %s\n", pkgName, pkgFilePath)
 	cmd := exec.CommandContext(ctx, "aqua", "g", pkgName)
 	cmd.Stdout = buf
 	cmd.Stderr = os.Stderr
