@@ -1,7 +1,6 @@
 package scaffold
 
 import (
-	"bytes"
 	"context"
 	"errors"
 	"fmt"
@@ -14,10 +13,7 @@ import (
 	"github.com/aquaproj/registry-tool/pkg/initcmd"
 )
 
-const (
-	dirPermission  os.FileMode = 0o775
-	filePermission os.FileMode = 0o644
-)
+const dirPermission os.FileMode = 0o775
 
 func Scaffold(ctx context.Context, pkgNames ...string) error {
 	if len(pkgNames) != 1 {
@@ -70,15 +66,10 @@ func aquaGR(ctx context.Context, pkgName, rgFilePath string) error {
 }
 
 func aquaG(ctx context.Context, pkgName string) error {
-	outFile, err := os.OpenFile("aqua-local.yaml", os.O_APPEND|os.O_CREATE|os.O_WRONLY, filePermission)
-	if err != nil {
-		return fmt.Errorf("open aqua-local.yaml: %w", err)
-	}
-	defer outFile.Close()
-	fmt.Fprintf(os.Stderr, "+ aqua g %s >> aqua-local.yaml\n", pkgName)
-	cmd := exec.CommandContext(ctx, "aqua", "g", pkgName)
+	fmt.Fprintf(os.Stderr, "+ aqua g -o aqua-loca.yaml %s\n", pkgName)
+	cmd := exec.CommandContext(ctx, "aqua", "g", "-o", "aqua-local.yaml", pkgName)
 	cmd.Stdin = os.Stdin
-	cmd.Stdout = outFile
+	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	if err := cmd.Run(); err != nil {
 		return fmt.Errorf("execute a command: %w", err)
@@ -99,28 +90,12 @@ func aquaI(ctx context.Context) error {
 }
 
 func createPkgFile(ctx context.Context, pkgName, pkgFilePath string) error {
-	outFile, err := os.Create(pkgFilePath)
-	if err != nil {
-		return fmt.Errorf("create a file %s: %w", pkgFilePath, err)
-	}
-	defer outFile.Close()
-	if _, err := outFile.WriteString("packages:\n"); err != nil {
-		return fmt.Errorf("write a string to file %s: %w", pkgFilePath, err)
-	}
-	buf := &bytes.Buffer{}
-	fmt.Fprintf(os.Stderr, "+ aqua -c aqua-all.yaml g %s >> %s\n", pkgName, pkgFilePath)
-	cmd := exec.CommandContext(ctx, "aqua", "-c", "aqua-all.yaml", "g", pkgName)
-	cmd.Stdout = buf
+	fmt.Fprintf(os.Stderr, "+ aqua -c aqua-all.yaml g -o %s %s\n", pkgFilePath, pkgName)
+	cmd := exec.CommandContext(ctx, "aqua", "-c", "aqua-all.yaml", "g", "-o", pkgFilePath, pkgName)
+	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	if err := cmd.Run(); err != nil {
 		return fmt.Errorf("execute a command: aqua g %s: %w", pkgName, err)
-	}
-	txt := ""
-	for _, line := range strings.Split(strings.TrimSpace(buf.String()), "\n") {
-		txt += fmt.Sprintf("  %s\n", line)
-	}
-	if _, err := outFile.WriteString(txt); err != nil {
-		return fmt.Errorf("write a string to file %s: %w", pkgFilePath, err)
 	}
 	return nil
 }
