@@ -7,6 +7,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/aquaproj/aqua/pkg/checksum"
 	"github.com/aquaproj/aqua/pkg/config/registry"
 	"github.com/aquaproj/aqua/pkg/github"
 	goccyYAML "github.com/goccy/go-yaml"
@@ -119,22 +120,16 @@ func patchChecksumOfPkg(ctx context.Context, logE *logrus.Entry, ghClient *githu
 	}
 	for _, asset := range assets {
 		assetName := asset.GetName()
-		if !strings.Contains(strings.ToLower(assetName), "checksum") {
+		chksum := checksum.GetChecksumConfigFromFilename(assetName)
+		if chksum == nil {
 			continue
 		}
 		fileName := strings.ReplaceAll(assetName, release.GetTagName(), "{{.Version}}")
 		fileName = strings.ReplaceAll(fileName, strings.TrimPrefix(release.GetTagName(), "v"), "{{trimV .Version}}")
+		chksum.Path = fileName
 		n, err := goccyYAML.ValueToNode(&registry.PackageInfo{
-			Type: "github_release", // I don't know the reason, but without this attribute type makes empty. `type: ""`
-			Checksum: &registry.Checksum{
-				Type:       "github_release",
-				Path:       fileName,
-				FileFormat: "regexp",
-				Pattern: &registry.ChecksumPattern{
-					Checksum: "^(.{64})",
-					File:     "^.{64}\\s+(\\S*)$",
-				},
-			},
+			Type:     "github_release", // I don't know the reason, but without this attribute type makes empty. `type: ""`
+			Checksum: chksum,
 		})
 		if err != nil {
 			return fmt.Errorf("create a YAML AST Node: %w", err)
@@ -142,7 +137,7 @@ func patchChecksumOfPkg(ctx context.Context, logE *logrus.Entry, ghClient *githu
 		if err := ast.Merge(node, n); err != nil {
 			return fmt.Errorf("patch checksum: %w", err)
 		}
-		return nil
+		continue
 	}
 	return nil
 }
