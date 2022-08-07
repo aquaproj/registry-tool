@@ -120,13 +120,10 @@ func patchChecksumOfPkg(ctx context.Context, logE *logrus.Entry, ghClient *githu
 	}
 	for _, asset := range assets {
 		assetName := asset.GetName()
-		chksum := checksum.GetChecksumConfigFromFilename(assetName)
+		chksum := checksum.GetChecksumConfigFromFilename(assetName, release.GetTagName())
 		if chksum == nil {
 			continue
 		}
-		fileName := strings.ReplaceAll(assetName, release.GetTagName(), "{{.Version}}")
-		fileName = strings.ReplaceAll(fileName, strings.TrimPrefix(release.GetTagName(), "v"), "{{trimV .Version}}")
-		chksum.Path = fileName
 		n, err := goccyYAML.ValueToNode(&registry.PackageInfo{
 			Type:     "github_release", // I don't know the reason, but without this attribute type makes empty. `type: ""`
 			Checksum: chksum,
