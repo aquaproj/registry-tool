@@ -59,7 +59,7 @@ func aquaGR(ctx context.Context, pkgName, rgFilePath string) error {
 		return fmt.Errorf("create a file %s: %w", rgFilePath, err)
 	}
 	defer outFile.Close()
-	fmt.Fprintf(os.Stderr, "+ aqua gr %s\n >> registry.yaml", pkgName)
+	fmt.Fprintf(os.Stderr, "+ aqua gr %s >> registry.yaml\n", pkgName)
 	cmd := exec.CommandContext(ctx, "aqua", "gr", pkgName)
 	cmd.Stdout = outFile
 	cmd.Stderr = os.Stderr
