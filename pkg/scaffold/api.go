@@ -41,7 +41,7 @@ e.g. $ aqua-registry scaffold cli/cli`)
 	if err := initcmd.Init(ctx); err != nil {
 		return err //nolint:wrapcheck
 	}
-	if err := aquaG(ctx, "local,"+pkgName); err != nil {
+	if err := aquaG(ctx, pkgName); err != nil {
 		return err
 	}
 	if err := createPkgFile(ctx, pkgName, pkgFile); err != nil {
