@@ -9,3 +9,4 @@ packages:
   - name: reviewdog/reviewdog@v0.14.1
   - name: rhysd/actionlint@v1.6.15
   - name: suzuki-shunsuke/cmdx@v1.6.1
+  - name: golang/go@go1.19
