@@ -3,7 +3,7 @@ module github.com/aquaproj/registry-tool
 go 1.18
 
 require (
-	github.com/aquaproj/aqua v1.19.1-0.20220807114306-f1021ac4cd61
+	github.com/aquaproj/aqua v1.19.3-0.20220814055701-c50826a19c38
 	github.com/goccy/go-yaml v1.9.5
 	github.com/mattn/go-colorable v0.1.12
 	github.com/sirupsen/logrus v1.9.0
@@ -56,8 +56,8 @@ require (
 	github.com/xrash/smetrics v0.0.0-20201216005158-039620a65673 // indirect
 	golang.org/x/crypto v0.0.0-20220131195533-30dcbda58838 // indirect
 	golang.org/x/net v0.0.0-20220624214902-1bab6f366d9e // indirect
-	golang.org/x/oauth2 v0.0.0-20220722155238-128564f6959c // indirect
-	golang.org/x/sys v0.0.0-20220804214406-8e32c043e418 // indirect
+	golang.org/x/oauth2 v0.0.0-20220808172628-8227340efae7 // indirect
+	golang.org/x/sys v0.0.0-20220811171246-fbc7d0a398ab // indirect
 	golang.org/x/term v0.0.0-20210927222741-03fcf44c2211 // indirect
 	golang.org/x/text v0.3.7 // indirect
 	golang.org/x/xerrors v0.0.0-20220609144429-65e65417b02f // indirect
