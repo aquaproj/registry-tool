@@ -12,6 +12,8 @@ import (
 
 	genrg "github.com/aquaproj/registry-tool/pkg/generate-registry"
 	"github.com/aquaproj/registry-tool/pkg/initcmd"
+	"github.com/aquaproj/registry-tool/pkg/patchchecksum"
+	"github.com/sirupsen/logrus"
 )
 
 const (
@@ -59,12 +61,16 @@ func aquaGR(ctx context.Context, pkgName, rgFilePath string) error {
 		return fmt.Errorf("create a file %s: %w", rgFilePath, err)
 	}
 	defer outFile.Close()
-	fmt.Fprintf(os.Stderr, "+ aqua gr %s >> registry.yaml\n", pkgName)
+	fmt.Fprintf(os.Stderr, "+ aqua gr %s > %s\n", pkgName, rgFilePath)
 	cmd := exec.CommandContext(ctx, "aqua", "gr", pkgName)
 	cmd.Stdout = outFile
 	cmd.Stderr = os.Stderr
 	if err := cmd.Run(); err != nil {
 		return fmt.Errorf("execute a command: %w", err)
+	}
+	logE := logrus.NewEntry(logrus.New())
+	if err := patchchecksum.PatchChecksum(ctx, logE, rgFilePath); err != nil {
+		return fmt.Errorf("patch the checksum config: %w", err)
 	}
 	return nil
 }
