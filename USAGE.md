@@ -11,7 +11,7 @@ USAGE:
    aqua-registry [global options] command [command options] [arguments...]
 
 VERSION:
-   0.1.0 (4e8af34e2a78a48729cc64144aeee8a529db9dfa)
+   0.1.4 (d7c108f77ea8576de6e7ece77f5fa07ef66a6d0e)
 
 COMMANDS:
    scaffold               Scaffold a package
@@ -20,6 +20,7 @@ COMMANDS:
    completion             Output shell completion script for bash or zsh
    version                Show version
    init                   Create configuration files
+   patch-checksum         Patch a checksum configuration
    help, h                Shows a list of commands or help for one command
 
 GLOBAL OPTIONS:
@@ -125,6 +126,25 @@ DESCRIPTION:
    Don't edit it manually, and if you update registry.yaml in the pkgs directory, don't forget to run this command.
    
    No argument is needed.
+   
+```
+
+## aqua-registry patch-checksum
+
+```console
+$ aqua-registry help patch-checksum
+NAME:
+   aqua-registry patch-checksum - Patch a checksum configuration
+
+USAGE:
+   $ aqua-registry patch-checksum <registry configuration file path>
+
+DESCRIPTION:
+   Patch a checksum configuration.
+   
+   e.g.
+   
+   $ aqua-registry patch-checksum pkgs/suzuki-shunsuke/tfcmt/registry.yaml
    
 ```
 
