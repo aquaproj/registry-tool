@@ -11,7 +11,7 @@ command_console() {
 }
 
 commands() {
-  for cmd in scaffold create-pr-new-pkg init generate-registry completion; do
+  for cmd in scaffold create-pr-new-pkg init generate-registry patch-checksum completion; do
     echo "
 ## aqua-registry $cmd
 
