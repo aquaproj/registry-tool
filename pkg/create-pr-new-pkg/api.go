@@ -14,7 +14,7 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-func CreatePRNewPkgs(ctx context.Context, pkgNames ...string) error { //nolint:cyclop
+func CreatePRNewPkgs(ctx context.Context, pkgNames ...string) error { //nolint:cyclop,funlen
 	if len(pkgNames) == 0 {
 		return errors.New(`usage: $ aqua-registry create-pr-new-pkg <pkgname>...
 e.g. $ aqua-registry create-pr-new-pkg cli/cli`)
