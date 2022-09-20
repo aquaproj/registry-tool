@@ -45,6 +45,15 @@ e.g. $ aqua-registry create-pr-new-pkg cli/cli`)
 		"$ aqua g -i " + strings.Join(pkgNames, " "),
 		"```",
 		"",
+		"## How to confirm if this package works well",
+		"",
+		"Maintainers aren't necessarily familiar with this package, so please describe how to confirm if this package works well.",
+		"Please confirm if this package works well yourself as much as possible.",
+		"",
+		"```console",
+		"$ ",
+		"```",
+		"",
 	}...), "\n")
 	pkgName := pkgNames[0]
 	branch := "feat/" + pkgName
