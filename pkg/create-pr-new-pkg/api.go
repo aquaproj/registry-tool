@@ -14,7 +14,7 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-func CreatePRNewPkgs(ctx context.Context, pkgNames ...string) error { //nolint:cyclop
+func CreatePRNewPkgs(ctx context.Context, pkgNames ...string) error { //nolint:cyclop,funlen
 	if len(pkgNames) == 0 {
 		return errors.New(`usage: $ aqua-registry create-pr-new-pkg <pkgname>...
 e.g. $ aqua-registry create-pr-new-pkg cli/cli`)
@@ -43,6 +43,15 @@ e.g. $ aqua-registry create-pr-new-pkg cli/cli`)
 		"",
 		"```console",
 		"$ aqua g -i " + strings.Join(pkgNames, " "),
+		"```",
+		"",
+		"## How to confirm if this package works well",
+		"",
+		"Maintainers aren't necessarily familiar with this package, so please describe how to confirm if this package works well.",
+		"Please confirm if this package works well yourself as much as possible.",
+		"",
+		"```console",
+		"$ ",
 		"```",
 		"",
 	}...), "\n")
