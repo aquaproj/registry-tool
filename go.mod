@@ -3,7 +3,7 @@ module github.com/aquaproj/registry-tool
 go 1.19
 
 require (
-	github.com/aquaproj/aqua v1.20.0-6-checksum
+	github.com/aquaproj/aqua v1.20.0-8-checksum
 	github.com/goccy/go-yaml v1.9.5
 	github.com/mattn/go-colorable v0.1.13
 	github.com/sirupsen/logrus v1.9.0
@@ -57,7 +57,7 @@ require (
 	golang.org/x/crypto v0.0.0-20220829220503-c86fa9a7ed90 // indirect
 	golang.org/x/net v0.0.0-20220624214902-1bab6f366d9e // indirect
 	golang.org/x/oauth2 v0.0.0-20220909003341-f21342109be1 // indirect
-	golang.org/x/sys v0.0.0-20220919091848-fb04ddd9f9c8 // indirect
+	golang.org/x/sys v0.0.0-20220927170352-d9d178bc13c6 // indirect
 	golang.org/x/term v0.0.0-20220722155259-a9ba230a4035 // indirect
 	golang.org/x/text v0.3.7 // indirect
 	golang.org/x/xerrors v0.0.0-20220609144429-65e65417b02f // indirect
