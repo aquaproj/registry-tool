@@ -5,6 +5,8 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+permissions:
+  contents: read
 jobs:
   prettier:
     runs-on: ubuntu-latest
