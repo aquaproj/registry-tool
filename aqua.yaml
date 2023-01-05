@@ -11,4 +11,4 @@ packages:
   - name: suzuki-shunsuke/cmdx@v1.6.1
   - name: golang/go@go1.19
   - name: sigstore/cosign@v1.13.1
-  - name: aquaproj/registry-tool@v0.1.5
+  - name: aquaproj/registry-tool@v0.1.6
