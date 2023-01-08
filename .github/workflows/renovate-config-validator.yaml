@@ -14,8 +14,7 @@ on:
       - .github/workflows/renovate-config-validator.yaml
       - renovate.json5
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
   validate:
