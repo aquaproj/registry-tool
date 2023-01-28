@@ -103,7 +103,12 @@ func getPackagesAST(file *ast.File) (*ast.SequenceNode, error) { //nolint:cyclop
 	return nil, nil //nolint:nilnil
 }
 
-func patchChecksumOfPkg(ctx context.Context, logE *logrus.Entry, ghClient *github.RepositoriesService, node *ast.MappingNode, pkgInfo *registry.PackageInfo) error {
+type GitHubClient interface {
+	GetLatestRelease(ctx context.Context, repoOwner, repoName string) (*github.RepositoryRelease, *github.Response, error)
+	ListReleaseAssets(ctx context.Context, owner, repo string, id int64, opts *github.ListOptions) ([]*github.ReleaseAsset, *github.Response, error)
+}
+
+func patchChecksumOfPkg(ctx context.Context, logE *logrus.Entry, ghClient GitHubClient, node *ast.MappingNode, pkgInfo *registry.PackageInfo) error {
 	if pkgInfo.Type != "github_release" {
 		return nil
 	}
@@ -139,7 +144,7 @@ func patchChecksumOfPkg(ctx context.Context, logE *logrus.Entry, ghClient *githu
 	return nil
 }
 
-func listReleaseAssets(ctx context.Context, logE *logrus.Entry, ghClient *github.RepositoriesService, pkgInfo *registry.PackageInfo, releaseID int64) []*github.ReleaseAsset {
+func listReleaseAssets(ctx context.Context, logE *logrus.Entry, ghClient GitHubClient, pkgInfo *registry.PackageInfo, releaseID int64) []*github.ReleaseAsset {
 	opts := &github.ListOptions{
 		PerPage: 100, //nolint:gomnd
 	}
