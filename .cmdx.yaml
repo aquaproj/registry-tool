@@ -29,3 +29,8 @@ tasks:
     description: go vet
     usage: go vet
     script: go vet ./...
+  - name: install
+    short: i
+    description: Build and install registry-tool
+    usage: Build and install registry-tool by "go install" command
+    script: go install ./cmd/aqua-registry
