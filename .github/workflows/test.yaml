@@ -4,7 +4,7 @@ name: test
 on: pull_request
 
 env:
-  AQUA_POLICY_CONFIG: ${{ github.workspace }}/aqua-policy.yaml
+  AQUA_POLICY_CONFIG: ${{ github.workspace }}/aqua/policy.yaml
 
 permissions: {}
 
@@ -132,8 +132,11 @@ jobs:
       - run: exit 1
 
   test:
-    uses: suzuki-shunsuke/go-test-workflow/.github/workflows/test.yaml@ef3bf756c7e21e23d232b73fd7bab92c848455cf # v0.2.1
+    uses: suzuki-shunsuke/go-test-workflow/.github/workflows/test.yaml@2bdeeb26dac484af74f203a6eca9e7784a29f48c # v0.3.1
     if: "! github.event.pull_request.head.repo.fork"
+    with:
+      aqua_version: v1.33.0
+      aqua_policy_config: aqua/policy.yaml
     permissions:
       pull-requests: write
       contents: read
