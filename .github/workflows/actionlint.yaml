@@ -12,7 +12,7 @@ on:
 permissions: {}
 jobs:
   actionlint:
-    uses: suzuki-shunsuke/actionlint-workflow/.github/workflows/actionlint.yaml@db69a88f7127e31730fc9bac1551aa7770c4dfe0 # v0.3.0
+    uses: suzuki-shunsuke/actionlint-workflow/.github/workflows/actionlint.yaml@6196583ab88cd36f36f7260fca4e8e4b2c4c9b66 # v0.4.1
     if: |
       ! github.event.pull_request.head.repo.fork
     with:
@@ -31,7 +31,7 @@ jobs:
       - uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c # v3
       - uses: aquaproj/aqua-installer@61e2563dfe7674cbf74fe6ec212e444198a3bb00 # v2.0.2
         with:
-          aqua_version: v1.33.0-3
+          aqua_version: v1.33.0
       - run: actionlint
         env:
           GITHUB_TOKEN: ${{github.token}}

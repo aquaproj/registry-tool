@@ -43,7 +43,7 @@ jobs:
       - uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c # v3
       - uses: aquaproj/aqua-installer@61e2563dfe7674cbf74fe6ec212e444198a3bb00 # v2.0.2
         with:
-          aqua_version: v1.33.0-3
+          aqua_version: v1.33.0
         env:
           AQUA_GITHUB_TOKEN: ${{github.token}}
       - run: ghalint run
@@ -70,10 +70,10 @@ jobs:
       - uses: aquaproj/aqua-installer@61e2563dfe7674cbf74fe6ec212e444198a3bb00 # v2.0.2
         # Install ghcp
         with:
-          aqua_version: v1.33.0-3
+          aqua_version: v1.33.0
         env:
           AQUA_GITHUB_TOKEN: ${{github.token}}
-      - uses: aquaproj/update-checksum-action@4bb09f359f2ecdb20aa9bc61684f5f9d185be909 # v0.1.4
+      - uses: aquaproj/update-checksum-action@5b6edb5a359b54a1dfa5d4012c69916268f48cb0 # v0.2.0
         with:
           prune: true
           skip_push: ${{github.event.pull_request.head.repo.fork}}
@@ -154,7 +154,7 @@ jobs:
           cache: true
       - uses: aquaproj/aqua-installer@61e2563dfe7674cbf74fe6ec212e444198a3bb00 # v2.0.2
         with:
-          aqua_version: v1.33.0-3
+          aqua_version: v1.33.0
         env:
           AQUA_GITHUB_TOKEN: ${{github.token}}
       - run: golangci-lint run
