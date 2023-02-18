@@ -123,7 +123,6 @@ jobs:
     needs:
       - update-aqua-checksums
       - test
-      - test_fork
       - ghalint
       - renovate-config-validator
     permissions: {}
