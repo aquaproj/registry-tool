@@ -23,3 +23,4 @@ linters:
     - exhaustive
     - exhaustruct
     - nosnakecase
+    - musttag
