@@ -9,7 +9,7 @@ func (runner *Runner) newScaffoldCommand() *cli.Command {
 	return &cli.Command{
 		Name:      "scaffold",
 		Usage:     `Scaffold a package`,
-		UsageText: `$ aqua-registry scaffold <package name>`,
+		UsageText: `$ aqua-registry scaffold [--deep] <package name>`,
 		Description: `Scaffold a package.
 
 aqua >= v1.14.0 is required.
@@ -33,9 +33,15 @@ This tool does the following things.
 6. aqua i
 `,
 		Action: runner.scaffoldAction,
+		Flags: []cli.Flag{
+			&cli.BoolFlag{
+				Name:  "deep",
+				Usage: "Resolve version_overrides. aqua >= v1.34.0 is required",
+			},
+		},
 	}
 }
 
 func (runner *Runner) scaffoldAction(c *cli.Context) error {
-	return scaffold.Scaffold(c.Context, c.Args().Slice()...) //nolint:wrapcheck
+	return scaffold.Scaffold(c.Context, c.Bool("deep"), c.Args().Slice()...) //nolint:wrapcheck
 }
