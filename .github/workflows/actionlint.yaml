@@ -17,7 +17,7 @@ jobs:
       ! github.event.pull_request.head.repo.fork
     with:
       aqua_policy_config: aqua/policy.yaml
-      aqua_version: v1.33.0
+      aqua_version: v1.34.0
     permissions:
       pull-requests: write
       contents: read
@@ -31,7 +31,7 @@ jobs:
       - uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c # v3
       - uses: aquaproj/aqua-installer@61e2563dfe7674cbf74fe6ec212e444198a3bb00 # v2.0.2
         with:
-          aqua_version: v1.33.0
+          aqua_version: v1.34.0
       - run: actionlint
         env:
           GITHUB_TOKEN: ${{github.token}}
