@@ -19,7 +19,7 @@ const (
 	filePermission os.FileMode = 0o644
 )
 
-func Scaffold(ctx context.Context, pkgNames ...string) error {
+func Scaffold(ctx context.Context, deep bool, pkgNames ...string) error {
 	if len(pkgNames) != 1 {
 		return errors.New(`usage: $ aqua-registry scaffold <pkgname>
 e.g. $ aqua-registry scaffold cli/cli`)
@@ -31,7 +31,7 @@ e.g. $ aqua-registry scaffold cli/cli`)
 	if err := os.MkdirAll(pkgDir, dirPermission); err != nil {
 		return fmt.Errorf("create directories: %w", err)
 	}
-	if err := aquaGR(ctx, pkgName, rgFile); err != nil {
+	if err := aquaGR(ctx, pkgName, pkgFile, rgFile, deep); err != nil {
 		return err
 	}
 	fmt.Fprintln(os.Stderr, "Update registry.yaml")
@@ -44,8 +44,10 @@ e.g. $ aqua-registry scaffold cli/cli`)
 	if err := aquaG(ctx, pkgName); err != nil {
 		return err
 	}
-	if err := createPkgFile(ctx, pkgName, pkgFile); err != nil {
-		return err
+	if !deep {
+		if err := createPkgFile(ctx, pkgName, pkgFile); err != nil {
+			return err
+		}
 	}
 	if err := aquaI(ctx); err != nil {
 		return err
@@ -53,14 +55,20 @@ e.g. $ aqua-registry scaffold cli/cli`)
 	return nil
 }
 
-func aquaGR(ctx context.Context, pkgName, rgFilePath string) error {
+func aquaGR(ctx context.Context, pkgName, pkgFilePath, rgFilePath string, deep bool) error {
 	outFile, err := os.Create(rgFilePath)
 	if err != nil {
 		return fmt.Errorf("create a file %s: %w", rgFilePath, err)
 	}
 	defer outFile.Close()
-	fmt.Fprintf(os.Stderr, "+ aqua gr %s > %s\n", pkgName, rgFilePath)
-	cmd := exec.CommandContext(ctx, "aqua", "gr", pkgName)
+	var cmd *exec.Cmd
+	if deep {
+		fmt.Fprintf(os.Stderr, "+ aqua gr --deep --out-testdata %s %s > %s\n", pkgFilePath, pkgName, rgFilePath)
+		cmd = exec.CommandContext(ctx, "aqua", "gr", "--deep", "--out-testdata", pkgFilePath, pkgName)
+	} else {
+		fmt.Fprintf(os.Stderr, "+ aqua gr %s > %s\n", pkgName, rgFilePath)
+		cmd = exec.CommandContext(ctx, "aqua", "gr", pkgName)
+	}
 	cmd.Stdout = outFile
 	cmd.Stderr = os.Stderr
 	if err := cmd.Run(); err != nil {
