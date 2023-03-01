@@ -51,8 +51,8 @@ github.com/andybalholm/brotli v1.0.1 h1:KqhlKozYbRtJvsPrrEeXcO+N2l6NYT5A2QAFmSUL
 github.com/andybalholm/brotli v1.0.1/go.mod h1:loMXtMfwqflxFJPmdbJO0a3KNoPuLBgiu3qAvBg8x/Y=
 github.com/antonmedv/expr v1.9.0 h1:j4HI3NHEdgDnN9p6oI6Ndr0G5QryMY0FNxT4ONrFDGU=
 github.com/antonmedv/expr v1.9.0/go.mod h1:5qsM3oLGDND7sDmQGDXHkYfkjYMUX14qsgqmHhwGEk8=
-github.com/aquaproj/aqua v1.34.0 h1:B+MeHszgvv/PzZY+bCES5s52x2NLcKK46qq4kEGDwvk=
-github.com/aquaproj/aqua v1.34.0/go.mod h1:vZLCLJ3HfDAtBI0O9+1KY9BO3UuDQvn+fHiYjVLeMmY=
+github.com/aquaproj/aqua v1.34.1 h1:VhIfaxIxVj32jII/jbVyBrabjCO3bRCCA5B8BtokCkQ=
+github.com/aquaproj/aqua v1.34.1/go.mod h1:vZLCLJ3HfDAtBI0O9+1KY9BO3UuDQvn+fHiYjVLeMmY=
 github.com/census-instrumentation/opencensus-proto v0.2.1/go.mod h1:f6KPmirojxKA12rnyqOA5BBL4O983OfeGPqjHWSTneU=
 github.com/chzyer/logex v1.1.10/go.mod h1:+Ywpsq7O8HXn0nuIou7OrIPyXbp3wmkHB+jjWRnGsAI=
 github.com/chzyer/readline v0.0.0-20180603132655-2972be24d48e/go.mod h1:nSuG5e5PlCu98SY8svDHJxuZscDgtXS6KTTbou5AhLI=
