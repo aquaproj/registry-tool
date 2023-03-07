@@ -39,6 +39,7 @@ e.g. $ aqua-registry create-pr-new-pkg cli/cli`)
 			return err
 		}
 	}
+	commitMsg := strings.Join(bodies, "\n")
 	body := strings.Join(append(bodies, []string{ //nolint:makezero
 		"",
 		"```console",
@@ -77,7 +78,7 @@ e.g. $ aqua-registry create-pr-new-pkg cli/cli`)
 	if err := command(ctx, "git", "commit", "-m", strings.Join([]string{
 		"feat: add " + pkgName,
 		"",
-		body,
+		commitMsg,
 	}, "\n")); err != nil {
 		return err
 	}
