@@ -41,7 +41,7 @@ e.g. $ aqua-registry scaffold cli/cli`)
 	if err := initcmd.Init(ctx); err != nil {
 		return err //nolint:wrapcheck
 	}
-	if err := aquaG(ctx, pkgName); err != nil {
+	if err := aquaG(pkgFile); err != nil {
 		return err
 	}
 	if !deep {
@@ -77,19 +77,10 @@ func aquaGR(ctx context.Context, pkgName, pkgFilePath, rgFilePath string, deep b
 	return nil
 }
 
-func aquaG(ctx context.Context, pkgName string) error {
-	outFile, err := os.OpenFile("aqua-local.yaml", os.O_APPEND|os.O_CREATE|os.O_WRONLY, filePermission)
-	if err != nil {
-		return fmt.Errorf("open aqua-local.yaml: %w", err)
-	}
-	defer outFile.Close()
-	fmt.Fprintf(os.Stderr, "+ aqua g %s >> aqua-local.yaml\n", pkgName)
-	cmd := exec.CommandContext(ctx, "aqua", "g", pkgName)
-	cmd.Stdin = os.Stdin
-	cmd.Stdout = outFile
-	cmd.Stderr = os.Stderr
-	if err := cmd.Run(); err != nil {
-		return fmt.Errorf("execute a command: %w", err)
+func aquaG(pkgFilePath string) error {
+	fmt.Fprintf(os.Stderr, "appending '- import: %s' to aqua-local.yaml\n", pkgFilePath)
+	if err := generateInsert("aqua-local.yaml", pkgFilePath); err != nil {
+		return err
 	}
 	return nil
 }
