@@ -4,7 +4,7 @@ CLI to develop [aqua](https://aquaproj.github.io/) Registry
 
 ## Reference
 
-https://aquaproj.github.io/docs/reference/create-private-registry
+https://aquaproj.github.io/docs/develop-registry/create-private-registry
 
 ## Install
 
