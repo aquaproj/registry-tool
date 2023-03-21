@@ -3,7 +3,7 @@ module github.com/aquaproj/registry-tool
 go 1.19
 
 require (
-	github.com/aquaproj/aqua v1.37.2
+	github.com/aquaproj/aqua v1.38.0
 	github.com/goccy/go-yaml v1.10.0
 	github.com/mattn/go-colorable v0.1.13
 	github.com/sirupsen/logrus v1.9.0
@@ -20,7 +20,7 @@ require (
 	github.com/ProtonMail/go-crypto v0.0.0-20230217124315-7d5c6f04bbb8 // indirect
 	github.com/adrg/xdg v0.4.0 // indirect
 	github.com/andybalholm/brotli v1.0.1 // indirect
-	github.com/antonmedv/expr v1.12.3 // indirect
+	github.com/antonmedv/expr v1.12.4 // indirect
 	github.com/cloudflare/circl v1.1.0 // indirect
 	github.com/codingsince1985/checksum v1.3.0 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.2 // indirect
