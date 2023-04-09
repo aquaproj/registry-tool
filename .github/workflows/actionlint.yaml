@@ -29,7 +29,7 @@ jobs:
     permissions: {}
     steps:
       - uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c # v3
-      - uses: aquaproj/aqua-installer@61e2563dfe7674cbf74fe6ec212e444198a3bb00 # v2.0.2
+      - uses: aquaproj/aqua-installer@8ca8a0c28ce34f7ad6d17ff87d4e3bf5d518dd5c # v2.1.0
         with:
           aqua_version: v2.2.2
       - run: actionlint
