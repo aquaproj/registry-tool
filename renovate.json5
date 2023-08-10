@@ -3,6 +3,6 @@
     "config:base",
     "github>suzuki-shunsuke/renovate-config#1.1.2",
     "github>suzuki-shunsuke/renovate-config:nolimit#2.1.0",
-    "github>aquaproj/aqua-renovate-config#1.7.0",
+    "github>aquaproj/aqua-renovate-config#1.8.0",
   ],
 }
