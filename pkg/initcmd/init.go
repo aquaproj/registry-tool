@@ -15,9 +15,6 @@ func Init(ctx context.Context) error {
 	if err := initAquaYAML(); err != nil {
 		return err
 	}
-	if err := initAquaLocalYAML(); err != nil {
-		return err
-	}
 	return nil
 }
 
@@ -36,21 +33,6 @@ registries:
 packages:
 `), filePermission); err != nil {
 		return fmt.Errorf("create aqua.yaml: %w", err)
-	}
-	return nil
-}
-
-func initAquaLocalYAML() error {
-	if _, err := os.Stat("aqua-local.yaml"); err == nil {
-		return nil
-	}
-	fmt.Fprintln(os.Stderr, "Creating aqua-local.yaml")
-	if err := os.WriteFile("aqua-local.yaml", []byte(`---
-# aqua - Declarative CLI Version Manager
-# https://aquaproj.github.io/
-packages:
-`), filePermission); err != nil {
-		return fmt.Errorf("create aqua-local.yaml: %w", err)
 	}
 	return nil
 }
