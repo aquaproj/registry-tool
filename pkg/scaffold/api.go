@@ -49,9 +49,6 @@ e.g. $ aqua-registry scaffold cli/cli`)
 			return err
 		}
 	}
-	if err := aquaI(ctx); err != nil {
-		return err
-	}
 	return nil
 }
 
@@ -81,18 +78,6 @@ func aquaG(pkgFilePath string) error {
 	fmt.Fprintf(os.Stderr, "appending '- import: %s' to aqua-local.yaml\n", pkgFilePath)
 	if err := generateInsert("aqua-local.yaml", pkgFilePath); err != nil {
 		return err
-	}
-	return nil
-}
-
-func aquaI(ctx context.Context) error {
-	fmt.Fprintln(os.Stderr, "+ aqua i --test")
-	cmd := exec.CommandContext(ctx, "aqua", "i", "--test")
-	cmd.Stdin = os.Stdin
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	if err := cmd.Run(); err != nil {
-		return fmt.Errorf("execute a command: aqua i: %w", err)
 	}
 	return nil
 }
