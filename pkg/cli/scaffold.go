@@ -9,10 +9,8 @@ func (runner *Runner) newScaffoldCommand() *cli.Command {
 	return &cli.Command{
 		Name:      "scaffold",
 		Usage:     `Scaffold a package`,
-		UsageText: `$ aqua-registry scaffold [--deep] <package name>`,
+		UsageText: `$ aqua-registry scaffold [-limit <the number of versions] [-cmd <command>[,<command>...]] <package name>`,
 		Description: `Scaffold a package.
-
-aqua >= v1.14.0 is required.
 
 e.g.
 
@@ -36,12 +34,21 @@ This tool does the following things.
 		Flags: []cli.Flag{
 			&cli.BoolFlag{
 				Name:  "deep",
-				Usage: "Resolve version_overrides. aqua >= v1.34.0 is required",
+				Usage: "This flag was deprecated and had no meaning from aqua v2.15.0. This flag will be removed in aqua v3.0.0. https://github.com/aquaproj/aqua/issues/2351",
+			},
+			&cli.StringFlag{
+				Name:  "cmd",
+				Usage: "A list of commands joined with single quotes ','",
+			},
+			&cli.IntFlag{
+				Name:    "limit",
+				Aliases: []string{"l"},
+				Usage:   "the maximum number of versions",
 			},
 		},
 	}
 }
 
 func (runner *Runner) scaffoldAction(c *cli.Context) error {
-	return scaffold.Scaffold(c.Context, c.Bool("deep"), c.Args().Slice()...) //nolint:wrapcheck
+	return scaffold.Scaffold(c.Context, c.String("cmd"), c.Int("limit"), c.Args().Slice()...) //nolint:wrapcheck
 }
