@@ -7,9 +7,9 @@ import (
 	"os"
 	"strings"
 
-	"github.com/aquaproj/aqua/pkg/checksum"
-	"github.com/aquaproj/aqua/pkg/config/registry"
-	"github.com/aquaproj/aqua/pkg/github"
+	"github.com/aquaproj/aqua/v2/pkg/checksum"
+	"github.com/aquaproj/aqua/v2/pkg/config/registry"
+	"github.com/aquaproj/aqua/v2/pkg/github"
 	goccyYAML "github.com/goccy/go-yaml"
 	"github.com/goccy/go-yaml/ast"
 	"github.com/goccy/go-yaml/parser"
@@ -34,7 +34,7 @@ func PatchChecksum(ctx context.Context, logE *logrus.Entry, configFilePath strin
 
 	ghClient := github.New(ctx)
 	size := len(cfg.PackageInfos)
-	pkgsAST, err := getPackagesAST(file)
+	pkgsAST, err := GetPackagesAST(file)
 	if err != nil {
 		return err
 	}
@@ -42,7 +42,7 @@ func PatchChecksum(ctx context.Context, logE *logrus.Entry, configFilePath strin
 	idx := 0
 	for i := 0; i < size; i++ {
 		pkgInfo := cfg.PackageInfos[i]
-		node, j := findFirstMappingNode(pkgsAST, idx)
+		node, j := FindFirstMappingNode(pkgsAST, idx)
 		if j == -1 {
 			return nil
 		}
@@ -58,7 +58,7 @@ func PatchChecksum(ctx context.Context, logE *logrus.Entry, configFilePath strin
 	return nil
 }
 
-func findFirstMappingNode(seq *ast.SequenceNode, idx int) (*ast.MappingNode, int) {
+func FindFirstMappingNode(seq *ast.SequenceNode, idx int) (*ast.MappingNode, int) {
 	s := len(seq.Values)
 	for i := idx; i < s; i++ {
 		value := seq.Values[i]
@@ -71,7 +71,7 @@ func findFirstMappingNode(seq *ast.SequenceNode, idx int) (*ast.MappingNode, int
 	return nil, -1
 }
 
-func getPackagesAST(file *ast.File) (*ast.SequenceNode, error) { //nolint:cyclop
+func GetPackagesAST(file *ast.File) (*ast.SequenceNode, error) { //nolint:cyclop
 	for _, doc := range file.Docs {
 		var values []*ast.MappingValueNode
 		switch body := doc.Body.(type) {

@@ -1,11 +1,6 @@
 ---
 name: test
-
 on: pull_request
-
-env:
-  AQUA_POLICY_CONFIG: ${{ github.workspace }}/aqua/policy.yaml
-
 permissions: {}
 
 jobs:
@@ -41,9 +36,9 @@ jobs:
     permissions: {}
     steps:
       - uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c # v3
-      - uses: aquaproj/aqua-installer@294926f94b4233f202a2f03875c604f840cfed70 # v2.1.1
+      - uses: aquaproj/aqua-installer@d9c4b5d107a17831a8c8718efa4ce67a0923d1f5 # v2.1.3
         with:
-          aqua_version: v2.3.6
+          aqua_version: v2.16.4
         env:
           AQUA_GITHUB_TOKEN: ${{github.token}}
       - run: ghalint run
@@ -67,13 +62,13 @@ jobs:
         with:
           app_id: ${{secrets.APP_ID}}
           private_key: ${{secrets.APP_PRIVATE_KEY}}
-      - uses: aquaproj/aqua-installer@294926f94b4233f202a2f03875c604f840cfed70 # v2.1.1
+      - uses: aquaproj/aqua-installer@d9c4b5d107a17831a8c8718efa4ce67a0923d1f5 # v2.1.3
         # Install ghcp
         with:
-          aqua_version: v2.3.6
+          aqua_version: v2.16.4
         env:
           AQUA_GITHUB_TOKEN: ${{github.token}}
-      - uses: aquaproj/update-checksum-action@2fb7f676d407d4fb8c2c466c19d09d3ddec4f82f # v0.2.2
+      - uses: aquaproj/update-checksum-action@0fef5fa12e81e046bb29078f76b99bb29fa4e696 # v0.2.3
         with:
           prune: true
           skip_push: ${{github.event.pull_request.head.repo.fork}}
@@ -86,7 +81,7 @@ jobs:
 
   renovate-config-validator:
     # Validate Renovate Configuration by renovate-config-validator.
-    uses: suzuki-shunsuke/renovate-config-validator-workflow/.github/workflows/validate.yaml@1a2fd7b15d99b1c434124b0bd2d8bd55b54ed869 # v0.2.0
+    uses: suzuki-shunsuke/renovate-config-validator-workflow/.github/workflows/validate.yaml@35f1c78014c423fd37eb792c73f11ec0898098f4 # v0.2.2
     needs: path-filter
     if: needs.path-filter.outputs.renovate-config-validator == 'true'
     permissions:
@@ -111,7 +106,7 @@ jobs:
         with:
           app_id: ${{secrets.APP_ID}}
           private_key: ${{secrets.APP_PRIVATE_KEY}}
-      - run: gh -R "$GITHUB_REPOSITORY" pr merge --merge --auto --delete-branch "$PR_NUMBER"
+      - run: gh -R "$GITHUB_REPOSITORY" pr merge --squash --auto --delete-branch "$PR_NUMBER"
         env:
           GITHUB_TOKEN: ${{steps.generate_token.outputs.token}} # Use GitHub App to trigger GitHub Actions Workflow by merge commit.
           PR_NUMBER: ${{github.event.pull_request.number}}
@@ -133,9 +128,8 @@ jobs:
   test:
     uses: suzuki-shunsuke/go-test-workflow/.github/workflows/test.yaml@66610a63dfe5160d97e1b68bc53949ceed18e0db # v0.5.0
     with:
-      aqua_version: v2.3.6
-      aqua_policy_config: aqua/policy.yaml
-      go-version: 1.20.1
+      aqua_version: v2.16.4
+      go-version: 1.21.4
     permissions:
       pull-requests: write
       contents: read
@@ -143,6 +137,6 @@ jobs:
   prettier:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab # v3.5.2
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       - run: npm i -g prettier
       - run: prettier -c .
