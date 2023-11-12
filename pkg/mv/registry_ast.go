@@ -71,26 +71,24 @@ func insertAliases(value ast.Node, idx int, oldPackageName string) error {
 		return errors.New("value must be a mapping node")
 	}
 
-	node, err := goccyYAML.ValueToNode(map[string]interface{}{
-		"aliases": []*registry.Alias{
-			{
-				Name: oldPackageName,
-			},
-		},
-	})
+	f, err := parser.ParseBytes([]byte(fmt.Sprintf(`aliases:
+  - name: %s`, oldPackageName)), parser.ParseComments)
 	if err != nil {
-		return fmt.Errorf("convert an alias to node: %w", err)
+		return fmt.Errorf("parse text as YAML: %w", err)
 	}
-
-	v, ok := node.(*ast.MappingNode)
+	mn, ok := f.Docs[0].Body.(*ast.MappingValueNode)
 	if !ok {
-		return errors.New("node must be a mapping node")
+		return errors.New("body must be a mapping node")
 	}
 
 	latterValues := make([]*ast.MappingValueNode, len(mv.Values[idx:]))
 	copy(latterValues, mv.Values[idx:])
 	mv.Values = mv.Values[:idx]
-	mv.Merge(v)
+	mv.Merge(&ast.MappingNode{
+		Values: []*ast.MappingValueNode{
+			mn,
+		},
+	})
 	mv.Merge(&ast.MappingNode{
 		Values: latterValues,
 	})
