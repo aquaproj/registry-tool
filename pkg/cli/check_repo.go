@@ -1,7 +1,10 @@
 package cli
 
 import (
+	"net/http"
+
 	"github.com/aquaproj/registry-tool/pkg/checkrepo"
+	"github.com/spf13/afero"
 	"github.com/urfave/cli/v2"
 )
 
@@ -24,5 +27,11 @@ Azure/aztfexport
 }
 
 func (runner *Runner) checkRepoAction(c *cli.Context) error {
-	return checkrepo.CheckRepo(c.Context, c.Bool("fix"), c.Args().First()) //nolint:wrapcheck
+	return checkrepo.CheckRepo(
+		c.Context, afero.NewOsFs(), &http.Client{
+			CheckRedirect: func(req *http.Request, via []*http.Request) error {
+				return http.ErrUseLastResponse
+			},
+		},
+		c.Args().First()) //nolint:wrapcheck
 }
