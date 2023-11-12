@@ -88,9 +88,7 @@ func insertAliases(value ast.Node, idx int, oldPackageName string) error {
 	}
 
 	latterValues := make([]*ast.MappingValueNode, len(mv.Values[idx:]))
-	for i, v := range mv.Values[idx:] {
-		latterValues[i] = v
-	}
+	copy(latterValues, mv.Values[idx:])
 	mv.Values = mv.Values[:idx]
 	mv.Merge(v)
 	mv.Merge(&ast.MappingNode{
