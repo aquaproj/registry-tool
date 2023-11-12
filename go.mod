@@ -3,7 +3,7 @@ module github.com/aquaproj/registry-tool
 go 1.19
 
 require (
-	github.com/aquaproj/aqua/v2 v2.16.5-0.20231111074236-e055ee3e74e9
+	github.com/aquaproj/aqua/v2 v2.17.0
 	github.com/goccy/go-yaml v1.11.2
 	github.com/mattn/go-colorable v0.1.13
 	github.com/sirupsen/logrus v1.9.3
