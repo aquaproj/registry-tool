@@ -52,6 +52,7 @@ func (runner *Runner) Run(ctx context.Context, args ...string) error {
 			runner.newInitCommand(),
 			runner.newPatchChecksumCommand(),
 			runner.newCheckRepoCommand(),
+			runner.newMVCommand(),
 		},
 	}
 
