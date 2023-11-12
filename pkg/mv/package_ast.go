@@ -59,6 +59,8 @@ func editPackageAST(values []ast.Node, oldPackageName, newPackageName string) (b
 	return updated, nil
 }
 
+const wordName = "name"
+
 func parsePackageNode(node ast.Node, oldPackageName, newPackageName string) (bool, error) {
 	mvs, err := wast.NormalizeMappingValueNodes(node)
 	if err != nil {
@@ -70,7 +72,7 @@ func parsePackageNode(node ast.Node, oldPackageName, newPackageName string) (boo
 			continue
 		}
 		switch key.Value {
-		case "name":
+		case wordName:
 			sn, ok := mvn.Value.(*ast.StringNode)
 			if !ok {
 				return false, errors.New("name must be a string")

@@ -138,7 +138,7 @@ func parseRegistryNode(node ast.Node, oldPackageName, newPackageName string, pkg
 	prevField := ""
 	if pkg.Aliases == nil {
 		if pkg.Name != "" {
-			prevField = "name"
+			prevField = wordName
 		} else if pkg.RepoName != "" {
 			prevField = wordRepoName
 		}
@@ -150,7 +150,7 @@ func parseRegistryNode(node ast.Node, oldPackageName, newPackageName string, pkg
 			continue
 		}
 		switch key.Value {
-		case "name":
+		case wordName:
 			sn, ok := mvn.Value.(*ast.StringNode)
 			if !ok {
 				return 0, false, errors.New("name must be a string")
@@ -160,7 +160,7 @@ func parseRegistryNode(node ast.Node, oldPackageName, newPackageName string, pkg
 			}
 			sn.Value = newPackageName
 			updated = true
-			if prevField == "name" {
+			if prevField == wordName {
 				insertIdx = i + 1
 			}
 		case "repo_owner":
