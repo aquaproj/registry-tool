@@ -87,7 +87,10 @@ func insertAliases(value ast.Node, idx int, oldPackageName string) error {
 		return errors.New("node must be a mapping node")
 	}
 
-	latterValues := mv.Values[idx:]
+	latterValues := make([]*ast.MappingValueNode, len(mv.Values[idx:]))
+	for i, v := range mv.Values[idx:] {
+		latterValues[i] = v
+	}
 	mv.Values = mv.Values[:idx]
 	mv.Merge(v)
 	mv.Merge(&ast.MappingNode{
