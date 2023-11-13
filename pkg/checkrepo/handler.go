@@ -134,9 +134,10 @@ func getRepoFromLocation(location string) (string, string, error) {
 		return "", "", errors.New("location must start with /")
 	}
 
+	// /<repo_owner>/<repo_name>
 	b := strings.Split(location, "/")
-	if len(b) != 2 { //nolint:gomnd
-		return "", "", errors.New("location path format must be <repo_owner>/<repo_name>")
+	if len(b) != 3 { //nolint:gomnd
+		return "", "", errors.New("location path format must be /<repo_owner>/<repo_name>")
 	}
-	return b[0], b[1], nil
+	return b[1], b[2], nil
 }
