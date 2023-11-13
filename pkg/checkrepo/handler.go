@@ -104,7 +104,7 @@ func CheckRedirect(ctx context.Context, afs afero.Fs, httpClient *http.Client, p
 		RepoName:       pkg.RepoName,
 		NewRepoOwner:   repoOwner,
 		NewRepoName:    repoName,
-		NewPackageName: "",
+		NewPackageName: pkgName,
 	}
 	repoFullName := fmt.Sprintf("%s/%s", pkg.RepoOwner, pkg.RepoName)
 	newRepoFullName := fmt.Sprintf("%s/%s", repoOwner, repoName)
