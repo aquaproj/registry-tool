@@ -7,9 +7,9 @@ import (
 
 func New(rt *runtime.Runtime, version string) *logrus.Entry {
 	return logrus.WithFields(logrus.Fields{
-		"aqua_version": version,
-		"program":      "aqua-registry",
-		"env":          rt.GOOS + "/" + rt.GOARCH,
+		"registry_tool_version": version,
+		"program":               "aqua-registry",
+		"env":                   rt.GOOS + "/" + rt.GOARCH,
 	})
 }
 
