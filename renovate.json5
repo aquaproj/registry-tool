@@ -1,6 +1,6 @@
 {
   extends: [
-    "config:base",
+    "config:recommended",
     "github>suzuki-shunsuke/renovate-config#1.1.2",
     "github>suzuki-shunsuke/renovate-config:nolimit#2.2.0",
     "github>suzuki-shunsuke/renovate-config:action-go-version#2.2.0",
