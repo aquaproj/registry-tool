@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/aquaproj/aqua/v2 v2.21.3
-	github.com/goccy/go-yaml v1.11.2
+	github.com/goccy/go-yaml v1.11.3
 	github.com/mattn/go-colorable v0.1.13
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/afero v1.11.0
