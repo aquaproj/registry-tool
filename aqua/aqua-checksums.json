@@ -1,58 +1,58 @@
 {
   "checksums": [
     {
-      "id": "github_release/github.com/golangci/golangci-lint/v1.51.1/golangci-lint-1.51.1-darwin-amd64.tar.gz",
-      "checksum": "FBA08ACC4027F69F07CEF48FBFF70B8A7ECDFAA1C2ABA9AD3FB31D60D9F5D4BC",
+      "id": "github_release/github.com/golangci/golangci-lint/v1.57.1/golangci-lint-1.57.1-darwin-amd64.tar.gz",
+      "checksum": "7B6CE262D6B318822AD6AD866DA31A7E0E8F8042EC2B1A34018488532D9BEB50",
       "algorithm": "sha256"
     },
     {
-      "id": "github_release/github.com/golangci/golangci-lint/v1.51.1/golangci-lint-1.51.1-darwin-arm64.tar.gz",
-      "checksum": "75B8F0FF3A4E68147156BE4161A49D4576F1BE37A0B506473F8C482140C1E7F2",
+      "id": "github_release/github.com/golangci/golangci-lint/v1.57.1/golangci-lint-1.57.1-darwin-arm64.tar.gz",
+      "checksum": "0099453F7F9EDF7438C848D2F1CEBFE8BD2FE8EF8817BA89C315127CCDDDDEE4",
       "algorithm": "sha256"
     },
     {
-      "id": "github_release/github.com/golangci/golangci-lint/v1.51.1/golangci-lint-1.51.1-linux-amd64.tar.gz",
-      "checksum": "17AEB26C76820C22EFA0E1838B0AB93E90CFEDEF43FBFC9A2F33F27EB9E5E070",
+      "id": "github_release/github.com/golangci/golangci-lint/v1.57.1/golangci-lint-1.57.1-linux-amd64.tar.gz",
+      "checksum": "7E148DF10DE55DCBDA283B43B9EA1C2F2A38B6E96BA91A71EC02EEFCF336EFBE",
       "algorithm": "sha256"
     },
     {
-      "id": "github_release/github.com/golangci/golangci-lint/v1.51.1/golangci-lint-1.51.1-linux-arm64.tar.gz",
-      "checksum": "9744BC34E7B8D82CA788B667BFB7155A39B4BE9AEF43BF9F10318B1372CEA338",
+      "id": "github_release/github.com/golangci/golangci-lint/v1.57.1/golangci-lint-1.57.1-linux-arm64.tar.gz",
+      "checksum": "55708F17C659D1B4589FE2B2F6C1D5528F5E3D9376D6E26D4AE266346D035D06",
       "algorithm": "sha256"
     },
     {
-      "id": "github_release/github.com/golangci/golangci-lint/v1.51.1/golangci-lint-1.51.1-windows-amd64.zip",
-      "checksum": "722D7B87B9CDDA0A3835D5030B3FC5385C2EBA4C107F63F6391CFB2AC35F051D",
+      "id": "github_release/github.com/golangci/golangci-lint/v1.57.1/golangci-lint-1.57.1-windows-amd64.zip",
+      "checksum": "7383A7DC7498AD4D0500FF6E661E50236216089CF68460F665553B9484C41601",
       "algorithm": "sha256"
     },
     {
-      "id": "github_release/github.com/golangci/golangci-lint/v1.51.1/golangci-lint-1.51.1-windows-arm64.zip",
-      "checksum": "EB57F9BCB56646F2E3D6CCAF02EC227815FB05077B2E0B1BF9E755805ACDC2B9",
+      "id": "github_release/github.com/golangci/golangci-lint/v1.57.1/golangci-lint-1.57.1-windows-arm64.zip",
+      "checksum": "7B2429923A74E9501D3E350E789F5032A36D604C5B1677959B3970DA48858191",
       "algorithm": "sha256"
     },
     {
-      "id": "github_release/github.com/goreleaser/goreleaser/v1.23.0/goreleaser_Darwin_all.tar.gz",
-      "checksum": "ACFA84F0DAD8DC66C261AC137E353027D8641273FC84B5BC39EE2FDEE844E9A5",
+      "id": "github_release/github.com/goreleaser/goreleaser/v1.24.0/goreleaser_Darwin_all.tar.gz",
+      "checksum": "D45D3D736BAE267D74304B3AD933B3221DE8C8F76772EE2A0F8D6EFA5F039D8F",
       "algorithm": "sha256"
     },
     {
-      "id": "github_release/github.com/goreleaser/goreleaser/v1.23.0/goreleaser_Linux_arm64.tar.gz",
-      "checksum": "ADE555A7E19F8F2CD2789895419AA3E5C067E94FA8CAA00201CC4536B55B6AA6",
+      "id": "github_release/github.com/goreleaser/goreleaser/v1.24.0/goreleaser_Linux_arm64.tar.gz",
+      "checksum": "A33003CBF71449A40DF6B771DA91E935435C6D6C0F31E63ECCADC4CFD384C276",
       "algorithm": "sha256"
     },
     {
-      "id": "github_release/github.com/goreleaser/goreleaser/v1.23.0/goreleaser_Linux_x86_64.tar.gz",
-      "checksum": "AFF50395D6D6CD2C32F11107ED478046F48389BE8CCD978478437D581B9B7EF3",
+      "id": "github_release/github.com/goreleaser/goreleaser/v1.24.0/goreleaser_Linux_x86_64.tar.gz",
+      "checksum": "99709684E3F543ED32A771E1565055E43D2EC524E631BCD8D331C2D8ED6A584F",
       "algorithm": "sha256"
     },
     {
-      "id": "github_release/github.com/goreleaser/goreleaser/v1.23.0/goreleaser_Windows_arm64.zip",
-      "checksum": "4DCE3B1890FD449224F9B5BEF7583620D5211271A811C4A3DF5E5E9B6773D0D1",
+      "id": "github_release/github.com/goreleaser/goreleaser/v1.24.0/goreleaser_Windows_arm64.zip",
+      "checksum": "364718814E20816E3A5AF51783A6101731C3744C843AFA9590D8337BF46ACED8",
       "algorithm": "sha256"
     },
     {
-      "id": "github_release/github.com/goreleaser/goreleaser/v1.23.0/goreleaser_Windows_x86_64.zip",
-      "checksum": "52D24AD9827C77A13BD2BECACCD8DE10DA910310133030DE41A3A1896352C23C",
+      "id": "github_release/github.com/goreleaser/goreleaser/v1.24.0/goreleaser_Windows_x86_64.zip",
+      "checksum": "251BF38FC28E56736BE12192987C7925AA084998696DBA19E1EBA5570BCC8EB8",
       "algorithm": "sha256"
     },
     {
@@ -71,63 +71,63 @@
       "algorithm": "sha256"
     },
     {
-      "id": "github_release/github.com/reviewdog/reviewdog/v0.17.0/reviewdog_0.17.0_Darwin_arm64.tar.gz",
-      "checksum": "ED0D50143A0F5E76B1CE6EA8A8B01F78B05D635F932FA14DB0ECD0E607912C15",
+      "id": "github_release/github.com/reviewdog/reviewdog/v0.17.2/reviewdog_0.17.2_Darwin_arm64.tar.gz",
+      "checksum": "0B16689B5CB5C4210A4478436E99A4CCD0DAAF86700E310D2E5E26717E770B4E",
       "algorithm": "sha256"
     },
     {
-      "id": "github_release/github.com/reviewdog/reviewdog/v0.17.0/reviewdog_0.17.0_Darwin_x86_64.tar.gz",
-      "checksum": "D08F07B3A1658275FE843F5742BC350D7C3F9C358B82EB030E494B147474F950",
+      "id": "github_release/github.com/reviewdog/reviewdog/v0.17.2/reviewdog_0.17.2_Darwin_x86_64.tar.gz",
+      "checksum": "8FAEDDFA755048DC2FB3AD73AE7FEA805CFCDCFEC5997AFEFAC66370899BBF8C",
       "algorithm": "sha256"
     },
     {
-      "id": "github_release/github.com/reviewdog/reviewdog/v0.17.0/reviewdog_0.17.0_Linux_arm64.tar.gz",
-      "checksum": "1BDD0F0FC1164E82CCA664AA975CC71D8593CB61D36D3DF64CBBB73F7861F97C",
+      "id": "github_release/github.com/reviewdog/reviewdog/v0.17.2/reviewdog_0.17.2_Linux_arm64.tar.gz",
+      "checksum": "873B075EAE781EB28E710BF42A6C08EDB4423A6ABE389CB94E2B08AF06FD4CDA",
       "algorithm": "sha256"
     },
     {
-      "id": "github_release/github.com/reviewdog/reviewdog/v0.17.0/reviewdog_0.17.0_Linux_x86_64.tar.gz",
-      "checksum": "DD909FBE1DACD53975060F7ECD4028B9BBF43AC4A6E40220B90AFEC779095CE1",
+      "id": "github_release/github.com/reviewdog/reviewdog/v0.17.2/reviewdog_0.17.2_Linux_x86_64.tar.gz",
+      "checksum": "1CB3FC67BD15225423F50FF06E543F7A4BB9BE5C3952996848EC412A6CB4C390",
       "algorithm": "sha256"
     },
     {
-      "id": "github_release/github.com/reviewdog/reviewdog/v0.17.0/reviewdog_0.17.0_Windows_arm64.tar.gz",
-      "checksum": "B09DF0CD51FE82143B88F58056BD426F58720DC7A9C29A9EF8683BB6A93A934F",
+      "id": "github_release/github.com/reviewdog/reviewdog/v0.17.2/reviewdog_0.17.2_Windows_arm64.tar.gz",
+      "checksum": "70D5F41B27355595B9E070E232DADCCB827B26037B0FEBF9F6CBCC5E8B759392",
       "algorithm": "sha256"
     },
     {
-      "id": "github_release/github.com/reviewdog/reviewdog/v0.17.0/reviewdog_0.17.0_Windows_x86_64.tar.gz",
-      "checksum": "F2F98F220A72A0F3E9CC217A2A972BDA5BDC2F54190124ABAFD0ED6CAE41C60F",
+      "id": "github_release/github.com/reviewdog/reviewdog/v0.17.2/reviewdog_0.17.2_Windows_x86_64.tar.gz",
+      "checksum": "5ADE60862B036D79212475B926D6EA41AE1F36A443F328F31704383D6FF4035C",
       "algorithm": "sha256"
     },
     {
-      "id": "github_release/github.com/rhysd/actionlint/v1.6.26/actionlint_1.6.26_darwin_amd64.tar.gz",
-      "checksum": "BFA890E77A8508603C785AF09A30BBAB3A3255D291D8D27EFC3F20AC8E303A8E",
+      "id": "github_release/github.com/rhysd/actionlint/v1.6.27/actionlint_1.6.27_darwin_amd64.tar.gz",
+      "checksum": "1459F1EC2182162C85BEDDACFF9B05D1CB921BFB2656A6FD9151E9CD84CD63E9",
       "algorithm": "sha256"
     },
     {
-      "id": "github_release/github.com/rhysd/actionlint/v1.6.26/actionlint_1.6.26_darwin_arm64.tar.gz",
-      "checksum": "5E131AB7DE7AD051E1923B80D167AAA414734E97C720698C48778250E1DD2590",
+      "id": "github_release/github.com/rhysd/actionlint/v1.6.27/actionlint_1.6.27_darwin_arm64.tar.gz",
+      "checksum": "4B8EFF986643B8D9918C4FD3ADA9C0EEE7E59230A53A46A9BD9686521DCAD170",
       "algorithm": "sha256"
     },
     {
-      "id": "github_release/github.com/rhysd/actionlint/v1.6.26/actionlint_1.6.26_linux_amd64.tar.gz",
-      "checksum": "F0294C342AF98FAD4FF917BC32032F28E1B55F76AEDF291886EC10BBED7C12E1",
+      "id": "github_release/github.com/rhysd/actionlint/v1.6.27/actionlint_1.6.27_linux_amd64.tar.gz",
+      "checksum": "5C9B6E5418F688B7F7C7E3D40C13D9E41B1CA45FB6A2C35788B0580E34B7300F",
       "algorithm": "sha256"
     },
     {
-      "id": "github_release/github.com/rhysd/actionlint/v1.6.26/actionlint_1.6.26_linux_arm64.tar.gz",
-      "checksum": "A1056D85D614AF4F6E5517ED2911DAB2621B8E97C368C8B265328F9C22801648",
+      "id": "github_release/github.com/rhysd/actionlint/v1.6.27/actionlint_1.6.27_linux_arm64.tar.gz",
+      "checksum": "03FFE5891DA7800EC39533543667697B5C292D0FF8B906397B43C58374EC052A",
       "algorithm": "sha256"
     },
     {
-      "id": "github_release/github.com/rhysd/actionlint/v1.6.26/actionlint_1.6.26_windows_amd64.zip",
-      "checksum": "8E31F6D623CDC3C12D2236E1E444FAA191126434A2007F4D2BECC0D0D416469B",
+      "id": "github_release/github.com/rhysd/actionlint/v1.6.27/actionlint_1.6.27_windows_amd64.zip",
+      "checksum": "2040AEB2530A80ABBB923493F6947443203B7E60E829CB7BAD1C8CDE1483C376",
       "algorithm": "sha256"
     },
     {
-      "id": "github_release/github.com/rhysd/actionlint/v1.6.26/actionlint_1.6.26_windows_arm64.zip",
-      "checksum": "2545EEA6E1F02A24619514F50DCCE7543B8C0028B50E3EFBCEC3DC79E16AE5EA",
+      "id": "github_release/github.com/rhysd/actionlint/v1.6.27/actionlint_1.6.27_windows_arm64.zip",
+      "checksum": "BC082F32A036A86DAD364BC46E2D707C4DA5615598E2D50DA2CB840CFF97731D",
       "algorithm": "sha256"
     },
     {
@@ -216,8 +216,8 @@
       "algorithm": "sha256"
     },
     {
-      "id": "registries/github_content/github.com/aquaproj/aqua-registry/v4.126.0/registry.yaml",
-      "checksum": "EF1372AD41168C94D7CE3263D73C470523E5AB17918A594FAA1A63BF7DB8F7B5",
+      "id": "registries/github_content/github.com/aquaproj/aqua-registry/v4.155.0/registry.yaml",
+      "checksum": "8D328C01EB7752D6900D21876BC2E73197BE7EA82A6760ED1C8DB369F08149F9",
       "algorithm": "sha256"
     }
   ]

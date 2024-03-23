@@ -10,11 +10,11 @@ on:
 permissions: {}
 jobs:
   actionlint:
-    uses: suzuki-shunsuke/actionlint-workflow/.github/workflows/actionlint.yaml@b6a5f966d4504893b2aeb60cf2b0de8946e48504 # v0.5.0
+    uses: suzuki-shunsuke/actionlint-workflow/.github/workflows/actionlint.yaml@8d67cddd56ea4b045e858700595d49b2fe09de61 # v1.0.0
     if: |
       ! github.event.pull_request.head.repo.fork
     with:
-      aqua_version: v2.21.0
+      aqua_version: v2.25.1
     permissions:
       pull-requests: write
       contents: read
@@ -26,9 +26,9 @@ jobs:
     permissions: {}
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-      - uses: aquaproj/aqua-installer@928a2ee4243a9ee8312d80dc8cbaca88fb602a91 # v2.2.0
+      - uses: aquaproj/aqua-installer@4551ec64e21bf0f557c2525135ff0bd2cba40ec7 # v3.0.0
         with:
-          aqua_version: v2.21.0
+          aqua_version: v2.25.1
       - run: actionlint
         env:
           GITHUB_TOKEN: ${{github.token}}

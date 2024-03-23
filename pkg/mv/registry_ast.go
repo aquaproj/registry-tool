@@ -71,8 +71,7 @@ func insertAliases(value ast.Node, idx int, oldPackageName string) error {
 		return errors.New("value must be a mapping node")
 	}
 
-	f, err := parser.ParseBytes([]byte(fmt.Sprintf(`aliases:
-  - name: %s`, oldPackageName)), parser.ParseComments)
+	f, err := parser.ParseBytes([]byte("aliases:\n  - name: "+oldPackageName), parser.ParseComments)
 	if err != nil {
 		return fmt.Errorf("parse text as YAML: %w", err)
 	}
