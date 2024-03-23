@@ -8,7 +8,7 @@ import (
 
 const filePermission os.FileMode = 0o644
 
-func Init(ctx context.Context) error {
+func Init(_ context.Context) error {
 	if err := initRegistryYAML(); err != nil {
 		return err
 	}

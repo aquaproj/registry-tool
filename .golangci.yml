@@ -26,3 +26,4 @@ linters:
     - exhaustruct
     - nosnakecase
     - musttag
+    - depguard
