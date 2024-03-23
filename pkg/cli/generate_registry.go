@@ -22,6 +22,6 @@ No argument is needed.
 	}
 }
 
-func (runner *Runner) generateRegistryAction(c *cli.Context) error {
+func (runner *Runner) generateRegistryAction(_ *cli.Context) error {
 	return genrg.GenerateRegistry() //nolint:wrapcheck
 }

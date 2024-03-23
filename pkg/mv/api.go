@@ -14,7 +14,7 @@ const (
 	filePermission os.FileMode = 0o644
 )
 
-func Move(ctx context.Context, afs afero.Fs, oldPackageName, newPackageName string) error {
+func Move(_ context.Context, afs afero.Fs, oldPackageName, newPackageName string) error {
 	// Check if the old package exists
 	oldPkgPath := filepath.Join("pkgs", filepath.FromSlash(oldPackageName))
 	newPkgPath := filepath.Join("pkgs", filepath.FromSlash(newPackageName))

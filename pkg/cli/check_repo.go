@@ -29,7 +29,7 @@ Azure/aztfexport
 func (runner *Runner) checkRepoAction(c *cli.Context) error {
 	return checkrepo.CheckRepo( //nolint:wrapcheck
 		c.Context, afero.NewOsFs(), &http.Client{
-			CheckRedirect: func(req *http.Request, via []*http.Request) error {
+			CheckRedirect: func(_ *http.Request, _ []*http.Request) error {
 				return http.ErrUseLastResponse
 			},
 		},

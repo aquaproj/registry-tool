@@ -77,15 +77,15 @@ func CheckRedirect(ctx context.Context, afs afero.Fs, httpClient *http.Client, p
 	}
 	defer resp.Body.Close()
 
-	if resp.StatusCode < 300 { //nolint:gomnd,usestdlibvars
+	if resp.StatusCode < 300 { //nolint:gomnd
 		return nil, nil //nolint:nilnil
 	}
-	if resp.StatusCode >= 500 { //nolint:gomnd,usestdlibvars
+	if resp.StatusCode >= 500 { //nolint:gomnd
 		return nil, logerr.WithFields(errors.New("http status code >= 500"), logrus.Fields{ //nolint:wrapcheck
 			"http_status_code": resp.StatusCode,
 		})
 	}
-	if resp.StatusCode >= 400 { //nolint:gomnd,usestdlibvars
+	if resp.StatusCode >= 400 { //nolint:gomnd
 		return nil, logerr.WithFields(errors.New("http status code >= 400"), logrus.Fields{ //nolint:wrapcheck
 			"http_status_code": resp.StatusCode,
 		})
