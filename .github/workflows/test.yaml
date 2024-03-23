@@ -36,9 +36,9 @@ jobs:
     permissions: {}
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-      - uses: aquaproj/aqua-installer@928a2ee4243a9ee8312d80dc8cbaca88fb602a91 # v2.2.0
+      - uses: aquaproj/aqua-installer@4551ec64e21bf0f557c2525135ff0bd2cba40ec7 # v3.0.0
         with:
-          aqua_version: v2.21.0
+          aqua_version: v2.25.1
         env:
           AQUA_GITHUB_TOKEN: ${{github.token}}
       - run: ghalint run
@@ -47,37 +47,18 @@ jobs:
 
   update-aqua-checksums:
     # Update aqua-checksums.json and push a commit
-    runs-on: ubuntu-latest
     needs: path-filter
-    permissions: {}
+    permissions:
+      contents: read # The reusable workflow requires contents:read
     if: |
       needs.path-filter.outputs.update-aqua-checksums == 'true'
-    steps:
-      - name: Checkout
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-      - name: Generate token
-        id: generate_token
-        if: "! github.event.pull_request.head.repo.fork"
-        uses: tibdex/github-app-token@3beb63f4bd073e61482598c45c71c1019b59b73a # v2.1.0
-        with:
-          app_id: ${{secrets.APP_ID}}
-          private_key: ${{secrets.APP_PRIVATE_KEY}}
-      - uses: aquaproj/aqua-installer@928a2ee4243a9ee8312d80dc8cbaca88fb602a91 # v2.2.0
-        # Install ghcp
-        with:
-          aqua_version: v2.21.0
-        env:
-          AQUA_GITHUB_TOKEN: ${{github.token}}
-      - uses: aquaproj/update-checksum-action@0fef5fa12e81e046bb29078f76b99bb29fa4e696 # v0.2.3
-        with:
-          prune: true
-          skip_push: ${{github.event.pull_request.head.repo.fork}}
-        env:
-          # To trigger GitHub Actions Workflow by pushing a commit, GitHub App token is required.
-          # github.token doesn't trigger GitHub Actions Workflow.
-          # https://docs.github.com/en/actions/security-guides/automatic-token-authentication#using-the-github_token-in-a-workflow
-          # > When you use the repository's GITHUB_TOKEN to perform tasks, events triggered by the GITHUB_TOKEN, with the exception of workflow_dispatch and repository_dispatch, will not create a new workflow run.
-          GITHUB_TOKEN: ${{steps.generate_token.outputs.token}}
+    uses: aquaproj/update-checksum-workflow/.github/workflows/update-checksum.yaml@f367004e7f17e99d30297cd9e89afad30ee1f251 # v1.0.0
+    with:
+      aqua_version: v2.25.1
+      prune: true
+    secrets:
+      gh_app_id: ${{secrets.APP_ID}}
+      gh_app_private_key: ${{secrets.APP_PRIVATE_KEY}}
 
   renovate-config-validator:
     # Validate Renovate Configuration by renovate-config-validator.
@@ -100,16 +81,12 @@ jobs:
     if: |
       ! failure() && ! cancelled() && github.event.pull_request.user.login == 'renovate[bot]' && contains(github.event.pull_request.body, ' **Automerge**: Enabled.')
     steps:
-      - name: Generate token
-        id: generate_token
-        uses: tibdex/github-app-token@3beb63f4bd073e61482598c45c71c1019b59b73a # v2.1.0
+      - uses: suzuki-shunsuke/enable-auto-merge-action@ec074392e76cd1062925255cd82a86ea1c44b6fd # v0.1.0
         with:
-          app_id: ${{secrets.APP_ID}}
-          private_key: ${{secrets.APP_PRIVATE_KEY}}
-      - run: gh -R "$GITHUB_REPOSITORY" pr merge --squash --auto --delete-branch "$PR_NUMBER"
-        env:
-          GITHUB_TOKEN: ${{steps.generate_token.outputs.token}} # Use GitHub App to trigger GitHub Actions Workflow by merge commit.
-          PR_NUMBER: ${{github.event.pull_request.number}}
+          pr_number: ${{github.event.pull_request.number}}
+          merge_method: squash
+          github_app_id: ${{secrets.APP_ID}}
+          github_app_private_key: ${{secrets.APP_PRIVATE_KEY}}
 
   status-check:
     # This job is used for main branch's branch protection rule's status check.
@@ -126,10 +103,10 @@ jobs:
       - run: exit 1
 
   test:
-    uses: suzuki-shunsuke/go-test-workflow/.github/workflows/test.yaml@66610a63dfe5160d97e1b68bc53949ceed18e0db # v0.5.0
+    uses: suzuki-shunsuke/go-test-workflow/.github/workflows/test.yaml@fd6e66427230606a7d71e686d01e3eed92ae5012 # v1.0.0
     with:
-      aqua_version: v2.21.0
-      go-version: 1.21.4
+      aqua_version: v2.25.1
+      go-version: 1.22.1
     permissions:
       pull-requests: write
       contents: read

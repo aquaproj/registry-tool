@@ -51,7 +51,7 @@ func aquaGR(ctx context.Context, pkgName, pkgFilePath, rgFilePath string, cmds s
 	}
 	defer outFile.Close()
 	var cmd *exec.Cmd
-	command := fmt.Sprintf("+ aqua gr --out-testdata %s", pkgFilePath)
+	command := "+ aqua gr --out-testdata " + pkgFilePath
 	args := []string{"gr", "-out-testdata", pkgFilePath}
 	if cmds != "" {
 		args = append(args, "-cmd", cmds)
