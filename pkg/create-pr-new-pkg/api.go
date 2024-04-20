@@ -2,6 +2,7 @@ package newpkg
 
 import (
 	"context"
+	_ "embed"
 	"errors"
 	"fmt"
 	"io"
@@ -13,6 +14,9 @@ import (
 	"github.com/aquaproj/registry-tool/pkg/initcmd"
 	"gopkg.in/yaml.v3"
 )
+
+//go:embed pr_template.md
+var bodyTemplate []byte
 
 func CreatePRNewPkgs(ctx context.Context, pkgNames ...string) error { //nolint:cyclop,funlen
 	if len(pkgNames) == 0 {
@@ -45,27 +49,7 @@ e.g. $ aqua-registry create-pr-new-pkg cli/cli`)
 		"```console",
 		"$ aqua g -i " + strings.Join(pkgNames, " "),
 		"```",
-		"",
-		"## How to confirm if this package works well",
-		"",
-		"Reviewers aren't necessarily familiar with this package, so please describe how to confirm if this package works well.",
-		"Please confirm if this package works well yourself as much as possible.",
-		"",
-		"Command and output",
-		"",
-		"```console",
-		"$ ",
-		"```",
-		"",
-		"If files such as configuration file are needed, please share them.",
-		"",
-		"```",
-		"```",
-		"",
-		"Reference",
-		"",
-		"-",
-		"",
+		string(bodyTemplate),
 	}...), "\n")
 	pkgName := pkgNames[0]
 	branch := "feat/" + pkgName
