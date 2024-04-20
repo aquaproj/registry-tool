@@ -49,6 +49,7 @@ e.g. $ aqua-registry create-pr-new-pkg cli/cli`)
 		"```console",
 		"$ aqua g -i " + strings.Join(pkgNames, " "),
 		"```",
+		"",
 		string(bodyTemplate),
 	}...), "\n")
 	pkgName := pkgNames[0]
