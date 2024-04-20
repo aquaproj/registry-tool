@@ -18,7 +18,7 @@ Please confirm if this package works well yourself as much as possible.
 Command and output
 
 ```console
-$ 
+$
 ```
 
 If files such as configuration file are needed, please share them.
