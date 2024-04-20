@@ -37,7 +37,6 @@ func Test_getDesc(t *testing.T) {
 		},
 	}
 	for _, d := range data {
-		d := d
 		t.Run(d.name, func(t *testing.T) {
 			t.Parallel()
 			desc, err := getDesc(strings.NewReader(d.yaml))
@@ -79,7 +78,6 @@ func Test_getBody(t *testing.T) {
 		},
 	}
 	for _, d := range data {
-		d := d
 		t.Run(d.name, func(t *testing.T) {
 			t.Parallel()
 			body := getBody(d.pkgName, d.desc)

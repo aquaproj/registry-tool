@@ -40,7 +40,7 @@ func PatchChecksum(ctx context.Context, logE *logrus.Entry, configFilePath strin
 	}
 
 	idx := 0
-	for i := 0; i < size; i++ {
+	for i := range size {
 		pkgInfo := cfg.PackageInfos[i]
 		node, j := FindFirstMappingNode(pkgsAST, idx)
 		if j == -1 {
@@ -149,7 +149,7 @@ func listReleaseAssets(ctx context.Context, logE *logrus.Entry, ghClient GitHubC
 		PerPage: 100, //nolint:gomnd
 	}
 	var arr []*github.ReleaseAsset
-	for i := 0; i < 10; i++ {
+	for range 10 {
 		assets, _, err := ghClient.ListReleaseAssets(ctx, pkgInfo.RepoOwner, pkgInfo.RepoName, releaseID, opts)
 		if err != nil {
 			logE.WithFields(logrus.Fields{
