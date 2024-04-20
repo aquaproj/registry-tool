@@ -18,7 +18,7 @@ import (
 //go:embed pr_template.md
 var bodyTemplate []byte
 
-func CreatePRNewPkgs(ctx context.Context, pkgNames ...string) error { //nolint:cyclop,funlen
+func CreatePRNewPkgs(ctx context.Context, pkgNames ...string) error { //nolint:cyclop
 	if len(pkgNames) == 0 {
 		return errors.New(`usage: $ aqua-registry create-pr-new-pkg <pkgname>...
 e.g. $ aqua-registry create-pr-new-pkg cli/cli`)
