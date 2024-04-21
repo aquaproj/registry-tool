@@ -2,7 +2,7 @@ module github.com/aquaproj/registry-tool
 
 go 1.22
 
-toolchain go1.22.1
+toolchain go1.22.2
 
 require (
 	github.com/aquaproj/aqua/v2 v2.27.1
