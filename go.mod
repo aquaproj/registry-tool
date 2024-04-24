@@ -5,7 +5,7 @@ go 1.22
 toolchain go1.22.2
 
 require (
-	github.com/aquaproj/aqua/v2 v2.27.2
+	github.com/aquaproj/aqua/v2 v2.27.3
 	github.com/goccy/go-yaml v1.11.3
 	github.com/mattn/go-colorable v0.1.13
 	github.com/sirupsen/logrus v1.9.3
