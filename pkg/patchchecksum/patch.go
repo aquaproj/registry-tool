@@ -52,7 +52,7 @@ func PatchChecksum(ctx context.Context, logE *logrus.Entry, configFilePath strin
 			}).WithError(err).Error("patch a checksum config")
 		}
 	}
-	if err := os.WriteFile(configFilePath, []byte(file.String()+"\n"), 0o644); err != nil { //nolint:gosec,gomnd
+	if err := os.WriteFile(configFilePath, []byte(file.String()+"\n"), 0o644); err != nil { //nolint:gosec,mnd
 		return fmt.Errorf("write the configuration file: %w", err)
 	}
 	return nil
@@ -146,7 +146,7 @@ func patchChecksumOfPkg(ctx context.Context, logE *logrus.Entry, ghClient GitHub
 
 func listReleaseAssets(ctx context.Context, logE *logrus.Entry, ghClient GitHubClient, pkgInfo *registry.PackageInfo, releaseID int64) []*github.ReleaseAsset {
 	opts := &github.ListOptions{
-		PerPage: 100, //nolint:gomnd
+		PerPage: 100, //nolint:mnd
 	}
 	var arr []*github.ReleaseAsset
 	for range 10 {

@@ -55,7 +55,7 @@ func editRegistry(afs afero.Fs, newRegistryYAMLPath, oldPackageName, newPackageN
 			up = true
 		}
 		if up {
-			if err := afero.WriteFile(afs, newRegistryYAMLPath, []byte(file.String()), 0o644); err != nil { //nolint:gomnd
+			if err := afero.WriteFile(afs, newRegistryYAMLPath, []byte(file.String()), 0o644); err != nil { //nolint:mnd
 				return fmt.Errorf("write registry.yaml: %w", err)
 			}
 			return nil

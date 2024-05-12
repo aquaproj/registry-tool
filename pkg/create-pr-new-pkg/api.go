@@ -95,7 +95,7 @@ func getDesc(rgFile io.Reader) (string, error) {
 
 func getBody(pkgName, desc string) string {
 	pkg := strings.Split(pkgName, "/")
-	if len(pkg) >= 2 { //nolint:gomnd
+	if len(pkg) >= 2 { //nolint:mnd
 		repo := pkg[0] + "/" + pkg[1]
 		return fmt.Sprintf(`[%s](https://github.com/%s): %s`, pkgName, repo, desc)
 	}

@@ -39,7 +39,7 @@ func editPackageYAML(afs afero.Fs, pkgYAMLPath string, oldPackageName, newPackag
 	if !updated {
 		return nil
 	}
-	if err := afero.WriteFile(afs, pkgYAMLPath, []byte(file.String()), 0o644); err != nil { //nolint:gomnd
+	if err := afero.WriteFile(afs, pkgYAMLPath, []byte(file.String()), 0o644); err != nil { //nolint:mnd
 		return fmt.Errorf("write registry.yaml: %w", err)
 	}
 	return nil

@@ -77,15 +77,15 @@ func CheckRedirect(ctx context.Context, afs afero.Fs, httpClient *http.Client, p
 	}
 	defer resp.Body.Close()
 
-	if resp.StatusCode < 300 { //nolint:gomnd
+	if resp.StatusCode < 300 { //nolint:mnd
 		return nil, nil //nolint:nilnil
 	}
-	if resp.StatusCode >= 500 { //nolint:gomnd
+	if resp.StatusCode >= 500 { //nolint:mnd
 		return nil, logerr.WithFields(errors.New("http status code >= 500"), logrus.Fields{ //nolint:wrapcheck
 			"http_status_code": resp.StatusCode,
 		})
 	}
-	if resp.StatusCode >= 400 { //nolint:gomnd
+	if resp.StatusCode >= 400 { //nolint:mnd
 		return nil, logerr.WithFields(errors.New("http status code >= 400"), logrus.Fields{ //nolint:wrapcheck
 			"http_status_code": resp.StatusCode,
 		})
@@ -136,7 +136,7 @@ func getRepoFromLocation(location string) (string, string, error) {
 
 	// /<repo_owner>/<repo_name>
 	b := strings.Split(location, "/")
-	if len(b) != 3 { //nolint:gomnd
+	if len(b) != 3 { //nolint:mnd
 		return "", "", errors.New("location path format must be /<repo_owner>/<repo_name>")
 	}
 	return b[1], b[2], nil

@@ -20,7 +20,7 @@ func (runner *Runner) newMVCommand() *cli.Command {
 
 func (runner *Runner) moveAction(c *cli.Context) error {
 	args := c.Args().Slice()
-	if len(args) != 2 { //nolint:gomnd
+	if len(args) != 2 { //nolint:mnd
 		return errors.New("invalid arguments")
 	}
 	return mv.Move(c.Context, afero.NewOsFs(), args[0], args[1]) //nolint:wrapcheck
