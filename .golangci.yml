@@ -11,8 +11,10 @@ linters:
     - varcheck # WARN [runner] The linter 'varcheck' is deprecated (since v1.49.0) due to: The owner seems to have abandoned the linter.  Replaced by unused.
     - deadcode # WARN [runner] The linter 'deadcode' is deprecated (since v1.49.0) due to: The owner seems to have abandoned the linter.  Replaced by unused.
     - structcheck # WARN [runner] The linter 'structcheck' is deprecated (since v1.49.0) due to: The owner seems to have abandoned the linter.  Replaced by unused.
+    - goerr113 # WARN [lintersdb] The name "goerr113" is deprecated. The linter has been renamed to: err113. 
+    - gomnd # WARN The linter 'gomnd' is deprecated (since v1.58.0) due to: The linter has been renamed. Replaced by mnd. 
+    - execinquery # WARN The linter 'execinquery' is deprecated (since v1.58.0) due to: The repository of the linter has been archived by the owner.  
     - wsl
-    - goerr113
     - lll
     - godot
     - nlreturn
