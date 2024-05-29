@@ -18,7 +18,7 @@ import (
 //go:embed pr_template.md
 var bodyTemplate []byte
 
-func CreatePRNewPkgs(ctx context.Context, pkgNames ...string) error { //nolint:cyclop
+func CreatePRNewPkgs(ctx context.Context, pkgNames ...string) error {
 	if len(pkgNames) == 0 {
 		return errors.New(`usage: $ aqua-registry create-pr-new-pkg <pkgname>...
 e.g. $ aqua-registry create-pr-new-pkg cli/cli`)
@@ -43,7 +43,6 @@ e.g. $ aqua-registry create-pr-new-pkg cli/cli`)
 			return err
 		}
 	}
-	commitMsg := strings.Join(bodies, "\n")
 	body := strings.Join(append(bodies, []string{ //nolint:makezero
 		"",
 		"```console",
@@ -56,16 +55,6 @@ e.g. $ aqua-registry create-pr-new-pkg cli/cli`)
 	branch := "feat/" + pkgName
 	if err := initcmd.Init(ctx); err != nil {
 		return err //nolint:wrapcheck
-	}
-	if err := command(ctx, "git", "checkout", "-b", branch); err != nil {
-		return err
-	}
-	if err := command(ctx, "git", "commit", "-m", strings.Join([]string{
-		"feat: add " + pkgName,
-		"",
-		commitMsg,
-	}, "\n")); err != nil {
-		return err
 	}
 	if err := command(ctx, "git", "push", "origin", branch); err != nil {
 		return err
