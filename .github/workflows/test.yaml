@@ -6,6 +6,7 @@ permissions: {}
 jobs:
   path-filter:
     # Get changed files to filter jobs
+    timeout-minutes: 30
     outputs:
       update-aqua-checksums: ${{steps.changes.outputs.update-aqua-checksums}}
       renovate-config-validator: ${{steps.changes.outputs.renovate-config-validator}}
@@ -30,6 +31,7 @@ jobs:
 
   ghalint:
     # Validate GitHub Actions Workflows by ghalint.
+    timeout-minutes: 30
     needs: path-filter
     if: needs.path-filter.outputs.ghalint == 'true'
     runs-on: ubuntu-latest
@@ -70,6 +72,7 @@ jobs:
 
   enable-automerge:
     # Enable automerge to merge pull requests from Renovate automatically.
+    timeout-minutes: 30
     runs-on: ubuntu-latest
     needs:
       - status-check
@@ -91,6 +94,7 @@ jobs:
   status-check:
     # This job is used for main branch's branch protection rule's status check.
     # If all dependent jobs succeed or are skipped this job succeeds.
+    timeout-minutes: 30
     runs-on: ubuntu-latest
     needs:
       - update-aqua-checksums
@@ -112,6 +116,7 @@ jobs:
       contents: read
 
   prettier:
+    timeout-minutes: 30
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
