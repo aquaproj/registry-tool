@@ -10,7 +10,7 @@ require (
 	github.com/spf13/afero v1.11.0
 	github.com/suzuki-shunsuke/logrus-error v0.1.4
 	github.com/urfave/cli/v2 v2.27.3
-	gopkg.in/yaml.v2 v2.4.0
+	gopkg.in/yaml.v3 v3.0.1
 	gopkg.in/yaml.v3 v3.0.1
 )
 
