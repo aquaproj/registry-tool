@@ -3,7 +3,7 @@ module github.com/aquaproj/registry-tool
 go 1.22.3
 
 require (
-	github.com/aquaproj/aqua/v2 v2.30.0
+	github.com/aquaproj/aqua/v2 v2.31.0
 	github.com/goccy/go-yaml v1.12.0
 	github.com/mattn/go-colorable v0.1.13
 	github.com/sirupsen/logrus v1.9.3
@@ -23,7 +23,7 @@ require (
 	github.com/cpuguy83/go-md2man/v2 v2.0.4 // indirect
 	github.com/expr-lang/expr v1.16.9 // indirect
 	github.com/fatih/color v1.13.0 // indirect
-	github.com/google/go-github/v63 v63.0.0 // indirect
+	github.com/google/go-github/v64 v64.0.0 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/google/uuid v1.4.0 // indirect
 	github.com/hashicorp/go-version v1.7.0 // indirect
@@ -41,9 +41,9 @@ require (
 	github.com/wk8/go-ordered-map/v2 v2.1.8 // indirect
 	github.com/xrash/smetrics v0.0.0-20240521201337-686a1a2994c1 // indirect
 	golang.org/x/crypto v0.21.0 // indirect
-	golang.org/x/oauth2 v0.21.0 // indirect
+	golang.org/x/oauth2 v0.22.0 // indirect
 	golang.org/x/sync v0.6.0 // indirect
-	golang.org/x/sys v0.22.0 // indirect
+	golang.org/x/sys v0.24.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
 )
