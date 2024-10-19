@@ -20,12 +20,12 @@ packages:
 func GenerateRegistry() error {
 	tempFile, err := os.CreateTemp("", "")
 	if err != nil {
-		return fmt.Errorf("create a temporal file: %w", err)
+		return fmt.Errorf("create a temporary file: %w", err)
 	}
 	defer tempFile.Close()
 	defer os.Remove(tempFile.Name())
 	if _, err := tempFile.WriteString(rHeader); err != nil {
-		return fmt.Errorf("write a header to a temporal file: %w", err)
+		return fmt.Errorf("write a header to a temporary file: %w", err)
 	}
 	registryFilePaths, err := listRegistryFiles()
 	if err != nil {
@@ -36,7 +36,7 @@ func GenerateRegistry() error {
 		return err
 	}
 	if _, err := tempFile.WriteString(strings.Join(lines, "\n") + "\n"); err != nil {
-		return fmt.Errorf("write a string to a temporal file: %w", err)
+		return fmt.Errorf("write a string to a temporary file: %w", err)
 	}
 	if err := copyRegistry(tempFile.Name()); err != nil {
 		return err
@@ -100,7 +100,7 @@ func readRegistryFiles(registryFilePaths []string) ([]string, error) {
 func copyRegistry(tempFilePath string) error {
 	rTempFile, err := os.Open(tempFilePath)
 	if err != nil {
-		return fmt.Errorf("open a temporal file: %w", err)
+		return fmt.Errorf("open a temporary file: %w", err)
 	}
 	defer rTempFile.Close()
 	registryFile, err := os.Create("registry.yaml")
@@ -109,7 +109,7 @@ func copyRegistry(tempFilePath string) error {
 	}
 	defer registryFile.Close()
 	if _, err := io.Copy(registryFile, rTempFile); err != nil {
-		return fmt.Errorf("copy a temporal file to registry.yaml: %w", err)
+		return fmt.Errorf("copy a temporary file to registry.yaml: %w", err)
 	}
 	return nil
 }
