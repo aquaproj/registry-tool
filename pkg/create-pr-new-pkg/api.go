@@ -1,6 +1,7 @@
 package newpkg
 
 import (
+	"bytes"
 	"context"
 	_ "embed"
 	"errors"
@@ -12,13 +13,14 @@ import (
 	"strings"
 
 	"github.com/aquaproj/registry-tool/pkg/initcmd"
+	"github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v3"
 )
 
 //go:embed pr_template.md
 var bodyTemplate []byte
 
-func CreatePRNewPkgs(ctx context.Context, pkgNames ...string) error {
+func CreatePRNewPkgs(ctx context.Context, logE *logrus.Entry, pkgNames ...string) error {
 	if len(pkgNames) == 0 {
 		return errors.New(`usage: $ aqua-registry create-pr-new-pkg <pkgname>...
 e.g. $ aqua-registry create-pr-new-pkg cli/cli`)
@@ -56,8 +58,17 @@ e.g. $ aqua-registry create-pr-new-pkg cli/cli`)
 	if err := initcmd.Init(ctx); err != nil {
 		return err //nolint:wrapcheck
 	}
-	if err := command(ctx, "git", "push", "origin", branch); err != nil {
-		return err
+	stderr := &bytes.Buffer{}
+	if err := commandStderr(ctx, io.MultiWriter(os.Stderr, stderr), "git", "push", "origin", branch); err != nil {
+		if strings.Contains(stderr.String(), "returned error: 403") {
+			logE.WithFields(logrus.Fields{
+				"doc": "https://aquaproj.github.io/docs/products/aqua-registry/contributing#cmdx-new-fails-to-push-a-commit-to-the-origin",
+			}).Warn(`you don't have the permission to push commits to the origin.
+Please fork aquaproj/aqua-registry and fix the origin url to your fork repository.
+For details, please see the document`)
+		} else {
+			return err
+		}
 	}
 	if err := command(ctx, "aqua", "-c", "aqua/dev.yaml", "exec", "--", "gh", "pr", "create", "-w", "-t", "feat: add "+pkgName, "-b", body); err != nil {
 		return err
@@ -98,6 +109,19 @@ func command(ctx context.Context, cmdName string, args ...string) error {
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
+	if err := cmd.Run(); err != nil {
+		return fmt.Errorf("execute a command: %s: %w", s, err)
+	}
+	return nil
+}
+
+func commandStderr(ctx context.Context, stderr io.Writer, cmdName string, args ...string) error {
+	s := cmdName + " " + strings.Join(args, " ")
+	fmt.Fprintln(os.Stderr, "+ "+s)
+	cmd := exec.CommandContext(ctx, cmdName, args...)
+	cmd.Stdin = os.Stdin
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = stderr
 	if err := cmd.Run(); err != nil {
 		return fmt.Errorf("execute a command: %s: %w", s, err)
 	}

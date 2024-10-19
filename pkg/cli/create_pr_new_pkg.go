@@ -28,5 +28,5 @@ This tool does the following things.
 }
 
 func (runner *Runner) createPRNewPkgAction(c *cli.Context) error {
-	return newpkg.CreatePRNewPkgs(c.Context, c.Args().Slice()...) //nolint:wrapcheck
+	return newpkg.CreatePRNewPkgs(c.Context, runner.LogE, c.Args().Slice()...) //nolint:wrapcheck
 }
