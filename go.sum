@@ -6,12 +6,12 @@ github.com/Masterminds/semver/v3 v3.3.0 h1:B8LGeaivUe71a5qox1ICM/JLl0NqZSW5CHyL+
 github.com/Masterminds/semver/v3 v3.3.0/go.mod h1:4V+yj/TJE1HU9XfppCwVMZq3I84lprf4nC11bSS5beM=
 github.com/Masterminds/sprig/v3 v3.3.0 h1:mQh0Yrg1XPo6vjYXgtf5OtijNAKJRNcTdOOGZe3tPhs=
 github.com/Masterminds/sprig/v3 v3.3.0/go.mod h1:Zy1iXRYNqNLUolqCpL4uhk6SHUMAOSCzdgBfDb35Lz0=
-github.com/adrg/xdg v0.5.0 h1:dDaZvhMXatArP1NPHhnfaQUqWBLBsmx1h1HXQdMoFCY=
-github.com/adrg/xdg v0.5.0/go.mod h1:dDdY4M4DF9Rjy4kHPeNL+ilVF+p2lK8IdM9/rTSGcI4=
+github.com/adrg/xdg v0.5.3 h1:xRnxJXne7+oWDatRhR1JLnvuccuIeCoBu2rtuLqQB78=
+github.com/adrg/xdg v0.5.3/go.mod h1:nlTsY+NNiCBGCK2tpm09vRqfVzrc2fLmXGpBLF0zlTQ=
 github.com/andybalholm/brotli v1.0.1 h1:KqhlKozYbRtJvsPrrEeXcO+N2l6NYT5A2QAFmSULpEc=
 github.com/andybalholm/brotli v1.0.1/go.mod h1:loMXtMfwqflxFJPmdbJO0a3KNoPuLBgiu3qAvBg8x/Y=
-github.com/aquaproj/aqua/v2 v2.36.2 h1:gKB7YZVX5i4jNWrUCj1dXvDYc5JG7mYF9NZxw/87uVI=
-github.com/aquaproj/aqua/v2 v2.36.2/go.mod h1:W6nHh7Vr/hDJL4EeHfn/F8eWHw0v6AH5Vp3wJnoMVYA=
+github.com/aquaproj/aqua/v2 v2.37.0 h1:xpDJhs93bSOPtnhhULHuiWaTX7CnBOEQW1s2mFZhC6E=
+github.com/aquaproj/aqua/v2 v2.37.0/go.mod h1:QBTU8DHj/wkCeFDipbq4PD3m+HwuuRwu/yxi/GeIG+M=
 github.com/bahlo/generic-list-go v0.2.0 h1:5sz/EEAK+ls5wF+NeqDpk5+iNdMDXrh3z3nPnH1Wvgk=
 github.com/bahlo/generic-list-go v0.2.0/go.mod h1:2KvAjgMlE5NNynlg/5iLrrCCZ2+5xWbdbCW3pNTGyYg=
 github.com/buger/jsonparser v1.1.1 h1:2PnMjfWD7wBILjqQbt530v576A/cAbQvEW9gGIpYMUs=
