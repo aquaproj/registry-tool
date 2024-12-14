@@ -78,10 +78,7 @@ func readRegistryFiles(registryFilePaths []string) ([]string, error) {
 			scanner := bufio.NewScanner(f)
 			for scanner.Scan() {
 				line := scanner.Text()
-				if strings.HasPrefix(line, "packages:") {
-					continue
-				}
-				if line == "---" {
+				if strings.HasPrefix(line, "packages:") || line == "---" || strings.HasPrefix(line, "# yaml-language-server:") {
 					continue
 				}
 				lines = append(lines, line)
