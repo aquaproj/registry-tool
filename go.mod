@@ -4,7 +4,7 @@ go 1.23.2
 
 require (
 	github.com/aquaproj/aqua/v2 v2.39.0
-	github.com/goccy/go-yaml v1.15.9
+	github.com/goccy/go-yaml v1.15.10
 	github.com/mattn/go-colorable v0.1.13
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/afero v1.11.0
