@@ -50,6 +50,9 @@ func aquaGR(ctx context.Context, pkgName, pkgFilePath, rgFilePath string, cmds s
 		return fmt.Errorf("create a file %s: %w", rgFilePath, err)
 	}
 	defer outFile.Close()
+	if _, err := outFile.WriteString("# yaml-language-server: $schema=https://raw.githubusercontent.com/aquaproj/aqua/main/json-schema/registry.json\n"); err != nil {
+		return fmt.Errorf("write a code comment for yaml-language-server: %w", err)
+	}
 	var cmd *exec.Cmd
 	command := "+ aqua gr --out-testdata " + pkgFilePath
 	args := []string{"gr", "-out-testdata", pkgFilePath}
