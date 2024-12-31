@@ -1,9 +1,9 @@
 module github.com/aquaproj/registry-tool
 
-go 1.23.2
+go 1.23.4
 
 require (
-	github.com/aquaproj/aqua/v2 v2.40.0
+	github.com/aquaproj/aqua/v2 v2.41.0
 	github.com/goccy/go-yaml v1.15.13
 	github.com/mattn/go-colorable v0.1.13
 	github.com/sirupsen/logrus v1.9.3
@@ -24,6 +24,7 @@ require (
 	github.com/cpuguy83/go-md2man/v2 v2.0.5 // indirect
 	github.com/expr-lang/expr v1.16.9 // indirect
 	github.com/google/go-github/v67 v67.0.0 // indirect
+	github.com/google/go-github/v68 v68.0.0 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/hashicorp/go-version v1.7.0 // indirect
