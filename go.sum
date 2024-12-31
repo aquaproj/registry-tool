@@ -18,6 +18,8 @@ github.com/aquaproj/aqua/v2 v2.39.1 h1:c/BOFY2kP5rPWBDxLsUrjmsqhedhcnxcai6EMklD9
 github.com/aquaproj/aqua/v2 v2.39.1/go.mod h1:+5pcEy5L6ngebOBKDCjUf9RCP5LLAJPsLQQmi6SE7ak=
 github.com/aquaproj/aqua/v2 v2.40.0 h1:oq4WlggwJxBaZKriogqXjH2qWWoD2SfE7UuEaiTM5J4=
 github.com/aquaproj/aqua/v2 v2.40.0/go.mod h1:jZDsML2FkE1gtAR6DjQcXKdIOAKoUvZ9TQVv48TN4N0=
+github.com/aquaproj/aqua/v2 v2.41.0 h1:r/voyOkyTwm/z6UbDPL9Csq7vxpK+u1kPvRYLnWNtxg=
+github.com/aquaproj/aqua/v2 v2.41.0/go.mod h1:o69x4rIme7Pn35BqHg0IJho4AHXfdz34mVMjjjQtK2o=
 github.com/bahlo/generic-list-go v0.2.0 h1:5sz/EEAK+ls5wF+NeqDpk5+iNdMDXrh3z3nPnH1Wvgk=
 github.com/bahlo/generic-list-go v0.2.0/go.mod h1:2KvAjgMlE5NNynlg/5iLrrCCZ2+5xWbdbCW3pNTGyYg=
 github.com/buger/jsonparser v1.1.1 h1:2PnMjfWD7wBILjqQbt530v576A/cAbQvEW9gGIpYMUs=
@@ -52,6 +54,8 @@ github.com/google/go-cmp v0.6.0 h1:ofyhxvXcZhMsU5ulbFiLKl/XBFqE1GSq7atu8tAmTRI=
 github.com/google/go-cmp v0.6.0/go.mod h1:17dUlkBOakJ0+DkrSSNjCkIjxS6bF9zb3elmeNGIjoY=
 github.com/google/go-github/v67 v67.0.0 h1:g11NDAmfaBaCO8qYdI9fsmbaRipHNWRIU/2YGvlh4rg=
 github.com/google/go-github/v67 v67.0.0/go.mod h1:zH3K7BxjFndr9QSeFibx4lTKkYS3K9nDanoI1NjaOtY=
+github.com/google/go-github/v68 v68.0.0 h1:ZW57zeNZiXTdQ16qrDiZ0k6XucrxZ2CGmoTvcCyQG6s=
+github.com/google/go-github/v68 v68.0.0/go.mod h1:K9HAUBovM2sLwM408A18h+wd9vqdLOEqTUCbnRIcx68=
 github.com/google/go-querystring v1.1.0 h1:AnCroh3fv4ZBgVIf1Iwtovgjaw/GiKJo8M8yD/fhyJ8=
 github.com/google/go-querystring v1.1.0/go.mod h1:Kcdr2DB4koayq7X8pmAG4sNG59So17icRSOU623lUBU=
 github.com/google/uuid v1.6.0 h1:NIvaJDMOsjHA8n1jAhLSgzrAzy1Hgr+hNrb57e+94F0=
