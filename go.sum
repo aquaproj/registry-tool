@@ -22,6 +22,8 @@ github.com/aquaproj/aqua/v2 v2.41.0 h1:r/voyOkyTwm/z6UbDPL9Csq7vxpK+u1kPvRYLnWNt
 github.com/aquaproj/aqua/v2 v2.41.0/go.mod h1:o69x4rIme7Pn35BqHg0IJho4AHXfdz34mVMjjjQtK2o=
 github.com/aquaproj/aqua/v2 v2.42.0 h1:zr+z2GA4RbSg0eTtA7FeVWXo4RJOxDQKu60BlTjvJIs=
 github.com/aquaproj/aqua/v2 v2.42.0/go.mod h1:j+anPlL0HZwQPRTo6b261/Unm8rExF7nJbZaiDKv3uI=
+github.com/aquaproj/aqua/v2 v2.42.1 h1:IySXie3VLphcrH4ZkHHWttrcr5kGemWq+d4Qt+y8CE4=
+github.com/aquaproj/aqua/v2 v2.42.1/go.mod h1:nKatxctMHZzZwOpbxETRFCElHHgZHsWU0bErABH45f8=
 github.com/bahlo/generic-list-go v0.2.0 h1:5sz/EEAK+ls5wF+NeqDpk5+iNdMDXrh3z3nPnH1Wvgk=
 github.com/bahlo/generic-list-go v0.2.0/go.mod h1:2KvAjgMlE5NNynlg/5iLrrCCZ2+5xWbdbCW3pNTGyYg=
 github.com/buger/jsonparser v1.1.1 h1:2PnMjfWD7wBILjqQbt530v576A/cAbQvEW9gGIpYMUs=
