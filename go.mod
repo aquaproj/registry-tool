@@ -7,7 +7,7 @@ require (
 	github.com/goccy/go-yaml v1.15.13
 	github.com/mattn/go-colorable v0.1.13
 	github.com/sirupsen/logrus v1.9.3
-	github.com/spf13/afero v1.11.0
+	github.com/spf13/afero v1.12.0
 	github.com/suzuki-shunsuke/logrus-error v0.1.4
 	github.com/urfave/cli/v2 v2.27.5
 	gopkg.in/yaml.v2 v2.4.0
@@ -41,9 +41,9 @@ require (
 	github.com/spf13/cast v1.7.0 // indirect
 	github.com/wk8/go-ordered-map/v2 v2.1.8 // indirect
 	github.com/xrash/smetrics v0.0.0-20240521201337-686a1a2994c1 // indirect
-	golang.org/x/crypto v0.28.0 // indirect
+	golang.org/x/crypto v0.32.0 // indirect
 	golang.org/x/oauth2 v0.25.0 // indirect
-	golang.org/x/sync v0.9.0 // indirect
+	golang.org/x/sync v0.10.0 // indirect
 	golang.org/x/sys v0.29.0 // indirect
-	golang.org/x/text v0.20.0 // indirect
+	golang.org/x/text v0.21.0 // indirect
 )
