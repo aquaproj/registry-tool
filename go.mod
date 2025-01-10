@@ -5,7 +5,7 @@ go 1.23.4
 require (
 	github.com/aquaproj/aqua/v2 v2.42.2
 	github.com/goccy/go-yaml v1.15.13
-	github.com/mattn/go-colorable v0.1.13
+	github.com/mattn/go-colorable v0.1.14
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/afero v1.12.0
 	github.com/suzuki-shunsuke/logrus-error v0.1.4
