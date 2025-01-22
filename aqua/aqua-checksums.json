@@ -31,28 +31,28 @@
       "algorithm": "sha256"
     },
     {
-      "id": "github_release/github.com/goreleaser/goreleaser/v2.5.1/goreleaser_Darwin_all.tar.gz",
-      "checksum": "3E307925F46B6F3D2D6C6B82D917BACABE2E119E2B10A2ABC0363A631D7FF82F",
+      "id": "github_release/github.com/goreleaser/goreleaser/v2.6.1/goreleaser_Darwin_all.tar.gz",
+      "checksum": "606ABD3612EEACD91E0393A856831B5FD598B3FD0B473B2DCC2CB26DA7FF502F",
       "algorithm": "sha256"
     },
     {
-      "id": "github_release/github.com/goreleaser/goreleaser/v2.5.1/goreleaser_Linux_arm64.tar.gz",
-      "checksum": "F322203467ACDC3FA1E56C77A34FB9B8F838C1742D14B5B0E283ADF3261004FC",
+      "id": "github_release/github.com/goreleaser/goreleaser/v2.6.1/goreleaser_Linux_arm64.tar.gz",
+      "checksum": "9500E8B68D86431DBCE011C48AFE866C2ABD936B92681D53DFCBA2F647F508E4",
       "algorithm": "sha256"
     },
     {
-      "id": "github_release/github.com/goreleaser/goreleaser/v2.5.1/goreleaser_Linux_x86_64.tar.gz",
-      "checksum": "DFDBDE64F57A7667BDCF5906C5DF8CEAF19FB3175C1B352534ED22CA78B7A4C7",
+      "id": "github_release/github.com/goreleaser/goreleaser/v2.6.1/goreleaser_Linux_x86_64.tar.gz",
+      "checksum": "517BC6422ED3FC4AE12900216CDAB047DBB1DC60610174A170F7B760F171E27F",
       "algorithm": "sha256"
     },
     {
-      "id": "github_release/github.com/goreleaser/goreleaser/v2.5.1/goreleaser_Windows_arm64.zip",
-      "checksum": "E1DF6A95741946DE2C8FC03980C2039EB4E07C02E06188AA0416B759AEA8823C",
+      "id": "github_release/github.com/goreleaser/goreleaser/v2.6.1/goreleaser_Windows_arm64.zip",
+      "checksum": "0AE7E492164FF281574A8BEA0A1FDA64031DD26242C7EAFE3A564A33DE522441",
       "algorithm": "sha256"
     },
     {
-      "id": "github_release/github.com/goreleaser/goreleaser/v2.5.1/goreleaser_Windows_x86_64.zip",
-      "checksum": "0593211CE02C83BE42B809B7E6F3051EE066505FE1C998D982626E2D886F58DA",
+      "id": "github_release/github.com/goreleaser/goreleaser/v2.6.1/goreleaser_Windows_x86_64.zip",
+      "checksum": "1FB1FBE056EAFFD869A05FE1E36EFC7DECD1886219E2A2A580DC56F16734511A",
       "algorithm": "sha256"
     },
     {
@@ -226,8 +226,8 @@
       "algorithm": "sha256"
     },
     {
-      "id": "registries/github_content/github.com/aquaproj/aqua-registry/v4.298.0/registry.yaml",
-      "checksum": "5AF5E7DBD3160A9CD322066D2CA65C2CA2F24835AB76A98322F837432191CDE6",
+      "id": "registries/github_content/github.com/aquaproj/aqua-registry/v4.299.0/registry.yaml",
+      "checksum": "B283E7F0DDE890C97C150507F77CB2322903F2C4D74FFEA94246F9366B1404B3",
       "algorithm": "sha256"
     }
   ]
