@@ -75,7 +75,7 @@ func insertAliases(value ast.Node, idx int, oldPackageName string) error {
 	if err != nil {
 		return fmt.Errorf("parse text as YAML: %w", err)
 	}
-	mn, ok := f.Docs[0].Body.(*ast.MappingValueNode)
+	mn, ok := f.Docs[0].Body.(*ast.MappingNode)
 	if !ok {
 		return errors.New("body must be a mapping node")
 	}
@@ -83,11 +83,7 @@ func insertAliases(value ast.Node, idx int, oldPackageName string) error {
 	latterValues := make([]*ast.MappingValueNode, len(mv.Values[idx:]))
 	copy(latterValues, mv.Values[idx:])
 	mv.Values = mv.Values[:idx]
-	mv.Merge(&ast.MappingNode{
-		Values: []*ast.MappingValueNode{
-			mn,
-		},
-	})
+	mv.Merge(mn)
 	mv.Merge(&ast.MappingNode{
 		Values: latterValues,
 	})
