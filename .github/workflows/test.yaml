@@ -104,9 +104,11 @@ jobs:
       - ghalint
       - renovate-config-validator
     permissions: {}
-    if: failure()
+    if: always()
     steps:
-      - run: exit 1
+      - uses: suzuki-shunsuke/required-status-check-action@2b5a46064846b09381852c2c4217e898f639e768 # v0.1.3
+        with:
+          needs: ${{ toJson(needs) }}
 
   test:
     uses: suzuki-shunsuke/go-test-workflow/.github/workflows/test.yaml@6861ea245ad10752afcba66cb71f28cf5c46ce49 # v1.1.0
