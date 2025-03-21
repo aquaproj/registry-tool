@@ -111,6 +111,8 @@ github.com/suzuki-shunsuke/go-osenv v0.1.0 h1:hBQ7yaeO1WBZsEWuDj1wrOWF+N7HSWSOpE
 github.com/suzuki-shunsuke/go-osenv v0.1.0/go.mod h1:ZlSVi4kYvV51JEtYpdHh9hAxXKLOWExXel3Jo74aacQ=
 github.com/suzuki-shunsuke/logrus-error v0.1.4 h1:nWo98uba1fANHdZ9Y5pJ2RKs/PpVjrLzRp5m+mRb9KE=
 github.com/suzuki-shunsuke/logrus-error v0.1.4/go.mod h1:WsVvvw6SKSt08/fB2qbnsKIMJA4K1MYCUprqsBJbMiM=
+github.com/suzuki-shunsuke/urfave-cli-help-all v0.0.4 h1:YGHgrVjGTYHY98II6zijXUHP+OyvrzSCvd8m9iUcaK8=
+github.com/suzuki-shunsuke/urfave-cli-help-all v0.0.4/go.mod h1:sSi6xaUaHfaqu32ECLeyE7NTMv+ZM5dW0JikhllaalY=
 github.com/therootcompany/xz v1.0.1 h1:CmOtsn1CbtmyYiusbfmhmkpAAETj0wBIH6kCYaX+xzw=
 github.com/therootcompany/xz v1.0.1/go.mod h1:3K3UH1yCKgBneZYhuQUvJ9HPD19UEXEI0BWbMn8qNMY=
 github.com/ulikunitz/xz v0.5.12 h1:37Nm15o69RwBkXM0J6A5OlE67RZTfzUxTj8fB3dfcsc=
