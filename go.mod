@@ -9,6 +9,7 @@ require (
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/afero v1.14.0
 	github.com/suzuki-shunsuke/logrus-error v0.1.4
+	github.com/suzuki-shunsuke/urfave-cli-help-all v0.0.4
 	github.com/urfave/cli/v2 v2.27.6
 	gopkg.in/yaml.v2 v2.4.0
 	gopkg.in/yaml.v3 v3.0.1
@@ -23,9 +24,6 @@ require (
 	github.com/buger/jsonparser v1.1.1 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.5 // indirect
 	github.com/expr-lang/expr v1.17.1 // indirect
-	github.com/google/go-github/v67 v67.0.0 // indirect
-	github.com/google/go-github/v68 v68.0.0 // indirect
-	github.com/google/go-github/v69 v69.2.0 // indirect
 	github.com/google/go-github/v70 v70.0.0 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect
