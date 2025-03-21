@@ -3,7 +3,7 @@ name: test
 on: pull_request
 permissions: {}
 concurrency:
-  group: ${{ github.workflow }}--${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 jobs:
   status-check:
