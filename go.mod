@@ -23,9 +23,6 @@ require (
 	github.com/buger/jsonparser v1.1.1 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.5 // indirect
 	github.com/expr-lang/expr v1.17.1 // indirect
-	github.com/google/go-github/v67 v67.0.0 // indirect
-	github.com/google/go-github/v68 v68.0.0 // indirect
-	github.com/google/go-github/v69 v69.2.0 // indirect
 	github.com/google/go-github/v70 v70.0.0 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect

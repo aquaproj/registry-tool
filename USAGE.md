@@ -171,4 +171,3 @@ DESCRIPTION:
    if command -v aqua-registry &> /dev/null; then source <(aqua-registry completion zsh); fi
    
 ```
-
