@@ -1,6 +1,36 @@
 {
   "checksums": [
     {
+      "id": "github_release/github.com/aquaproj/registry-tool/v0.3.4/registry-tool_darwin_amd64.tar.gz",
+      "checksum": "33E6DB8F7F5430139BD62ADA1134B0A56E0AB856EC3B5AAB6BA9E283BC03FFA3",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "github_release/github.com/aquaproj/registry-tool/v0.3.4/registry-tool_darwin_arm64.tar.gz",
+      "checksum": "B32C9669C04676D578D1E7DB36610571C4B217E6AE0A8E20377BF2C563958885",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "github_release/github.com/aquaproj/registry-tool/v0.3.4/registry-tool_linux_amd64.tar.gz",
+      "checksum": "B9B1ACA699E3ABA63E01DDEFF728D05B8CD434740604A82C42A0209FB4AD5380",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "github_release/github.com/aquaproj/registry-tool/v0.3.4/registry-tool_linux_arm64.tar.gz",
+      "checksum": "6D0DC7D7273BF193774BA648A1305F38BF7755723A0E484F5C7A7ECCEB785C77",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "github_release/github.com/aquaproj/registry-tool/v0.3.4/registry-tool_windows_amd64.tar.gz",
+      "checksum": "ED9E4FB785717AE016315D1C1F739401CE987181EA8BEB0672EDB33760495F00",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "github_release/github.com/aquaproj/registry-tool/v0.3.4/registry-tool_windows_arm64.tar.gz",
+      "checksum": "1093467743827CB4CF3513C280A352A67C94987B5E153FD46AC50F8682505859",
+      "algorithm": "sha256"
+    },
+    {
       "id": "github_release/github.com/golangci/golangci-lint/v1.64.8/golangci-lint-1.64.8-darwin-amd64.tar.gz",
       "checksum": "B52AEBB8CB51E00BFD5976099083FBE2C43EF556CEF9C87E58A8AE656E740444",
       "algorithm": "sha256"
