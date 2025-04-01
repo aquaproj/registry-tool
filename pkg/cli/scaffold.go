@@ -2,7 +2,7 @@ package cli
 
 import (
 	"github.com/aquaproj/registry-tool/pkg/scaffold"
-	"github.com/urfave/cli/v2"
+	"github.com/urfave/cli/v3"
 )
 
 func (runner *Runner) newScaffoldCommand() *cli.Command {

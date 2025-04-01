@@ -2,7 +2,7 @@ package cli
 
 import (
 	newpkg "github.com/aquaproj/registry-tool/pkg/create-pr-new-pkg"
-	"github.com/urfave/cli/v2"
+	"github.com/urfave/cli/v3"
 )
 
 func (runner *Runner) newCreatePRNewPkgCommand() *cli.Command {

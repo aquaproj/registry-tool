@@ -2,7 +2,7 @@ package cli
 
 import (
 	genrg "github.com/aquaproj/registry-tool/pkg/generate-registry"
-	"github.com/urfave/cli/v2"
+	"github.com/urfave/cli/v3"
 )
 
 func (runner *Runner) newGenerateRegistryCommand() *cli.Command {

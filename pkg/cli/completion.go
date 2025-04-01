@@ -3,7 +3,7 @@ package cli
 import (
 	"fmt"
 
-	"github.com/urfave/cli/v2"
+	"github.com/urfave/cli/v3"
 )
 
 func (runner *Runner) newCompletionCommand() *cli.Command {

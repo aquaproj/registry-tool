@@ -5,7 +5,7 @@ import (
 
 	"github.com/aquaproj/registry-tool/pkg/checkrepo"
 	"github.com/spf13/afero"
-	"github.com/urfave/cli/v2"
+	"github.com/urfave/cli/v3"
 )
 
 func (runner *Runner) newCheckRepoCommand() *cli.Command {

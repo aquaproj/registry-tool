@@ -2,7 +2,7 @@ package cli
 
 import (
 	"github.com/aquaproj/registry-tool/pkg/initcmd"
-	"github.com/urfave/cli/v2"
+	"github.com/urfave/cli/v3"
 )
 
 func (runner *Runner) newInitCommand() *cli.Command {
