@@ -1,8 +1,10 @@
 package cli
 
 import (
+	"context"
+
 	genrg "github.com/aquaproj/registry-tool/pkg/generate-registry"
-	"github.com/urfave/cli/v2"
+	"github.com/urfave/cli/v3"
 )
 
 func (runner *Runner) newGenerateRegistryCommand() *cli.Command {
@@ -22,6 +24,6 @@ No argument is needed.
 	}
 }
 
-func (runner *Runner) generateRegistryAction(_ *cli.Context) error {
+func (runner *Runner) generateRegistryAction(context.Context, *cli.Command) error {
 	return genrg.GenerateRegistry() //nolint:wrapcheck
 }

@@ -1,11 +1,12 @@
 package cli
 
 import (
+	"context"
 	"errors"
 
 	"github.com/aquaproj/registry-tool/pkg/mv"
 	"github.com/spf13/afero"
-	"github.com/urfave/cli/v2"
+	"github.com/urfave/cli/v3"
 )
 
 func (runner *Runner) newMVCommand() *cli.Command {
@@ -18,10 +19,10 @@ func (runner *Runner) newMVCommand() *cli.Command {
 	}
 }
 
-func (runner *Runner) moveAction(c *cli.Context) error {
-	args := c.Args().Slice()
+func (runner *Runner) moveAction(ctx context.Context, cmd *cli.Command) error {
+	args := cmd.Args().Slice()
 	if len(args) != 2 { //nolint:mnd
 		return errors.New("invalid arguments")
 	}
-	return mv.Move(c.Context, afero.NewOsFs(), args[0], args[1]) //nolint:wrapcheck
+	return mv.Move(ctx, afero.NewOsFs(), args[0], args[1]) //nolint:wrapcheck
 }

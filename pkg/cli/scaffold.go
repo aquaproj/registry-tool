@@ -1,8 +1,10 @@
 package cli
 
 import (
+	"context"
+
 	"github.com/aquaproj/registry-tool/pkg/scaffold"
-	"github.com/urfave/cli/v2"
+	"github.com/urfave/cli/v3"
 )
 
 func (runner *Runner) newScaffoldCommand() *cli.Command {
@@ -49,6 +51,6 @@ This tool does the following things.
 	}
 }
 
-func (runner *Runner) scaffoldAction(c *cli.Context) error {
-	return scaffold.Scaffold(c.Context, c.String("cmd"), c.Int("limit"), c.Args().Slice()...) //nolint:wrapcheck
+func (runner *Runner) scaffoldAction(ctx context.Context, c *cli.Command) error {
+	return scaffold.Scaffold(ctx, c.String("cmd"), int(c.Int("limit")), c.Args().Slice()...) //nolint:wrapcheck
 }

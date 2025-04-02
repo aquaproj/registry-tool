@@ -1,9 +1,10 @@
 package cli
 
 import (
+	"context"
 	"fmt"
 
-	"github.com/urfave/cli/v2"
+	"github.com/urfave/cli/v3"
 )
 
 func (runner *Runner) newCompletionCommand() *cli.Command {
@@ -23,7 +24,7 @@ if command -v aqua-registry &> /dev/null; then source <(aqua-registry completion
 
 if command -v aqua-registry &> /dev/null; then source <(aqua-registry completion zsh); fi
 `,
-		Subcommands: []*cli.Command{
+		Commands: []*cli.Command{
 			{
 				Name:   "bash",
 				Usage:  "Output shell completion script for bash",
@@ -38,7 +39,7 @@ if command -v aqua-registry &> /dev/null; then source <(aqua-registry completion
 	}
 }
 
-func (runner *Runner) bashCompletionAction(_ *cli.Context) error {
+func (runner *Runner) bashCompletionAction(_ context.Context, _ *cli.Command) error {
 	// https://github.com/urfave/cli/blob/main/autocomplete/bash_autocomplete
 	// https://github.com/urfave/cli/blob/c3f51bed6fffdf84227c5b59bd3f2e90683314df/autocomplete/bash_autocomplete#L5-L20
 	fmt.Fprintln(runner.Stdout, `
@@ -61,7 +62,7 @@ complete -o bashdefault -o default -o nospace -F _cli_bash_autocomplete aqua-reg
 	return nil
 }
 
-func (runner *Runner) zshCompletionAction(_ *cli.Context) error {
+func (runner *Runner) zshCompletionAction(_ context.Context, _ *cli.Command) error {
 	// https://github.com/urfave/cli/blob/main/autocomplete/zsh_autocomplete
 	// https://github.com/urfave/cli/blob/947f9894eef4725a1c15ed75459907b52dde7616/autocomplete/zsh_autocomplete
 	fmt.Fprintln(runner.Stdout, `

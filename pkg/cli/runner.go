@@ -3,12 +3,11 @@ package cli
 import (
 	"context"
 	"io"
-	"time"
 
 	"github.com/aquaproj/registry-tool/pkg/runtime"
 	"github.com/sirupsen/logrus"
-	"github.com/suzuki-shunsuke/urfave-cli-help-all/helpall"
-	"github.com/urfave/cli/v2"
+	"github.com/suzuki-shunsuke/urfave-cli-v3-help-all/helpall"
+	"github.com/urfave/cli/v3"
 )
 
 type Runner struct {
@@ -27,23 +26,18 @@ type LDFlags struct {
 }
 
 func (runner *Runner) Run(ctx context.Context, args ...string) error {
-	compiledDate, err := time.Parse(time.RFC3339, runner.LDFlags.Date)
-	if err != nil {
-		compiledDate = time.Now()
-	}
-	app := cli.App{
-		Name:     "aqua-registry",
-		Usage:    "CLI to develop aqua Registry. https://github.com/aquaproj/registry-tool",
-		Version:  runner.LDFlags.Version + " (" + runner.LDFlags.Commit + ")",
-		Compiled: compiledDate,
+	return helpall.With(&cli.Command{ //nolint:wrapcheck
+		Name:    "aqua-registry",
+		Usage:   "CLI to develop aqua Registry. https://github.com/aquaproj/registry-tool",
+		Version: runner.LDFlags.Version + " (" + runner.LDFlags.Commit + ")",
 		Flags: []cli.Flag{
 			&cli.StringFlag{
 				Name:    "log-level",
 				Usage:   "log level",
-				EnvVars: []string{"AQUA_LOG_LEVEL"},
+				Sources: cli.EnvVars("AQUA_LOG_LEVEL"),
 			},
 		},
-		EnableBashCompletion: true,
+		EnableShellCompletion: true,
 		Commands: []*cli.Command{
 			runner.newScaffoldCommand(),
 			runner.newCreatePRNewPkgCommand(),
@@ -54,9 +48,6 @@ func (runner *Runner) Run(ctx context.Context, args ...string) error {
 			runner.newPatchChecksumCommand(),
 			runner.newCheckRepoCommand(),
 			runner.newMVCommand(),
-			helpall.New(nil),
 		},
-	}
-
-	return app.RunContext(ctx, args) //nolint:wrapcheck
+	}, nil).Run(ctx, args)
 }

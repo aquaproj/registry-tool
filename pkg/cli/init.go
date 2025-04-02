@@ -1,8 +1,10 @@
 package cli
 
 import (
+	"context"
+
 	"github.com/aquaproj/registry-tool/pkg/initcmd"
-	"github.com/urfave/cli/v2"
+	"github.com/urfave/cli/v3"
 )
 
 func (runner *Runner) newInitCommand() *cli.Command {
@@ -19,6 +21,6 @@ func (runner *Runner) newInitCommand() *cli.Command {
 	}
 }
 
-func (runner *Runner) initAction(c *cli.Context) error {
-	return initcmd.Init(c.Context) //nolint:wrapcheck
+func (runner *Runner) initAction(ctx context.Context, _ *cli.Command) error {
+	return initcmd.Init(ctx) //nolint:wrapcheck
 }
