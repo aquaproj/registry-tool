@@ -1,6 +1,8 @@
 package cli
 
 import (
+	"context"
+
 	"github.com/aquaproj/registry-tool/pkg/patchchecksum"
 	"github.com/urfave/cli/v3"
 )
@@ -20,6 +22,6 @@ $ aqua-registry patch-checksum pkgs/suzuki-shunsuke/tfcmt/registry.yaml
 	}
 }
 
-func (runner *Runner) patchChecksumAction(c *cli.Context) error {
-	return patchchecksum.PatchChecksum(c.Context, runner.LogE, c.Args().First()) //nolint:wrapcheck
+func (runner *Runner) patchChecksumAction(ctx context.Context, cmd *cli.Command) error {
+	return patchchecksum.PatchChecksum(ctx, runner.LogE, cmd.Args().First()) //nolint:wrapcheck
 }

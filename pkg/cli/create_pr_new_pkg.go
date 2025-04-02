@@ -1,6 +1,8 @@
 package cli
 
 import (
+	"context"
+
 	newpkg "github.com/aquaproj/registry-tool/pkg/create-pr-new-pkg"
 	"github.com/urfave/cli/v3"
 )
@@ -27,6 +29,6 @@ This tool does the following things.
 	}
 }
 
-func (runner *Runner) createPRNewPkgAction(c *cli.Context) error {
-	return newpkg.CreatePRNewPkgs(c.Context, runner.LogE, c.Args().Slice()...) //nolint:wrapcheck
+func (runner *Runner) createPRNewPkgAction(ctx context.Context, cmd *cli.Command) error {
+	return newpkg.CreatePRNewPkgs(ctx, runner.LogE, cmd.Args().Slice()...) //nolint:wrapcheck
 }
