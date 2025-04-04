@@ -3,7 +3,7 @@ module github.com/aquaproj/registry-tool
 go 1.23.4
 
 require (
-	github.com/aquaproj/aqua/v2 v2.46.0
+	github.com/aquaproj/aqua/v2 v2.47.0
 	github.com/goccy/go-yaml v1.17.1
 	github.com/mattn/go-colorable v0.1.14
 	github.com/sirupsen/logrus v1.9.3
@@ -22,7 +22,7 @@ require (
 	github.com/Masterminds/sprig/v3 v3.3.0 // indirect
 	github.com/bahlo/generic-list-go v0.2.0 // indirect
 	github.com/buger/jsonparser v1.1.1 // indirect
-	github.com/expr-lang/expr v1.17.1 // indirect
+	github.com/expr-lang/expr v1.17.2 // indirect
 	github.com/google/go-github/v70 v70.0.0 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect

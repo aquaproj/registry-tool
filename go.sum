@@ -14,6 +14,8 @@ github.com/andybalholm/brotli v1.1.1 h1:PR2pgnyFznKEugtsUo0xLdDop5SKXd5Qf5ysW+7X
 github.com/andybalholm/brotli v1.1.1/go.mod h1:05ib4cKhjx3OQYUY22hTVd34Bc8upXjOLL2rKwwZBoA=
 github.com/aquaproj/aqua/v2 v2.46.0 h1:en7mPqrlkN+SmVV46GiZtHA5TCjzljRxG3WK2ei17ys=
 github.com/aquaproj/aqua/v2 v2.46.0/go.mod h1:h78OcZE2s8qpkQ9quwe45nBEHlK/qYi9qCdTB3WRSu0=
+github.com/aquaproj/aqua/v2 v2.47.0 h1:L5HeGIZve/3xnlOT6Y8t60jvSsy1D2jSKSeGqhlguO0=
+github.com/aquaproj/aqua/v2 v2.47.0/go.mod h1:7myASn6+yhDA1ktukwUmvn8Y4udq+ZO+oPpQfJPNQ54=
 github.com/bahlo/generic-list-go v0.2.0 h1:5sz/EEAK+ls5wF+NeqDpk5+iNdMDXrh3z3nPnH1Wvgk=
 github.com/bahlo/generic-list-go v0.2.0/go.mod h1:2KvAjgMlE5NNynlg/5iLrrCCZ2+5xWbdbCW3pNTGyYg=
 github.com/bodgit/plumbing v1.3.0 h1:pf9Itz1JOQgn7vEOE7v7nlEfBykYqvUYioC61TwWCFU=
@@ -31,6 +33,8 @@ github.com/dsnet/compress v0.0.2-0.20230904184137-39efe44ab707 h1:2tV76y6Q9BB+NE
 github.com/dsnet/compress v0.0.2-0.20230904184137-39efe44ab707/go.mod h1:qssHWj60/X5sZFNxpG4HBPDHVqxNm4DfnCKgrbZOT+s=
 github.com/expr-lang/expr v1.17.1 h1:8nlCWiAbM/L9p4I5mWSCLTV9JnmMaEmgvA/dIL1Dslw=
 github.com/expr-lang/expr v1.17.1/go.mod h1:8/vRC7+7HBzESEqt5kKpYXxrxkr31SaO8r40VO/1IT4=
+github.com/expr-lang/expr v1.17.2 h1:o0A99O/Px+/DTjEnQiodAgOIK9PPxL8DtXhBRKC+Iso=
+github.com/expr-lang/expr v1.17.2/go.mod h1:8/vRC7+7HBzESEqt5kKpYXxrxkr31SaO8r40VO/1IT4=
 github.com/frankban/quicktest v1.14.6 h1:7Xjx+VpznH+oBnejlPUj8oUpdxnVs4f8XU8WnHkI4W8=
 github.com/frankban/quicktest v1.14.6/go.mod h1:4ptaffx2x8+WTWXmUCuVU6aPUX1/Mz7zb5vbUoiM6w0=
 github.com/goccy/go-yaml v1.17.1 h1:LI34wktB2xEE3ONG/2Ar54+/HJVBriAGJ55PHls4YuY=
