@@ -6,7 +6,8 @@ import (
 
 	"github.com/aquaproj/registry-tool/pkg/runtime"
 	"github.com/sirupsen/logrus"
-	"github.com/suzuki-shunsuke/urfave-cli-v3-help-all/helpall"
+	"github.com/suzuki-shunsuke/urfave-cli-v3-util/helpall"
+	"github.com/suzuki-shunsuke/urfave-cli-v3-util/vcmd"
 	"github.com/urfave/cli/v3"
 )
 
@@ -43,11 +44,15 @@ func (runner *Runner) Run(ctx context.Context, args ...string) error {
 			runner.newCreatePRNewPkgCommand(),
 			runner.newGenerateRegistryCommand(),
 			runner.newCompletionCommand(),
-			runner.newVersionCommand(),
 			runner.newInitCommand(),
 			runner.newPatchChecksumCommand(),
 			runner.newCheckRepoCommand(),
 			runner.newMVCommand(),
+			vcmd.New(&vcmd.Command{
+				Name:    "aqua-registry",
+				Version: runner.LDFlags.Version,
+				SHA:     runner.LDFlags.Commit,
+			}),
 		},
 	}, nil).Run(ctx, args)
 }
