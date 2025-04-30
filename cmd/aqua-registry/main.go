@@ -23,12 +23,12 @@ var (
 func main() {
 	rt := runtime.New()
 	logE := log.New(rt, version)
-	if err := core(logE, rt); err != nil {
+	if err := core(logE); err != nil {
 		logerr.WithError(logE, err).Fatal("aqua failed")
 	}
 }
 
-func core(logE *logrus.Entry, rt *runtime.Runtime) error {
+func core(logE *logrus.Entry) error {
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer stop()
 	return cli.Run(ctx, logE, &urfave.LDFlags{ //nolint:wrapcheck
