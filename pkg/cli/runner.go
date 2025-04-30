@@ -26,11 +26,11 @@ type LDFlags struct {
 	Date    string
 }
 
-func (runner *Runner) Run(ctx context.Context, args ...string) error {
+func (r *Runner) Run(ctx context.Context, args ...string) error {
 	return helpall.With(&cli.Command{ //nolint:wrapcheck
 		Name:    "aqua-registry",
 		Usage:   "CLI to develop aqua Registry. https://github.com/aquaproj/registry-tool",
-		Version: runner.LDFlags.Version + " (" + runner.LDFlags.Commit + ")",
+		Version: r.LDFlags.Version + " (" + r.LDFlags.Commit + ")",
 		Flags: []cli.Flag{
 			&cli.StringFlag{
 				Name:    "log-level",
@@ -40,18 +40,18 @@ func (runner *Runner) Run(ctx context.Context, args ...string) error {
 		},
 		EnableShellCompletion: true,
 		Commands: []*cli.Command{
-			runner.newScaffoldCommand(),
-			runner.newCreatePRNewPkgCommand(),
-			runner.newGenerateRegistryCommand(),
-			runner.newCompletionCommand(),
-			runner.newInitCommand(),
-			runner.newPatchChecksumCommand(),
-			runner.newCheckRepoCommand(),
-			runner.newMVCommand(),
+			r.newScaffoldCommand(),
+			r.newCreatePRNewPkgCommand(),
+			r.newGenerateRegistryCommand(),
+			r.newCompletionCommand(),
+			r.newInitCommand(),
+			r.newPatchChecksumCommand(),
+			r.newCheckRepoCommand(),
+			r.newMVCommand(),
 			vcmd.New(&vcmd.Command{
 				Name:    "aqua-registry",
-				Version: runner.LDFlags.Version,
-				SHA:     runner.LDFlags.Commit,
+				Version: r.LDFlags.Version,
+				SHA:     r.LDFlags.Commit,
 			}),
 		},
 	}, nil).Run(ctx, args)

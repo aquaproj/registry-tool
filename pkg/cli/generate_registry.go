@@ -7,7 +7,7 @@ import (
 	"github.com/urfave/cli/v3"
 )
 
-func (runner *Runner) newGenerateRegistryCommand() *cli.Command {
+func (r *Runner) newGenerateRegistryCommand() *cli.Command {
 	return &cli.Command{
 		Name:      "generate-registry",
 		Aliases:   []string{"gr"},
@@ -20,10 +20,10 @@ Don't edit it manually, and if you update registry.yaml in the pkgs directory, d
 
 No argument is needed.
 `,
-		Action: runner.generateRegistryAction,
+		Action: r.generateRegistryAction,
 	}
 }
 
-func (runner *Runner) generateRegistryAction(context.Context, *cli.Command) error {
+func (r *Runner) generateRegistryAction(context.Context, *cli.Command) error {
 	return genrg.GenerateRegistry() //nolint:wrapcheck
 }
