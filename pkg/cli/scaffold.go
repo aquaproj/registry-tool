@@ -52,5 +52,5 @@ This tool does the following things.
 }
 
 func (r *Runner) scaffoldAction(ctx context.Context, c *cli.Command) error {
-	return scaffold.Scaffold(ctx, c.String("cmd"), int(c.Int("limit")), c.Args().Slice()...) //nolint:wrapcheck
+	return scaffold.Scaffold(ctx, c.String("cmd"), c.Int("limit"), c.Args().Slice()...) //nolint:wrapcheck
 }
