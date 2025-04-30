@@ -1,4 +1,4 @@
-package cli
+package gengr
 
 import (
 	"context"
@@ -7,7 +7,13 @@ import (
 	"github.com/urfave/cli/v3"
 )
 
-func (r *Runner) newGenerateRegistryCommand() *cli.Command {
+type runner struct{}
+
+func Command() *cli.Command {
+	return (&runner{}).Command()
+}
+
+func (r *runner) Command() *cli.Command {
 	return &cli.Command{
 		Name:      "generate-registry",
 		Aliases:   []string{"gr"},
@@ -20,10 +26,10 @@ Don't edit it manually, and if you update registry.yaml in the pkgs directory, d
 
 No argument is needed.
 `,
-		Action: r.generateRegistryAction,
+		Action: r.action,
 	}
 }
 
-func (r *Runner) generateRegistryAction(context.Context, *cli.Command) error {
+func (r *runner) action(context.Context, *cli.Command) error {
 	return genrg.GenerateRegistry() //nolint:wrapcheck
 }

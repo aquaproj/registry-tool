@@ -1,4 +1,4 @@
-package cli
+package checkrepo
 
 import (
 	"context"
@@ -9,7 +9,14 @@ import (
 	"github.com/urfave/cli/v3"
 )
 
-func (r *Runner) newCheckRepoCommand() *cli.Command {
+type runner struct{}
+
+func Command() *cli.Command {
+	r := &runner{}
+	return r.Command()
+}
+
+func (r *runner) Command() *cli.Command {
 	return &cli.Command{
 		Name:      "check-repo",
 		Usage:     `Check if GitHub Repository was transferred`,
@@ -22,12 +29,12 @@ e.g.
 $ aqua-registry check-repo Azure/aztfy
 Azure/aztfexport
 `,
-		Action: r.checkRepoAction,
+		Action: r.action,
 		Flags:  []cli.Flag{},
 	}
 }
 
-func (r *Runner) checkRepoAction(ctx context.Context, cmd *cli.Command) error {
+func (r *runner) action(ctx context.Context, cmd *cli.Command) error {
 	return checkrepo.CheckRepo( //nolint:wrapcheck
 		ctx, afero.NewOsFs(), &http.Client{
 			CheckRedirect: func(_ *http.Request, _ []*http.Request) error {

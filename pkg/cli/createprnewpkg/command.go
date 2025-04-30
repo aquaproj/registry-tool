@@ -1,13 +1,22 @@
-package cli
+package createprnewpkg
 
 import (
 	"context"
 
 	newpkg "github.com/aquaproj/registry-tool/pkg/create-pr-new-pkg"
+	"github.com/sirupsen/logrus"
 	"github.com/urfave/cli/v3"
 )
 
-func (r *Runner) newCreatePRNewPkgCommand() *cli.Command {
+type runner struct {
+	logE *logrus.Entry
+}
+
+func Command(logE *logrus.Entry) *cli.Command {
+	return (&runner{logE: logE}).Command()
+}
+
+func (r *runner) Command() *cli.Command {
 	return &cli.Command{
 		Name:      "create-pr-new-pkg",
 		Usage:     `Create a pull request to add new packages`,
@@ -25,10 +34,10 @@ This tool does the following things.
 3. Push the commit to origin
 4. Open a web browser to create a request with GitHub CLI
 `,
-		Action: r.createPRNewPkgAction,
+		Action: r.action,
 	}
 }
 
-func (r *Runner) createPRNewPkgAction(ctx context.Context, cmd *cli.Command) error {
-	return newpkg.CreatePRNewPkgs(ctx, r.LogE, cmd.Args().Slice()...) //nolint:wrapcheck
+func (r *runner) action(ctx context.Context, cmd *cli.Command) error {
+	return newpkg.CreatePRNewPkgs(ctx, r.logE, cmd.Args().Slice()...) //nolint:wrapcheck
 }
