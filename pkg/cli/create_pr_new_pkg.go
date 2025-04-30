@@ -7,7 +7,7 @@ import (
 	"github.com/urfave/cli/v3"
 )
 
-func (runner *Runner) newCreatePRNewPkgCommand() *cli.Command {
+func (r *Runner) newCreatePRNewPkgCommand() *cli.Command {
 	return &cli.Command{
 		Name:      "create-pr-new-pkg",
 		Usage:     `Create a pull request to add new packages`,
@@ -25,10 +25,10 @@ This tool does the following things.
 3. Push the commit to origin
 4. Open a web browser to create a request with GitHub CLI
 `,
-		Action: runner.createPRNewPkgAction,
+		Action: r.createPRNewPkgAction,
 	}
 }
 
-func (runner *Runner) createPRNewPkgAction(ctx context.Context, cmd *cli.Command) error {
-	return newpkg.CreatePRNewPkgs(ctx, runner.LogE, cmd.Args().Slice()...) //nolint:wrapcheck
+func (r *Runner) createPRNewPkgAction(ctx context.Context, cmd *cli.Command) error {
+	return newpkg.CreatePRNewPkgs(ctx, r.LogE, cmd.Args().Slice()...) //nolint:wrapcheck
 }

@@ -9,17 +9,17 @@ import (
 	"github.com/urfave/cli/v3"
 )
 
-func (runner *Runner) newMVCommand() *cli.Command {
+func (r *Runner) newMVCommand() *cli.Command {
 	return &cli.Command{
 		Name:        "mv",
 		Usage:       `Rename a package`,
 		UsageText:   `$ aqua-registry mv <old package name> <new package name>`,
 		Description: `Rename a package.`,
-		Action:      runner.moveAction,
+		Action:      r.moveAction,
 	}
 }
 
-func (runner *Runner) moveAction(ctx context.Context, cmd *cli.Command) error {
+func (r *Runner) moveAction(ctx context.Context, cmd *cli.Command) error {
 	args := cmd.Args().Slice()
 	if len(args) != 2 { //nolint:mnd
 		return errors.New("invalid arguments")
