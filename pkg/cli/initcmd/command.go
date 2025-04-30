@@ -1,4 +1,4 @@
-package cli
+package initcmd
 
 import (
 	"context"
@@ -7,7 +7,13 @@ import (
 	"github.com/urfave/cli/v3"
 )
 
-func (r *Runner) newInitCommand() *cli.Command {
+type runner struct{}
+
+func Command() *cli.Command {
+	return (&runner{}).Command()
+}
+
+func (r *runner) Command() *cli.Command {
 	return &cli.Command{
 		Name:      "init",
 		Usage:     `Create configuration files`,
@@ -17,10 +23,10 @@ func (r *Runner) newInitCommand() *cli.Command {
 * aqua.yaml
 * aqua-dev.yaml
 `,
-		Action: r.initAction,
+		Action: r.action,
 	}
 }
 
-func (r *Runner) initAction(ctx context.Context, _ *cli.Command) error {
+func (r *runner) action(ctx context.Context, _ *cli.Command) error {
 	return initcmd.Init(ctx) //nolint:wrapcheck
 }
