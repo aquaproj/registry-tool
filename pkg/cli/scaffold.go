@@ -7,7 +7,7 @@ import (
 	"github.com/urfave/cli/v3"
 )
 
-func (runner *Runner) newScaffoldCommand() *cli.Command {
+func (r *Runner) newScaffoldCommand() *cli.Command {
 	return &cli.Command{
 		Name:      "scaffold",
 		Usage:     `Scaffold a package`,
@@ -32,7 +32,7 @@ This tool does the following things.
 5. aqua g -i <package name>
 6. aqua i
 `,
-		Action: runner.scaffoldAction,
+		Action: r.scaffoldAction,
 		Flags: []cli.Flag{
 			&cli.BoolFlag{
 				Name:  "deep",
@@ -51,6 +51,6 @@ This tool does the following things.
 	}
 }
 
-func (runner *Runner) scaffoldAction(ctx context.Context, c *cli.Command) error {
+func (r *Runner) scaffoldAction(ctx context.Context, c *cli.Command) error {
 	return scaffold.Scaffold(ctx, c.String("cmd"), int(c.Int("limit")), c.Args().Slice()...) //nolint:wrapcheck
 }

@@ -9,7 +9,7 @@ import (
 	"github.com/urfave/cli/v3"
 )
 
-func (runner *Runner) newCheckRepoCommand() *cli.Command {
+func (r *Runner) newCheckRepoCommand() *cli.Command {
 	return &cli.Command{
 		Name:      "check-repo",
 		Usage:     `Check if GitHub Repository was transferred`,
@@ -22,12 +22,12 @@ e.g.
 $ aqua-registry check-repo Azure/aztfy
 Azure/aztfexport
 `,
-		Action: runner.checkRepoAction,
+		Action: r.checkRepoAction,
 		Flags:  []cli.Flag{},
 	}
 }
 
-func (runner *Runner) checkRepoAction(ctx context.Context, cmd *cli.Command) error {
+func (r *Runner) checkRepoAction(ctx context.Context, cmd *cli.Command) error {
 	return checkrepo.CheckRepo( //nolint:wrapcheck
 		ctx, afero.NewOsFs(), &http.Client{
 			CheckRedirect: func(_ *http.Request, _ []*http.Request) error {
