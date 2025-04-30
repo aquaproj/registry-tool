@@ -24,12 +24,21 @@ func Move(_ context.Context, afs afero.Fs, oldPackageName, newPackageName string
 	}
 	newPkgYAMLPath := filepath.Join(newPkgPath, "pkg.yaml")
 	newRegistryYAMLPath := filepath.Join(newPkgPath, "registry.yaml")
+	newScaffoldYAMLPath := filepath.Join(newPkgPath, "scaffold.yaml")
 	// Move files
 	if err := afs.Rename(filepath.Join(oldPkgPath, "pkg.yaml"), newPkgYAMLPath); err != nil {
 		return fmt.Errorf("rename directories: %w", err)
 	}
 	if err := afs.Rename(filepath.Join(oldPkgPath, "registry.yaml"), newRegistryYAMLPath); err != nil {
 		return fmt.Errorf("rename directories: %w", err)
+	}
+	oldScaffoldYAMLPath := filepath.Join(oldPkgPath, "scaffold.yaml")
+	if f, err := afero.Exists(afs, oldScaffoldYAMLPath); err != nil {
+		return fmt.Errorf("check if scaffold.yaml exists: %w", err)
+	} else if f {
+		if err := afs.Rename(oldScaffoldYAMLPath, newScaffoldYAMLPath); err != nil {
+			return fmt.Errorf("rename directories: %w", err)
+		}
 	}
 
 	// Fix repo_owner and repo_name in registry.yaml
