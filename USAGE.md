@@ -8,27 +8,27 @@ NAME:
    aqua-registry - CLI to develop aqua Registry. https://github.com/aquaproj/registry-tool
 
 USAGE:
-   aqua-registry [global options] command [command options]
+   aqua-registry [global options] [command [command options]]
 
 VERSION:
-   0.3.4 (865a679a7914b8489daff99659e83e4cae3ad11b)
+   0.3.5
 
 COMMANDS:
    scaffold               Scaffold a package
    create-pr-new-pkg      Create a pull request to add new packages
    generate-registry, gr  Update registry.yaml
-   completion             Output shell completion script for bash or zsh
-   version                Show version
    init                   Create configuration files
    patch-checksum         Patch a checksum configuration
    check-repo             Check if GitHub Repository was transferred
    mv                     Rename a package
+   version                Show version
    help, h                Shows a list of commands or help for one command
+   completion             Output shell completion script for bash, zsh, fish, or Powershell
 
 GLOBAL OPTIONS:
-   --log-level value  log level [$AQUA_LOG_LEVEL]
-   --help, -h         show help
-   --version, -v      print the version
+   --log-level string  log level [$AQUA_LOG_LEVEL]
+   --help, -h          show help
+   --version, -v       print the version
 ```
 
 ## aqua-registry scaffold
@@ -64,10 +64,10 @@ DESCRIPTION:
 
 
 OPTIONS:
-   --deep                   This flag was deprecated and had no meaning from aqua v2.15.0. This flag will be removed in aqua v3.0.0. https://github.com/aquaproj/aqua/issues/2351 (default: false)
-   --cmd value              A list of commands joined with single quotes ','
-   --limit value, -l value  the maximum number of versions (default: 0)
-   --help, -h               show help
+   --deep               This flag was deprecated and had no meaning from aqua v2.15.0. This flag will be removed in aqua v3.0.0. https://github.com/aquaproj/aqua/issues/2351 (default: false)
+   --cmd string         A list of commands joined with single quotes ','
+   --limit int, -l int  the maximum number of versions (default: 0)
+   --help, -h           show help
 ```
 
 ## aqua-registry create-pr-new-pkg
@@ -117,73 +117,6 @@ DESCRIPTION:
 
    No argument is needed.
 
-
-OPTIONS:
-   --help, -h  show help
-```
-
-## aqua-registry completion
-
-```console
-$ aqua-registry completion --help
-NAME:
-   aqua-registry completion - Output shell completion script for bash or zsh
-
-USAGE:
-   aqua-registry completion [command options]
-
-DESCRIPTION:
-   Output shell completion script for bash or zsh
-   Run these commands in .bash_profile or .zprofile
-   e.g.
-   .bash_profile
-
-   if command -v aqua-registry &> /dev/null; then source <(aqua-registry completion bash); fi
-
-   .zprofile
-
-   if command -v aqua-registry &> /dev/null; then source <(aqua-registry completion zsh); fi
-
-
-```
-
-### aqua-registry completion bash
-
-```console
-$ aqua-registry completion bash --help
-NAME:
-    - Output shell completion script for bash
-
-USAGE:
-    [command options]
-
-OPTIONS:
-   --help, -h  show help
-```
-
-### aqua-registry completion zsh
-
-```console
-$ aqua-registry completion zsh --help
-NAME:
-    - Output shell completion script for zsh
-
-USAGE:
-    [command options]
-
-OPTIONS:
-   --help, -h  show help
-```
-
-## aqua-registry version
-
-```console
-$ aqua-registry version --help
-NAME:
-   aqua-registry version - Show version
-
-USAGE:
-   aqua-registry version [command options]
 
 OPTIONS:
    --help, -h  show help
@@ -268,6 +201,52 @@ USAGE:
 
 DESCRIPTION:
    Rename a package.
+
+OPTIONS:
+   --help, -h  show help
+```
+
+## aqua-registry version
+
+```console
+$ aqua-registry version --help
+NAME:
+   aqua-registry version - Show version
+
+USAGE:
+   aqua-registry version
+
+OPTIONS:
+   --json, -j  Output version in JSON format (default: false)
+   --help, -h  show help
+```
+
+## aqua-registry completion
+
+```console
+$ aqua-registry completion --help
+NAME:
+   aqua-registry completion - Output shell completion script for bash, zsh, fish, or Powershell
+
+USAGE:
+   aqua-registry completion
+
+DESCRIPTION:
+   Output shell completion script for bash, zsh, fish, or Powershell.
+   Source the output to enable completion.
+
+   # .bashrc
+   source <(aqua-registry completion bash)
+
+   # .zshrc
+   source <(aqua-registry completion zsh)
+
+   # fish
+   aqua-registry completion fish > ~/.config/fish/completions/aqua-registry.fish
+
+   # Powershell
+   Output the script to path/to/autocomplete/aqua-registry.ps1 an run it.
+
 
 OPTIONS:
    --help, -h  show help
