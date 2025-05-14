@@ -16,6 +16,8 @@ github.com/andybalholm/brotli v1.1.1 h1:PR2pgnyFznKEugtsUo0xLdDop5SKXd5Qf5ysW+7X
 github.com/andybalholm/brotli v1.1.1/go.mod h1:05ib4cKhjx3OQYUY22hTVd34Bc8upXjOLL2rKwwZBoA=
 github.com/aquaproj/aqua/v2 v2.51.1 h1:8WbWeBW3LaZWSm9sjZfj84kTqR361Ypw3lPOm8lkMYk=
 github.com/aquaproj/aqua/v2 v2.51.1/go.mod h1:XZXnXEjL7Vgkx7JQehapzbS+NvOpeEFDPvoC4wX5MgI=
+github.com/aquaproj/aqua/v2 v2.51.2 h1:WIdgvJsyAnGSDmeMB6Yt8hVWRD0wA2pWkX1sglMrthI=
+github.com/aquaproj/aqua/v2 v2.51.2/go.mod h1:iEBpDWdOvwQzr6qbtopML9fJ3l+8a4Rgk5GXGHqkrZ0=
 github.com/bahlo/generic-list-go v0.2.0 h1:5sz/EEAK+ls5wF+NeqDpk5+iNdMDXrh3z3nPnH1Wvgk=
 github.com/bahlo/generic-list-go v0.2.0/go.mod h1:2KvAjgMlE5NNynlg/5iLrrCCZ2+5xWbdbCW3pNTGyYg=
 github.com/bodgit/plumbing v1.3.0 h1:pf9Itz1JOQgn7vEOE7v7nlEfBykYqvUYioC61TwWCFU=
@@ -121,6 +123,8 @@ github.com/suzuki-shunsuke/logrus-error v0.1.4 h1:nWo98uba1fANHdZ9Y5pJ2RKs/PpVjr
 github.com/suzuki-shunsuke/logrus-error v0.1.4/go.mod h1:WsVvvw6SKSt08/fB2qbnsKIMJA4K1MYCUprqsBJbMiM=
 github.com/suzuki-shunsuke/urfave-cli-v3-util v0.0.4 h1:cwI1g8vDJZnH/A8Pfc4Vkuc6MIcO4eulf1qiFHYbLB4=
 github.com/suzuki-shunsuke/urfave-cli-v3-util v0.0.4/go.mod h1:XzvaaJ7L21jH7CqwZj4FlYCRJYqiEUHMqiFp54je7/M=
+github.com/suzuki-shunsuke/urfave-cli-v3-util v0.0.5 h1:ETCRtbqi2D0NTwGHBPTc1IRIa8mFPLt936J2FA1iy10=
+github.com/suzuki-shunsuke/urfave-cli-v3-util v0.0.5/go.mod h1:XzvaaJ7L21jH7CqwZj4FlYCRJYqiEUHMqiFp54je7/M=
 github.com/therootcompany/xz v1.0.1 h1:CmOtsn1CbtmyYiusbfmhmkpAAETj0wBIH6kCYaX+xzw=
 github.com/therootcompany/xz v1.0.1/go.mod h1:3K3UH1yCKgBneZYhuQUvJ9HPD19UEXEI0BWbMn8qNMY=
 github.com/ulikunitz/xz v0.5.12 h1:37Nm15o69RwBkXM0J6A5OlE67RZTfzUxTj8fB3dfcsc=
