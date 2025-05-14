@@ -3,13 +3,13 @@ module github.com/aquaproj/registry-tool
 go 1.24.2
 
 require (
-	github.com/aquaproj/aqua/v2 v2.51.1
+	github.com/aquaproj/aqua/v2 v2.51.2
 	github.com/goccy/go-yaml v1.17.1
 	github.com/mattn/go-colorable v0.1.14
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/afero v1.14.0
 	github.com/suzuki-shunsuke/logrus-error v0.1.4
-	github.com/suzuki-shunsuke/urfave-cli-v3-util v0.0.4
+	github.com/suzuki-shunsuke/urfave-cli-v3-util v0.0.5
 	github.com/urfave/cli/v3 v3.3.3
 	gopkg.in/yaml.v2 v2.4.0
 	gopkg.in/yaml.v3 v3.0.1
