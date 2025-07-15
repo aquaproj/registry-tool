@@ -3,6 +3,10 @@ version: 2
 project_name: registry-tool
 archives:
   - name_template: "{{.ProjectName}}_{{.Os}}_{{.Arch}}"
+    files:
+      - LICENSE
+      - README.md
+      - third_party_licenses/**/*
 builds:
   - binary: aqua-registry
     main: cmd/aqua-registry/main.go
