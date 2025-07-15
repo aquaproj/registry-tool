@@ -35,3 +35,7 @@ signs:
       - --oidc-provider
       - github
       - ${artifact}
+
+sboms:
+  - id: default
+    disable: false
