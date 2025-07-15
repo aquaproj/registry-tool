@@ -16,7 +16,7 @@ builds:
       - amd64
       - arm64
 release:
-  prerelease: true
+  prerelease: "true"
   header: |
     [Pull Requests](https://github.com/aquaproj/registry-tool/pulls?q=is%3Apr+milestone%3A{{.Tag}}) | [Issues](https://github.com/aquaproj/registry-tool/issues?q=is%3Aissue+milestone%3A{{.Tag}}) | https://github.com/aquaproj/registry-tool/compare/{{.PreviousTag}}...{{.Tag}}
 signs:
