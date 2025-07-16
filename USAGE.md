@@ -11,7 +11,7 @@ USAGE:
    aqua-registry [global options] [command [command options]]
 
 VERSION:
-   0.3.5
+   0.3.6
 
 COMMANDS:
    scaffold               Scaffold a package
