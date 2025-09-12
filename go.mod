@@ -7,7 +7,7 @@ require (
 	github.com/goccy/go-yaml v1.18.0
 	github.com/mattn/go-colorable v0.1.14
 	github.com/sirupsen/logrus v1.9.3
-	github.com/spf13/afero v1.14.0
+	github.com/spf13/afero v1.15.0
 	github.com/suzuki-shunsuke/logrus-error v0.1.4
 	github.com/suzuki-shunsuke/urfave-cli-v3-util v0.0.7
 	github.com/urfave/cli/v3 v3.4.1
@@ -49,5 +49,5 @@ require (
 	golang.org/x/oauth2 v0.30.0 // indirect
 	golang.org/x/sync v0.16.0 // indirect
 	golang.org/x/sys v0.34.0 // indirect
-	golang.org/x/text v0.24.0 // indirect
+	golang.org/x/text v0.28.0 // indirect
 )
