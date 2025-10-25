@@ -3,7 +3,7 @@ module github.com/aquaproj/registry-tool
 go 1.25.3
 
 require (
-	github.com/aquaproj/aqua/v2 v2.55.0
+	github.com/aquaproj/aqua/v2 v2.55.1
 	github.com/goccy/go-yaml v1.18.0
 	github.com/mattn/go-colorable v0.1.14
 	github.com/sirupsen/logrus v1.9.3
@@ -27,6 +27,7 @@ require (
 	github.com/expr-lang/expr v1.17.6 // indirect
 	github.com/godbus/dbus/v5 v5.1.0 // indirect
 	github.com/google/go-github/v74 v74.0.0 // indirect
+	github.com/google/go-github/v76 v76.0.0 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
@@ -45,7 +46,7 @@ require (
 	github.com/spf13/cast v1.7.0 // indirect
 	github.com/suzuki-shunsuke/ghtkn-go-sdk v0.2.1 // indirect
 	github.com/suzuki-shunsuke/go-exec v0.0.1 // indirect
-	github.com/suzuki-shunsuke/go-retryablehttp v0.7.8-1 // indirect
+	github.com/suzuki-shunsuke/go-retryablehttp v0.7.8-2 // indirect
 	github.com/suzuki-shunsuke/go-retryablehttp-logrus v0.0.1 // indirect
 	github.com/suzuki-shunsuke/slog-error v0.2.0 // indirect
 	github.com/suzuki-shunsuke/slog-logrus v0.1.0 // indirect
@@ -53,9 +54,9 @@ require (
 	github.com/zalando/go-keyring v0.2.6 // indirect
 	golang.org/x/crypto v0.36.0 // indirect
 	golang.org/x/exp v0.0.0-20230522175609-2e198f4a06a1 // indirect
-	golang.org/x/oauth2 v0.31.0 // indirect
+	golang.org/x/oauth2 v0.32.0 // indirect
 	golang.org/x/sync v0.17.0 // indirect
-	golang.org/x/sys v0.36.0 // indirect
+	golang.org/x/sys v0.37.0 // indirect
 	golang.org/x/term v0.35.0 // indirect
-	golang.org/x/text v0.28.0 // indirect
+	golang.org/x/text v0.29.0 // indirect
 )
