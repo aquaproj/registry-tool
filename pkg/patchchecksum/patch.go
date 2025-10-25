@@ -14,7 +14,7 @@ import (
 	"github.com/goccy/go-yaml/ast"
 	"github.com/goccy/go-yaml/parser"
 	"github.com/sirupsen/logrus"
-	"gopkg.in/yaml.v2"
+	"gopkg.in/yaml.v3"
 )
 
 func PatchChecksum(ctx context.Context, logE *logrus.Entry, configFilePath string) error {
