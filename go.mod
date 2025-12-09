@@ -27,7 +27,6 @@ require (
 	github.com/expr-lang/expr v1.17.6 // indirect
 	github.com/godbus/dbus/v5 v5.1.0 // indirect
 	github.com/google/go-github/v74 v74.0.0 // indirect
-	github.com/google/go-github/v79 v79.0.0 // indirect
 	github.com/google/go-github/v80 v80.0.0 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect
