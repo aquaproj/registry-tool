@@ -16,6 +16,8 @@ github.com/andybalholm/brotli v1.2.0 h1:ukwgCxwYrmACq68yiUqwIWnGY0cTPox/M94sVwTo
 github.com/andybalholm/brotli v1.2.0/go.mod h1:rzTDkvFWvIrjDXZHkuS16NPggd91W3kUSvPlQ1pLaKY=
 github.com/aquaproj/aqua/v2 v2.56.0 h1:n73SiZdAJPCEeZ39GIYsPD7URPT8SGau6ERXiiwjslQ=
 github.com/aquaproj/aqua/v2 v2.56.0/go.mod h1:SQ8sgwf1obZO6RJdJzJuzCPJrElDiWGf5z9x2nfsjtk=
+github.com/aquaproj/aqua/v2 v2.56.1 h1:irOzGpWIbY/Mv8w6K5SnQmTZlA7yxMaCvfZkScp8wZU=
+github.com/aquaproj/aqua/v2 v2.56.1/go.mod h1:SQ8sgwf1obZO6RJdJzJuzCPJrElDiWGf5z9x2nfsjtk=
 github.com/bahlo/generic-list-go v0.2.0 h1:5sz/EEAK+ls5wF+NeqDpk5+iNdMDXrh3z3nPnH1Wvgk=
 github.com/bahlo/generic-list-go v0.2.0/go.mod h1:2KvAjgMlE5NNynlg/5iLrrCCZ2+5xWbdbCW3pNTGyYg=
 github.com/bodgit/plumbing v1.3.0 h1:pf9Itz1JOQgn7vEOE7v7nlEfBykYqvUYioC61TwWCFU=
