@@ -41,23 +41,18 @@ require (
 	github.com/mitchellh/reflectwalk v1.0.2 // indirect
 	github.com/otiai10/copy v1.14.1 // indirect
 	github.com/otiai10/mint v1.6.3 // indirect
-	github.com/samber/lo v1.38.1 // indirect
-	github.com/samber/slog-logrus v1.0.0 // indirect
 	github.com/shopspring/decimal v1.4.0 // indirect
 	github.com/spf13/cast v1.7.0 // indirect
 	github.com/suzuki-shunsuke/ghtkn-go-sdk v0.2.2 // indirect
 	github.com/suzuki-shunsuke/go-error-with-exit-code v1.0.0 // indirect
 	github.com/suzuki-shunsuke/go-exec v0.0.1 // indirect
 	github.com/suzuki-shunsuke/go-retryablehttp v0.7.8-2 // indirect
-	github.com/suzuki-shunsuke/go-retryablehttp-logrus v0.0.1 // indirect
 	github.com/suzuki-shunsuke/slog-error v0.2.1 // indirect
-	github.com/suzuki-shunsuke/slog-logrus v0.1.0 // indirect
 	github.com/suzuki-shunsuke/slog-util v0.3.0 // indirect
 	github.com/wk8/go-ordered-map/v2 v2.1.8 // indirect
 	github.com/zalando/go-keyring v0.2.6 // indirect
 	go.yaml.in/yaml/v3 v3.0.4 // indirect
 	golang.org/x/crypto v0.36.0 // indirect
-	golang.org/x/exp v0.0.0-20230522175609-2e198f4a06a1 // indirect
 	golang.org/x/oauth2 v0.34.0 // indirect
 	golang.org/x/sync v0.19.0 // indirect
 	golang.org/x/sys v0.40.0 // indirect
