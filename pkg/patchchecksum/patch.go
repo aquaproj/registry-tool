@@ -15,7 +15,7 @@ import (
 	"github.com/goccy/go-yaml/ast"
 	"github.com/goccy/go-yaml/parser"
 	"github.com/suzuki-shunsuke/slog-error/slogerr"
-	"gopkg.in/yaml.v2"
+	"gopkg.in/yaml.v3"
 )
 
 func PatchChecksum(ctx context.Context, logger *slog.Logger, configFilePath string) error {
