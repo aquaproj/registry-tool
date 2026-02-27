@@ -37,7 +37,7 @@ func CheckRepo(ctx context.Context, afs afero.Fs, httpClient *http.Client, pkgNa
 	}
 
 	fmt.Printf("%s/%s\n", redirect.NewRepoOwner, redirect.NewRepoName) //nolint:forbidigo
-	return slogerr.With(errors.New("a repository was transferred"),
+	return slogerr.With(errors.New("a repository was transferred"),    //nolint:wrapcheck
 		"package_name", pkgName,
 		"repo_owner", redirect.NewRepoOwner,
 		"repo_name", redirect.NewRepoName,
