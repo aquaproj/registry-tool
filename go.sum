@@ -110,8 +110,6 @@ github.com/rogpeppe/go-internal v1.9.0 h1:73kH8U+JUqXU8lRuOHeVHaa/SZPifC7BkcraZV
 github.com/rogpeppe/go-internal v1.9.0/go.mod h1:WtVeX8xhTBvf0smdhujwtBcq4Qrzq/fJaraNFVN+nFs=
 github.com/shopspring/decimal v1.4.0 h1:bxl37RwXBklmTi0C79JfXCEBD1cqqHt0bbgBAGFp81k=
 github.com/shopspring/decimal v1.4.0/go.mod h1:gawqmDU56v4yIKSwfBSFip1HdCCXN8/+DMd9qYNcwME=
-github.com/sirupsen/logrus v1.9.4 h1:TsZE7l11zFCLZnZ+teH4Umoq5BhEIfIzfRDZ1Uzql2w=
-github.com/sirupsen/logrus v1.9.4/go.mod h1:ftWc9WdOfJ0a92nsE2jF5u5ZwH8Bv2zdeOC42RjbV2g=
 github.com/sorairolake/lzip-go v0.3.8 h1:j5Q2313INdTA80ureWYRhX+1K78mUXfMoPZCw/ivWik=
 github.com/sorairolake/lzip-go v0.3.8/go.mod h1:JcBqGMV0frlxwrsE9sMWXDjqn3EeVf0/54YPsw66qkU=
 github.com/spf13/afero v1.15.0 h1:b/YBCLWAJdFWJTN9cLhiXXcD7mzKn9Dm86dNnfyQw1I=
@@ -132,8 +130,6 @@ github.com/suzuki-shunsuke/go-osenv v0.1.0 h1:hBQ7yaeO1WBZsEWuDj1wrOWF+N7HSWSOpE
 github.com/suzuki-shunsuke/go-osenv v0.1.0/go.mod h1:ZlSVi4kYvV51JEtYpdHh9hAxXKLOWExXel3Jo74aacQ=
 github.com/suzuki-shunsuke/go-retryablehttp v0.7.8-2 h1:oOeDLYiW+X/8XC2/Wu3U3rQ0hbindlFs0I8BYpHVA9Y=
 github.com/suzuki-shunsuke/go-retryablehttp v0.7.8-2/go.mod h1:fRVZ62p4iY8BxyyhZQ++grjQIDzWtRK02mHQapxm4Kk=
-github.com/suzuki-shunsuke/logrus-error v0.1.4 h1:nWo98uba1fANHdZ9Y5pJ2RKs/PpVjrLzRp5m+mRb9KE=
-github.com/suzuki-shunsuke/logrus-error v0.1.4/go.mod h1:WsVvvw6SKSt08/fB2qbnsKIMJA4K1MYCUprqsBJbMiM=
 github.com/suzuki-shunsuke/slog-error v0.2.2 h1:z8rymlIlZcMA+ERnnhVigQ0Q+X0pxKqBfDzSIyGh6vU=
 github.com/suzuki-shunsuke/slog-error v0.2.2/go.mod h1:w45QyO2G0uiEuo9hhrcLqqRl3hmYon9jGgq9CrCxxOY=
 github.com/suzuki-shunsuke/slog-util v0.3.1 h1:tp4xgj4y/T2YcZkHtr7N2E49f5CiHl9o47/HKdwRQ4g=

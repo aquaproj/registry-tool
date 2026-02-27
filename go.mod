@@ -5,9 +5,7 @@ go 1.26.0
 require (
 	github.com/aquaproj/aqua/v2 v2.56.7
 	github.com/goccy/go-yaml v1.19.2
-	github.com/sirupsen/logrus v1.9.4
 	github.com/spf13/afero v1.15.0
-	github.com/suzuki-shunsuke/logrus-error v0.1.4
 	github.com/suzuki-shunsuke/slog-error v0.2.2
 	github.com/suzuki-shunsuke/slog-util v0.3.1
 	github.com/suzuki-shunsuke/urfave-cli-v3-util v0.2.2
