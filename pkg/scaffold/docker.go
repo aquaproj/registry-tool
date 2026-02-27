@@ -241,11 +241,11 @@ func (dm *DockerManager) dockerfileNotChanged() (bool, error) {
 	// Compare docker/Dockerfile with .build/Dockerfile
 	b1, err := os.ReadFile("docker/Dockerfile")
 	if err != nil {
-		return false, err
+		return false, fmt.Errorf("read docker/Dockerfile: %w", err)
 	}
 	b2, err := os.ReadFile(".build/Dockerfile")
 	if err != nil {
-		return false, err
+		return false, fmt.Errorf("read .build/Dockerfile: %w", err)
 	}
 	return string(b1) == string(b2), nil
 }
