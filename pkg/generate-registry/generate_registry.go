@@ -95,7 +95,7 @@ func readRegistryFiles(registryFilePaths []string) ([]string, error) {
 }
 
 func copyRegistry(tempFilePath string) error {
-	rTempFile, err := os.Open(tempFilePath)
+	rTempFile, err := os.Open(tempFilePath) //nolint:gosec
 	if err != nil {
 		return fmt.Errorf("open a temporary file: %w", err)
 	}

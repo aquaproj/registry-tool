@@ -1,11 +1,11 @@
-package log
+package logging
 
 import (
-	"github.com/aquaproj/registry-tool/pkg/runtime"
+	"github.com/aquaproj/registry-tool/pkg/osarch"
 	"github.com/sirupsen/logrus"
 )
 
-func New(rt *runtime.Runtime, version string) *logrus.Entry {
+func New(rt *osarch.Runtime, version string) *logrus.Entry {
 	return logrus.WithFields(logrus.Fields{
 		"registry_tool_version": version,
 		"program":               "aqua-registry",
