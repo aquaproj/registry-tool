@@ -30,7 +30,6 @@ $ aqua-registry check-repo Azure/aztfy
 Azure/aztfexport
 `,
 		Action: r.action,
-		Flags:  []cli.Flag{},
 	}
 }
 

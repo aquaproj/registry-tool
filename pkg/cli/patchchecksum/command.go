@@ -2,21 +2,13 @@ package patchchecksum
 
 import (
 	"context"
+	"log/slog"
 
 	"github.com/aquaproj/registry-tool/pkg/patchchecksum"
-	"github.com/sirupsen/logrus"
 	"github.com/urfave/cli/v3"
 )
 
-type runner struct {
-	logE *logrus.Entry
-}
-
-func Command(logE *logrus.Entry) *cli.Command {
-	return (&runner{logE: logE}).Command()
-}
-
-func (r *runner) Command() *cli.Command {
+func Command(logger *slog.Logger) *cli.Command {
 	return &cli.Command{
 		Name:      "patch-checksum",
 		Usage:     `Patch a checksum configuration`,
@@ -27,10 +19,8 @@ e.g.
 
 $ aqua-registry patch-checksum pkgs/suzuki-shunsuke/tfcmt/registry.yaml
 `,
-		Action: r.action,
+		Action: func(ctx context.Context, cmd *cli.Command) error {
+			return patchchecksum.PatchChecksum(ctx, logger, cmd.Args().First())
+		},
 	}
-}
-
-func (r *runner) action(ctx context.Context, cmd *cli.Command) error {
-	return patchchecksum.PatchChecksum(ctx, r.logE, cmd.Args().First()) //nolint:wrapcheck
 }

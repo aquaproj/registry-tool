@@ -8,9 +8,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/sirupsen/logrus"
 	"github.com/spf13/afero"
-	"github.com/suzuki-shunsuke/logrus-error/logerr"
+	"github.com/suzuki-shunsuke/slog-error/slogerr"
 	"gopkg.in/yaml.v3"
 )
 
@@ -37,12 +36,12 @@ func CheckRepo(ctx context.Context, afs afero.Fs, httpClient *http.Client, pkgNa
 		return nil
 	}
 
-	fmt.Printf("%s/%s\n", redirect.NewRepoOwner, redirect.NewRepoName)                  //nolint:forbidigo
-	return logerr.WithFields(errors.New("a repository was transferred"), logrus.Fields{ //nolint:wrapcheck
-		"package_name": pkgName,
-		"repo_owner":   redirect.NewRepoOwner,
-		"repo_name":    redirect.NewRepoName,
-	})
+	fmt.Printf("%s/%s\n", redirect.NewRepoOwner, redirect.NewRepoName) //nolint:forbidigo
+	return slogerr.With(errors.New("a repository was transferred"),    //nolint:wrapcheck
+		"package_name", pkgName,
+		"repo_owner", redirect.NewRepoOwner,
+		"repo_name", redirect.NewRepoName,
+	)
 }
 
 type Redirect struct {
@@ -81,14 +80,14 @@ func CheckRedirect(ctx context.Context, afs afero.Fs, httpClient *http.Client, p
 		return nil, nil //nolint:nilnil
 	}
 	if resp.StatusCode >= 500 { //nolint:mnd
-		return nil, logerr.WithFields(errors.New("http status code >= 500"), logrus.Fields{ //nolint:wrapcheck
-			"http_status_code": resp.StatusCode,
-		})
+		return nil, slogerr.With(errors.New("http status code >= 500"), //nolint:wrapcheck
+			"http_status_code", resp.StatusCode,
+		)
 	}
 	if resp.StatusCode >= 400 { //nolint:mnd
-		return nil, logerr.WithFields(errors.New("http status code >= 400"), logrus.Fields{ //nolint:wrapcheck
-			"http_status_code": resp.StatusCode,
-		})
+		return nil, slogerr.With(errors.New("http status code >= 400"), //nolint:wrapcheck
+			"http_status_code", resp.StatusCode,
+		)
 	}
 
 	location, err := resp.Location()

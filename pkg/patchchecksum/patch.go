@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"log/slog"
 	"os"
 	"strings"
 
@@ -13,11 +14,11 @@ import (
 	goccyYAML "github.com/goccy/go-yaml"
 	"github.com/goccy/go-yaml/ast"
 	"github.com/goccy/go-yaml/parser"
-	"github.com/sirupsen/logrus"
+	"github.com/suzuki-shunsuke/slog-error/slogerr"
 	"gopkg.in/yaml.v2"
 )
 
-func PatchChecksum(ctx context.Context, logE *logrus.Entry, configFilePath string) error {
+func PatchChecksum(ctx context.Context, logger *slog.Logger, configFilePath string) error {
 	cfg := &registry.Config{}
 	b, err := os.ReadFile(configFilePath)
 	if err != nil {
@@ -32,7 +33,7 @@ func PatchChecksum(ctx context.Context, logE *logrus.Entry, configFilePath strin
 		return fmt.Errorf("parse configuration file as YAML: %w", err)
 	}
 
-	ghClient := github.New(ctx, logE)
+	ghClient := github.New(ctx, logger)
 	size := len(cfg.PackageInfos)
 	pkgsAST, err := GetPackagesAST(file)
 	if err != nil {
@@ -46,10 +47,10 @@ func PatchChecksum(ctx context.Context, logE *logrus.Entry, configFilePath strin
 		if j == -1 {
 			return nil
 		}
-		if err := patchChecksumOfPkg(ctx, logE, ghClient, node, pkgInfo); err != nil {
-			logE.WithFields(logrus.Fields{
-				"pkg_name": pkgInfo.GetName(),
-			}).WithError(err).Error("patch a checksum config")
+		if err := patchChecksumOfPkg(ctx, logger, ghClient, node, pkgInfo); err != nil {
+			slogerr.WithError(logger, err).With(
+				"pkg_name", pkgInfo.GetName(),
+			).Error("patch a checksum config")
 		}
 	}
 	if err := os.WriteFile(configFilePath, []byte(file.String()+"\n"), 0o644); err != nil { //nolint:gosec,mnd
@@ -108,7 +109,7 @@ type GitHubClient interface {
 	ListReleaseAssets(ctx context.Context, owner, repo string, id int64, opts *github.ListOptions) ([]*github.ReleaseAsset, *github.Response, error)
 }
 
-func patchChecksumOfPkg(ctx context.Context, logE *logrus.Entry, ghClient GitHubClient, node *ast.MappingNode, pkgInfo *registry.PackageInfo) error {
+func patchChecksumOfPkg(ctx context.Context, logger *slog.Logger, ghClient GitHubClient, node *ast.MappingNode, pkgInfo *registry.PackageInfo) error {
 	if pkgInfo.Type != "github_release" {
 		return nil
 	}
@@ -119,7 +120,7 @@ func patchChecksumOfPkg(ctx context.Context, logE *logrus.Entry, ghClient GitHub
 	if err != nil {
 		return fmt.Errorf("get the latest release: %w", err)
 	}
-	assets := listReleaseAssets(ctx, logE, ghClient, pkgInfo, release.GetID())
+	assets := listReleaseAssets(ctx, logger, ghClient, pkgInfo, release.GetID())
 	if strings.Contains(strings.ToLower(pkgInfo.GetName()), "checksum") {
 		return nil
 	}
@@ -144,7 +145,7 @@ func patchChecksumOfPkg(ctx context.Context, logE *logrus.Entry, ghClient GitHub
 	return nil
 }
 
-func listReleaseAssets(ctx context.Context, logE *logrus.Entry, ghClient GitHubClient, pkgInfo *registry.PackageInfo, releaseID int64) []*github.ReleaseAsset {
+func listReleaseAssets(ctx context.Context, logger *slog.Logger, ghClient GitHubClient, pkgInfo *registry.PackageInfo, releaseID int64) []*github.ReleaseAsset {
 	opts := &github.ListOptions{
 		PerPage: 100, //nolint:mnd
 	}
@@ -152,10 +153,10 @@ func listReleaseAssets(ctx context.Context, logE *logrus.Entry, ghClient GitHubC
 	for range 10 {
 		assets, _, err := ghClient.ListReleaseAssets(ctx, pkgInfo.RepoOwner, pkgInfo.RepoName, releaseID, opts)
 		if err != nil {
-			logE.WithFields(logrus.Fields{
-				"repo_owner": pkgInfo.RepoOwner,
-				"repo_name":  pkgInfo.RepoName,
-			}).WithError(err).Warn("list release assets")
+			slogerr.WithError(logger, err).With(
+				"repo_owner", pkgInfo.RepoOwner,
+				"repo_name", pkgInfo.RepoName,
+			).Warn("list release assets")
 			return arr
 		}
 		arr = append(arr, assets...)
