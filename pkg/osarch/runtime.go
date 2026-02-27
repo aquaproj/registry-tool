@@ -1,4 +1,4 @@
-package runtime
+package osarch
 
 import (
 	"os"

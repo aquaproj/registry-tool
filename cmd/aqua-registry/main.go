@@ -7,8 +7,8 @@ import (
 	"syscall"
 
 	"github.com/aquaproj/registry-tool/pkg/cli"
-	"github.com/aquaproj/registry-tool/pkg/log"
-	"github.com/aquaproj/registry-tool/pkg/runtime"
+	"github.com/aquaproj/registry-tool/pkg/logging"
+	"github.com/aquaproj/registry-tool/pkg/osarch"
 	"github.com/sirupsen/logrus"
 	"github.com/suzuki-shunsuke/logrus-error/logerr"
 	"github.com/suzuki-shunsuke/urfave-cli-v3-util/urfave"
@@ -21,8 +21,8 @@ var (
 )
 
 func main() {
-	rt := runtime.New()
-	logE := log.New(rt, version)
+	rt := osarch.New()
+	logE := logging.New(rt, version)
 	if err := core(logE); err != nil {
 		logerr.WithError(logE, err).Fatal("aqua failed")
 	}
