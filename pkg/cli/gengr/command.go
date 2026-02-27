@@ -7,13 +7,7 @@ import (
 	"github.com/urfave/cli/v3"
 )
 
-type runner struct{}
-
 func Command() *cli.Command {
-	return (&runner{}).Command()
-}
-
-func (r *runner) Command() *cli.Command {
 	return &cli.Command{
 		Name:      "generate-registry",
 		Aliases:   []string{"gr"},
@@ -26,10 +20,8 @@ Don't edit it manually, and if you update registry.yaml in the pkgs directory, d
 
 No argument is needed.
 `,
-		Action: r.action,
+		Action: func(context.Context, *cli.Command) error {
+			return genrg.GenerateRegistry()
+		},
 	}
-}
-
-func (r *runner) action(context.Context, *cli.Command) error {
-	return genrg.GenerateRegistry() //nolint:wrapcheck
 }

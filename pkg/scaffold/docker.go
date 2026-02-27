@@ -86,7 +86,7 @@ func (dm *DockerManager) EnsureContainer(ctx context.Context, recreate bool) err
 }
 
 func (dm *DockerManager) ensureImage(ctx context.Context) error {
-	if dm.imageExists(ctx) && dm.dockerfileNotChanged() {
+	if dm.imageExists(ctx) && dm.dockerfileNotChanged(ctx) {
 		return nil
 	}
 
@@ -101,14 +101,14 @@ func (dm *DockerManager) imageExists(ctx context.Context) bool {
 	return cmd.Run() == nil
 }
 
-func (dm *DockerManager) dockerfileNotChanged() bool {
+func (dm *DockerManager) dockerfileNotChanged(ctx context.Context) bool {
 	// Check if .build/Dockerfile exists
 	if _, err := os.Stat(".build/Dockerfile"); os.IsNotExist(err) {
 		return false
 	}
 
 	// Compare docker/Dockerfile with .build/Dockerfile
-	cmd := exec.Command("diff", "-q", "docker/Dockerfile", ".build/Dockerfile")
+	cmd := exec.CommandContext(ctx, "diff", "-q", "docker/Dockerfile", ".build/Dockerfile")
 	cmd.Stdout = nil
 	cmd.Stderr = nil
 	return cmd.Run() == nil

@@ -36,21 +36,6 @@ e.g. $ aqua-registry scaffold cli/cli`)
 	return scaffoldFull(ctx, cfg)
 }
 
-// ScaffoldLegacy is the legacy entry point for backward compatibility.
-func ScaffoldLegacy(ctx context.Context, cmds string, limit int, pkgNames ...string) error {
-	if len(pkgNames) != 1 {
-		return errors.New(`usage: $ aqua-registry scaffold <pkgname>
-e.g. $ aqua-registry scaffold cli/cli`)
-	}
-	cfg := &Config{
-		PkgName: pkgNames[0],
-		Cmds:    cmds,
-		Limit:   limit,
-		Local:   true,
-	}
-	return Scaffold(ctx, cfg)
-}
-
 // scaffoldLocal runs the simple local scaffold without Docker.
 func scaffoldLocal(ctx context.Context, cfg *Config) error {
 	pkgName := cfg.PkgName
@@ -143,7 +128,7 @@ func scaffoldFull(ctx context.Context, cfg *Config) error {
 	// Step 10: Run Windows tests
 	fmt.Fprintln(os.Stderr, "[Step 10/10] Running Windows tests...")
 	if err := RunWindowsTests(ctx, windowsDM, pkgName); err != nil {
-		return fmt.Errorf("Windows tests failed: %w", err)
+		return fmt.Errorf("windows tests failed: %w", err)
 	}
 
 	fmt.Fprintln(os.Stderr, "\n[SUCCESS] Scaffold completed successfully!")

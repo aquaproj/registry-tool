@@ -1,14 +1,14 @@
-package runtime_test
+package osarch_test
 
 import (
 	"testing"
 
-	"github.com/aquaproj/registry-tool/pkg/runtime"
+	"github.com/aquaproj/registry-tool/pkg/osarch"
 )
 
 func TestNew(t *testing.T) {
 	t.Parallel()
-	rt := runtime.New()
+	rt := osarch.New()
 	if rt == nil {
 		t.Fatal("runtime must not be nil")
 	}
