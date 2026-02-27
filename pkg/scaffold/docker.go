@@ -216,7 +216,8 @@ func (dm *DockerManager) handleStoppedContainer(ctx context.Context) error {
 }
 
 func (dm *DockerManager) ensureImage(ctx context.Context) error {
-	if dm.imageExists(ctx) && dm.dockerfileNotChanged(ctx) {
+	notChanged, err := dm.dockerfileNotChanged()
+	if err == nil && notChanged && dm.imageExists(ctx) {
 		return nil
 	}
 
@@ -231,17 +232,22 @@ func (dm *DockerManager) imageExists(ctx context.Context) bool {
 	return cmd.Run() == nil
 }
 
-func (dm *DockerManager) dockerfileNotChanged(ctx context.Context) bool {
+func (dm *DockerManager) dockerfileNotChanged() (bool, error) {
 	// Check if .build/Dockerfile exists
 	if _, err := os.Stat(".build/Dockerfile"); os.IsNotExist(err) {
-		return false
+		return false, nil
 	}
 
 	// Compare docker/Dockerfile with .build/Dockerfile
-	cmd := exec.CommandContext(ctx, "diff", "-q", "docker/Dockerfile", ".build/Dockerfile")
-	cmd.Stdout = nil
-	cmd.Stderr = nil
-	return cmd.Run() == nil
+	b1, err := os.ReadFile("docker/Dockerfile")
+	if err != nil {
+		return false, err
+	}
+	b2, err := os.ReadFile(".build/Dockerfile")
+	if err != nil {
+		return false, err
+	}
+	return string(b1) == string(b2), nil
 }
 
 func (dm *DockerManager) buildImage(ctx context.Context) error {
