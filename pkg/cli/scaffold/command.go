@@ -20,15 +20,7 @@ type scaffoldFlags struct {
 	NoCreateBranch bool
 }
 
-func Command(gFlags *gflag.Flags) *cli.Command {
-	flags := &scaffoldFlags{
-		Flags: gFlags,
-	}
-	return &cli.Command{
-		Name:      "scaffold",
-		Usage:     `Scaffold a package`,
-		UsageText: `$ aqua-registry scaffold [options] <package name>`,
-		Description: `Scaffold a package.
+const scaffoldDescription = `Scaffold a package.
 
 e.g.
 
@@ -62,48 +54,18 @@ This tool does the following things.
 4. Create or update aqua.yaml
 5. aqua g -i <package name>
 6. aqua i
-`,
-		Flags: []cli.Flag{
-			&cli.BoolFlag{
-				Name:        "deep",
-				Usage:       "This flag was deprecated and had no meaning from aqua v2.15.0. This flag will be removed in aqua v3.0.0. https://github.com/aquaproj/aqua/issues/2351",
-				Destination: &flags.Deep,
-			},
-			&cli.StringFlag{
-				Name:        "cmd",
-				Usage:       "A list of commands joined with single quotes ','",
-				Destination: &flags.Cmd,
-			},
-			&cli.IntFlag{
-				Name:        "limit",
-				Aliases:     []string{"l"},
-				Usage:       "the maximum number of versions",
-				Destination: &flags.Limit,
-			},
-			&cli.BoolFlag{
-				Name:        "local",
-				Usage:       "Run in local mode without Docker (simple scaffold only)",
-				Destination: &flags.Local,
-			},
-			&cli.BoolFlag{
-				Name:        "recreate",
-				Aliases:     []string{"r"},
-				Usage:       "Recreate Docker containers",
-				Destination: &flags.Recreate,
-			},
-			&cli.BoolFlag{
-				Name:        "no-create-branch",
-				Aliases:     []string{"B"},
-				Usage:       "Don't create a git branch",
-				Destination: &flags.NoCreateBranch,
-			},
-			&cli.StringFlag{
-				Name:        "config",
-				Aliases:     []string{"c"},
-				Usage:       "Path to scaffold.yaml configuration file",
-				Destination: &flags.Config,
-			},
-		},
+`
+
+func Command(gFlags *gflag.Flags) *cli.Command {
+	flags := &scaffoldFlags{
+		Flags: gFlags,
+	}
+	return &cli.Command{
+		Name:        "scaffold",
+		Usage:       `Scaffold a package`,
+		UsageText:   `$ aqua-registry scaffold [options] <package name>`,
+		Description: scaffoldDescription,
+		Flags:       scaffoldCLIFlags(flags),
 		Action: func(ctx context.Context, c *cli.Command) error {
 			args := c.Args().Slice()
 			pkgName := ""
@@ -122,6 +84,50 @@ This tool does the following things.
 			}
 
 			return scaffold.Scaffold(ctx, cfg)
+		},
+	}
+}
+
+func scaffoldCLIFlags(flags *scaffoldFlags) []cli.Flag {
+	return []cli.Flag{
+		&cli.BoolFlag{
+			Name:        "deep",
+			Usage:       "This flag was deprecated and had no meaning from aqua v2.15.0. This flag will be removed in aqua v3.0.0. https://github.com/aquaproj/aqua/issues/2351",
+			Destination: &flags.Deep,
+		},
+		&cli.StringFlag{
+			Name:        "cmd",
+			Usage:       "A list of commands joined with single quotes ','",
+			Destination: &flags.Cmd,
+		},
+		&cli.IntFlag{
+			Name:        "limit",
+			Aliases:     []string{"l"},
+			Usage:       "the maximum number of versions",
+			Destination: &flags.Limit,
+		},
+		&cli.BoolFlag{
+			Name:        "local",
+			Usage:       "Run in local mode without Docker (simple scaffold only)",
+			Destination: &flags.Local,
+		},
+		&cli.BoolFlag{
+			Name:        "recreate",
+			Aliases:     []string{"r"},
+			Usage:       "Recreate Docker containers",
+			Destination: &flags.Recreate,
+		},
+		&cli.BoolFlag{
+			Name:        "no-create-branch",
+			Aliases:     []string{"B"},
+			Usage:       "Don't create a git branch",
+			Destination: &flags.NoCreateBranch,
+		},
+		&cli.StringFlag{
+			Name:        "config",
+			Aliases:     []string{"c"},
+			Usage:       "Path to scaffold.yaml configuration file",
+			Destination: &flags.Config,
 		},
 	}
 }

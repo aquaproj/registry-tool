@@ -111,6 +111,15 @@ func scaffoldFull(ctx context.Context, cfg *Config) error {
 		return fmt.Errorf("git commit failed: %w", err)
 	}
 
+	if err := runTests(ctx, cfg, linuxDM, pkgName); err != nil {
+		return err
+	}
+
+	fmt.Fprintln(os.Stderr, "\n[SUCCESS] Scaffold completed successfully!")
+	return nil
+}
+
+func runTests(ctx context.Context, cfg *Config, linuxDM *DockerManager, pkgName string) error {
 	// Step 8: Run Linux/Darwin tests
 	fmt.Fprintln(os.Stderr, "[Step 8/10] Running Linux/Darwin tests...")
 	if err := RunLinuxDarwinTests(ctx, linuxDM, pkgName); err != nil {
@@ -131,7 +140,6 @@ func scaffoldFull(ctx context.Context, cfg *Config) error {
 		return fmt.Errorf("windows tests failed: %w", err)
 	}
 
-	fmt.Fprintln(os.Stderr, "\n[SUCCESS] Scaffold completed successfully!")
 	return nil
 }
 
@@ -145,20 +153,8 @@ func scaffoldInContainer(ctx context.Context, dm *DockerManager, cfg *Config) er
 		return fmt.Errorf("create directories: %w", err)
 	}
 
-	// Copy scaffold config if provided
-	if cfg.ConfigPath != "" {
-		if err := dm.CopyTo(ctx, cfg.ConfigPath, dm.config.WorkingDir+"/scaffold.yaml"); err != nil {
-			return fmt.Errorf("copy scaffold config to container: %w", err)
-		}
-	} else {
-		// Check if pkgs/{pkg}/scaffold.yaml exists
-		scaffoldConfig := filepath.Join(pkgDir, "scaffold.yaml")
-		if _, err := os.Stat(scaffoldConfig); err == nil {
-			fmt.Fprintf(os.Stderr, "[INFO] Using %s\n", scaffoldConfig)
-			if err := dm.CopyTo(ctx, scaffoldConfig, dm.config.WorkingDir+"/scaffold.yaml"); err != nil {
-				return fmt.Errorf("copy scaffold config to container: %w", err)
-			}
-		}
+	if err := copyScaffoldConfig(ctx, dm, cfg, pkgDir); err != nil {
+		return err
 	}
 
 	// Remove old pkg.yaml if exists
@@ -169,23 +165,8 @@ func scaffoldInContainer(ctx context.Context, dm *DockerManager, cfg *Config) er
 		return fmt.Errorf("create registry.yaml header: %w", err)
 	}
 
-	// Build aqua gr command
-	grCmd := "aqua gr"
-	if cfg.Cmds != "" {
-		grCmd += " -cmd " + cfg.Cmds
-	}
-	if cfg.Limit != 0 {
-		grCmd += " -limit " + strconv.Itoa(cfg.Limit)
-	}
-	if cfg.ConfigPath != "" || fileExists(filepath.Join(pkgDir, "scaffold.yaml")) {
-		grCmd += " -c scaffold.yaml"
-	}
-	grCmd += " --out-testdata pkg.yaml"
-	grCmd += fmt.Sprintf(" %q >> registry.yaml", pkgName)
-
-	// Run aqua gr in container
-	if err := dm.ExecBash(ctx, grCmd); err != nil {
-		return fmt.Errorf("aqua gr in container: %w", err)
+	if err := runAquaGRInContainer(ctx, dm, cfg, pkgDir); err != nil {
+		return err
 	}
 
 	// Copy results back from container
@@ -203,6 +184,44 @@ func scaffoldInContainer(ctx context.Context, dm *DockerManager, cfg *Config) er
 		}
 	}
 
+	return nil
+}
+
+func copyScaffoldConfig(ctx context.Context, dm *DockerManager, cfg *Config, pkgDir string) error {
+	if cfg.ConfigPath != "" {
+		if err := dm.CopyTo(ctx, cfg.ConfigPath, dm.config.WorkingDir+"/scaffold.yaml"); err != nil {
+			return fmt.Errorf("copy scaffold config to container: %w", err)
+		}
+		return nil
+	}
+	// Check if pkgs/{pkg}/scaffold.yaml exists
+	scaffoldConfig := filepath.Join(pkgDir, "scaffold.yaml")
+	if _, err := os.Stat(scaffoldConfig); err == nil {
+		fmt.Fprintf(os.Stderr, "[INFO] Using %s\n", scaffoldConfig)
+		if err := dm.CopyTo(ctx, scaffoldConfig, dm.config.WorkingDir+"/scaffold.yaml"); err != nil {
+			return fmt.Errorf("copy scaffold config to container: %w", err)
+		}
+	}
+	return nil
+}
+
+func runAquaGRInContainer(ctx context.Context, dm *DockerManager, cfg *Config, pkgDir string) error {
+	grCmd := "aqua gr"
+	if cfg.Cmds != "" {
+		grCmd += " -cmd " + cfg.Cmds
+	}
+	if cfg.Limit != 0 {
+		grCmd += " -limit " + strconv.Itoa(cfg.Limit)
+	}
+	if cfg.ConfigPath != "" || fileExists(filepath.Join(pkgDir, "scaffold.yaml")) {
+		grCmd += " -c scaffold.yaml"
+	}
+	grCmd += " --out-testdata pkg.yaml"
+	grCmd += fmt.Sprintf(" %q >> registry.yaml", cfg.PkgName)
+
+	if err := dm.ExecBash(ctx, grCmd); err != nil {
+		return fmt.Errorf("aqua gr in container: %w", err)
+	}
 	return nil
 }
 

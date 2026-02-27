@@ -29,7 +29,7 @@ func GitCheckout(ctx context.Context, pkgName string, noCreateBranch bool) error
 }
 
 func branchExists(ctx context.Context, branch string) bool {
-	cmd := exec.CommandContext(ctx, "git", "show-ref", "--quiet", "refs/heads/"+branch)
+	cmd := exec.CommandContext(ctx, "git", "show-ref", "--quiet", "refs/heads/"+branch) //nolint:gosec
 	cmd.Stdout = nil
 	cmd.Stderr = nil
 	return cmd.Run() == nil
@@ -48,7 +48,7 @@ func gitCheckoutBranch(ctx context.Context, branch string) error {
 
 func createBranchFromUpstream(ctx context.Context, branch string) error {
 	// Create a temporary remote to fetch from upstream
-	tempRemote := fmt.Sprintf("temp-remote-%s", time.Now().Format("20060102150405"))
+	tempRemote := "temp-remote-" + time.Now().Format("20060102150405")
 
 	// Add temporary remote
 	fmt.Fprintf(os.Stderr, "+ git remote add %s https://github.com/aquaproj/aqua-registry\n", tempRemote)
