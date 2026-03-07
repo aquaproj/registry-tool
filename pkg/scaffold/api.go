@@ -70,7 +70,6 @@ func scaffoldLocal(ctx context.Context, logger *slog.Logger, cfg *Config) error 
 func scaffoldFull(ctx context.Context, logger *slog.Logger, cfg *Config) error {
 	pkgName := cfg.PkgName
 
-	logger.Info("Checking prerequisites")
 	if err := CheckPrerequisites(ctx, logger); err != nil {
 		return fmt.Errorf("prerequisites check failed: %w", err)
 	}
@@ -230,6 +229,7 @@ func runAquaGRInContainer(ctx context.Context, logger *slog.Logger, dm *DockerMa
 	cmd.Stdout = buf
 	cmd.Stderr = os.Stderr
 	setCancel(logger, cmd)
+	logger.Info("+ " + cmd.String())
 	if err := cmd.Run(); err != nil {
 		return fmt.Errorf("docker exec: %w", err)
 	}
