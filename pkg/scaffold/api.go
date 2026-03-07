@@ -233,7 +233,11 @@ func runAquaGRInContainer(ctx context.Context, logger *slog.Logger, dm *DockerMa
 	if err := cmd.Run(); err != nil {
 		return fmt.Errorf("docker exec: %w", err)
 	}
-	f, err := os.Create(filepath.Join(pkgDir, "registry.yaml"))
+	return writeRegistryYAML(filepath.Join(pkgDir, "registry.yaml"), buf.Bytes())
+}
+
+func writeRegistryYAML(path string, data []byte) error {
+	f, err := os.Create(path)
 	if err != nil {
 		return fmt.Errorf("open registry.yaml: %w", err)
 	}
@@ -242,7 +246,7 @@ func runAquaGRInContainer(ctx context.Context, logger *slog.Logger, dm *DockerMa
 	if _, err := w.WriteString("# yaml-language-server: $schema=https://raw.githubusercontent.com/aquaproj/aqua/main/json-schema/registry.json\n"); err != nil {
 		return fmt.Errorf("write yaml-language-server comment to registry.yaml: %w", err)
 	}
-	if _, err := w.Write(buf.Bytes()); err != nil {
+	if _, err := w.Write(data); err != nil {
 		return fmt.Errorf("write registry.yaml: %w", err)
 	}
 	if err := w.Flush(); err != nil {
