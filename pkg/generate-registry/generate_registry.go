@@ -3,7 +3,6 @@ package genrg
 import (
 	"bufio"
 	"fmt"
-	"io"
 	"io/fs"
 	"os"
 	"path/filepath"
@@ -18,28 +17,26 @@ packages:
 `
 
 func GenerateRegistry() error {
-	tempFile, err := os.CreateTemp("", "")
-	if err != nil {
-		return fmt.Errorf("create a temporary file: %w", err)
-	}
-	defer tempFile.Close()
-	defer os.Remove(tempFile.Name())
-	if _, err := tempFile.WriteString(rHeader); err != nil {
-		return fmt.Errorf("write a header to a temporary file: %w", err)
-	}
 	registryFilePaths, err := listRegistryFiles()
 	if err != nil {
 		return err
 	}
-	lines, err := readRegistryFiles(registryFilePaths)
+	rgFile, err := os.Create("registry.yaml")
 	if err != nil {
-		return err
+		return fmt.Errorf("open registry.yaml: %w", err)
 	}
-	if _, err := tempFile.WriteString(strings.Join(lines, "\n") + "\n"); err != nil {
-		return fmt.Errorf("write a string to a temporary file: %w", err)
+	defer rgFile.Close()
+	if _, err := rgFile.WriteString(rHeader); err != nil {
+		return fmt.Errorf("write a header to registry.yaml: %w", err)
 	}
-	if err := copyRegistry(tempFile.Name()); err != nil {
-		return err
+	for _, registryFilePath := range registryFilePaths {
+		lines, err := readRegistryFile(registryFilePath)
+		if err != nil {
+			return fmt.Errorf("read a registry.yaml: %w", err)
+		}
+		if _, err := rgFile.WriteString(strings.Join(lines, "\n") + "\n"); err != nil {
+			return fmt.Errorf("write registry.yaml: %w", err)
+		}
 	}
 	return nil
 }
@@ -66,47 +63,23 @@ func listRegistryFiles() ([]string, error) {
 	return registryFilePaths, nil
 }
 
-func readRegistryFiles(registryFilePaths []string) ([]string, error) {
+func readRegistryFile(registryFilePath string) ([]string, error) {
 	lines := []string{}
-	for _, registryFilePath := range registryFilePaths {
-		if err := func() error {
-			f, err := os.Open(registryFilePath)
-			if err != nil {
-				return fmt.Errorf("open %s: %w", registryFilePath, err)
-			}
-			defer f.Close()
-			scanner := bufio.NewScanner(f)
-			for scanner.Scan() {
-				line := scanner.Text()
-				if strings.HasPrefix(line, "packages:") || line == "---" || strings.HasPrefix(line, "# yaml-language-server:") {
-					continue
-				}
-				lines = append(lines, line)
-			}
-			if err := scanner.Err(); err != nil {
-				return fmt.Errorf("scan a file: %w", err)
-			}
-			return nil
-		}(); err != nil {
-			return nil, err
+	f, err := os.Open(registryFilePath)
+	if err != nil {
+		return nil, fmt.Errorf("open %s: %w", registryFilePath, err)
+	}
+	defer f.Close()
+	scanner := bufio.NewScanner(f)
+	for scanner.Scan() {
+		line := scanner.Text()
+		if strings.HasPrefix(line, "packages:") || line == "---" || strings.HasPrefix(line, "# yaml-language-server:") {
+			continue
 		}
+		lines = append(lines, line)
+	}
+	if err := scanner.Err(); err != nil {
+		return nil, fmt.Errorf("scan a file: %w", err)
 	}
 	return lines, nil
-}
-
-func copyRegistry(tempFilePath string) error {
-	rTempFile, err := os.Open(tempFilePath) //nolint:gosec
-	if err != nil {
-		return fmt.Errorf("open a temporary file: %w", err)
-	}
-	defer rTempFile.Close()
-	registryFile, err := os.Create("registry.yaml")
-	if err != nil {
-		return fmt.Errorf("create registry.yaml: %w", err)
-	}
-	defer registryFile.Close()
-	if _, err := io.Copy(registryFile, rTempFile); err != nil {
-		return fmt.Errorf("copy a temporary file to registry.yaml: %w", err)
-	}
-	return nil
 }
