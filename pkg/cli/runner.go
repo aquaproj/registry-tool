@@ -32,7 +32,7 @@ func Run(ctx context.Context, logger *slogutil.Logger, env *urfave.Env) error {
 		},
 		EnableShellCompletion: true,
 		Commands: []*cli.Command{
-			scaffold.Command(flags),
+			scaffold.Command(logger.Logger, flags),
 			createprnewpkg.Command(logger.Logger),
 			gengr.Command(),
 			initcmd.Command(),

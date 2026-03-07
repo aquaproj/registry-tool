@@ -2,6 +2,7 @@ package scaffold
 
 import (
 	"context"
+	"log/slog"
 
 	"github.com/aquaproj/registry-tool/pkg/cli/gflag"
 	"github.com/aquaproj/registry-tool/pkg/scaffold"
@@ -56,7 +57,7 @@ This tool does the following things.
 6. aqua i
 `
 
-func Command(gFlags *gflag.Flags) *cli.Command {
+func Command(logger *slog.Logger, gFlags *gflag.Flags) *cli.Command {
 	flags := &scaffoldFlags{
 		Flags: gFlags,
 	}
@@ -83,7 +84,7 @@ func Command(gFlags *gflag.Flags) *cli.Command {
 				ConfigPath:     flags.Config,
 			}
 
-			return scaffold.Scaffold(ctx, cfg)
+			return scaffold.Scaffold(ctx, logger, cfg)
 		},
 	}
 }

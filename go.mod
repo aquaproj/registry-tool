@@ -6,6 +6,7 @@ require (
 	github.com/aquaproj/aqua/v2 v2.56.7
 	github.com/goccy/go-yaml v1.19.2
 	github.com/spf13/afero v1.15.0
+	github.com/suzuki-shunsuke/ghtkn-go-sdk v0.2.2
 	github.com/suzuki-shunsuke/slog-error v0.2.2
 	github.com/suzuki-shunsuke/slog-util v0.3.1
 	github.com/suzuki-shunsuke/urfave-cli-v3-util v0.2.2
@@ -44,7 +45,6 @@ require (
 	github.com/otiai10/mint v1.6.3 // indirect
 	github.com/shopspring/decimal v1.4.0 // indirect
 	github.com/spf13/cast v1.7.0 // indirect
-	github.com/suzuki-shunsuke/ghtkn-go-sdk v0.2.2 // indirect
 	github.com/suzuki-shunsuke/go-error-with-exit-code v1.0.0 // indirect
 	github.com/suzuki-shunsuke/go-exec v0.0.1 // indirect
 	github.com/suzuki-shunsuke/go-retryablehttp v0.7.8-2 // indirect
