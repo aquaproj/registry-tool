@@ -1,6 +1,6 @@
 module github.com/aquaproj/registry-tool
 
-go 1.26.0
+go 1.26.1
 
 require (
 	github.com/aquaproj/aqua/v2 v2.56.7
