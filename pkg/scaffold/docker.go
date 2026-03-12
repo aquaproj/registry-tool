@@ -144,7 +144,7 @@ func (dm *DockerManager) Exec(ctx context.Context, logger *slog.Logger, env map[
 	args = append(args, command...)
 
 	cmd := exec.CommandContext(ctx, "docker", args...)
-	logger.Info("+ " + cmd.String())
+	logger.Info("+ " + redactSecrets(cmd.String(), env))
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	setCancel(logger, cmd)
@@ -382,6 +382,15 @@ func copyFile(src, dst string) error {
 		return err //nolint:wrapcheck
 	}
 	return os.WriteFile(dst, data, filePermission) //nolint:wrapcheck
+}
+
+func redactSecrets(s string, env map[string]string) string {
+	for _, v := range env {
+		if v != "" {
+			s = strings.ReplaceAll(s, v, "<REDACTED>")
+		}
+	}
+	return s
 }
 
 func isPodman(ctx context.Context, logger *slog.Logger) bool {
