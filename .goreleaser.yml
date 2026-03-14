@@ -7,6 +7,10 @@ archives:
       - LICENSE
       - README.md
       - third_party_licenses/**/*
+
+checksum:
+  name_template: "argd_checksums.txt"
+
 builds:
   - binary: argd
     main: cmd/argd/main.go
@@ -19,6 +23,7 @@ builds:
     goarch:
       - amd64
       - arm64
+
 release:
   prerelease: "true"
   header: |
