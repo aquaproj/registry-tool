@@ -2,14 +2,14 @@
 version: 2
 project_name: registry-tool
 archives:
-  - name_template: "{{.ProjectName}}_{{.Os}}_{{.Arch}}"
+  - name_template: "argd_{{.Os}}_{{.Arch}}"
     files:
       - LICENSE
       - README.md
       - third_party_licenses/**/*
 builds:
-  - binary: aqua-registry
-    main: cmd/aqua-registry/main.go
+  - binary: argd
+    main: cmd/argd/main.go
     env:
       - CGO_ENABLED=0
     goos:

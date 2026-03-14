@@ -11,7 +11,7 @@ func Command() *cli.Command {
 	return &cli.Command{
 		Name:      "init",
 		Usage:     `Create configuration files`,
-		UsageText: `$ aqua-registry init`,
+		UsageText: `$ argd init`,
 		Description: `Create configuration files.
 
 * aqua.yaml

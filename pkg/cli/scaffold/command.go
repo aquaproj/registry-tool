@@ -25,7 +25,7 @@ const scaffoldDescription = `Scaffold a package.
 
 e.g.
 
-$ aqua-registry scaffold cli/cli
+$ argd scaffold cli/cli
 `
 
 func Command(logger *slog.Logger, gFlags *gflag.Flags) *cli.Command {
@@ -36,7 +36,7 @@ func Command(logger *slog.Logger, gFlags *gflag.Flags) *cli.Command {
 		Name:        "scaffold",
 		Aliases:     []string{"s"},
 		Usage:       `Scaffold a package`,
-		UsageText:   `$ aqua-registry scaffold [options] <package name>`,
+		UsageText:   `$ argd scaffold [options] <package name>`,
 		Description: scaffoldDescription,
 		Flags:       scaffoldCLIFlags(flags),
 		Action: func(ctx context.Context, c *cli.Command) error {
