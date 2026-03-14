@@ -2,18 +2,16 @@ package removepackage
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"log/slog"
-	"strings"
 
 	"github.com/aquaproj/registry-tool/pkg/docker"
-	"github.com/aquaproj/registry-tool/pkg/scaffold"
+	"github.com/aquaproj/registry-tool/pkg/naming"
 )
 
 // RemovePackage removes a package from Docker containers.
 func RemovePackage(ctx context.Context, logger *slog.Logger, pkgName string) error {
-	pkg, err := resolvePkgName(ctx, logger, pkgName)
+	pkg, err := naming.Resolve(ctx, logger, pkgName)
 	if err != nil {
 		return err
 	}
@@ -39,21 +37,4 @@ func removeFromContainer(ctx context.Context, logger *slog.Logger, dm *docker.Ma
 		return fmt.Errorf("remove aqua-checksums.json: %w", err)
 	}
 	return nil
-}
-
-func resolvePkgName(ctx context.Context, logger *slog.Logger, pkgName string) (string, error) {
-	if pkgName != "" {
-		return strings.TrimPrefix(pkgName, "https://github.com/"), nil
-	}
-
-	branch, err := scaffold.GetCurrentBranch(ctx, logger)
-	if err != nil {
-		return "", fmt.Errorf("get current branch: %w", err)
-	}
-
-	if !strings.HasPrefix(branch, "feat/") {
-		return "", errors.New("current branch must be feat/<package name> or you must give a package name")
-	}
-
-	return strings.TrimPrefix(branch, "feat/"), nil
 }

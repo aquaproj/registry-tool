@@ -2,13 +2,12 @@ package test
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"log/slog"
-	"strings"
 
 	"github.com/aquaproj/registry-tool/pkg/docker"
 	genrg "github.com/aquaproj/registry-tool/pkg/generate-registry"
+	"github.com/aquaproj/registry-tool/pkg/naming"
 	"github.com/aquaproj/registry-tool/pkg/scaffold"
 )
 
@@ -20,7 +19,7 @@ type Config struct {
 
 // Test tests a package in Docker containers across all platforms.
 func Test(ctx context.Context, logger *slog.Logger, cfg *Config) error {
-	pkgName, err := resolvePkgName(ctx, logger, cfg.PkgName)
+	pkgName, err := naming.Resolve(ctx, logger, cfg.PkgName)
 	if err != nil {
 		return err
 	}
@@ -56,21 +55,4 @@ func Test(ctx context.Context, logger *slog.Logger, cfg *Config) error {
 	}
 
 	return nil
-}
-
-func resolvePkgName(ctx context.Context, logger *slog.Logger, pkgName string) (string, error) {
-	if pkgName != "" {
-		return strings.TrimPrefix(pkgName, "https://github.com/"), nil
-	}
-
-	branch, err := scaffold.GetCurrentBranch(ctx, logger)
-	if err != nil {
-		return "", fmt.Errorf("get current branch: %w", err)
-	}
-
-	if !strings.HasPrefix(branch, "feat/") {
-		return "", errors.New("current branch must be feat/<package name> or you must give a package name")
-	}
-
-	return strings.TrimPrefix(branch, "feat/"), nil
 }
