@@ -13,7 +13,7 @@ func Command() *cli.Command {
 	return &cli.Command{
 		Name:        "mv",
 		Usage:       `Rename a package`,
-		UsageText:   `$ aqua-registry mv <old package name> <new package name>`,
+		UsageText:   `$ argd mv <old package name> <new package name>`,
 		Description: `Rename a package.`,
 		Action: func(ctx context.Context, cmd *cli.Command) error {
 			args := cmd.Args().Slice()

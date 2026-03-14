@@ -18,7 +18,7 @@ func Command(logger *slog.Logger) *cli.Command {
 
 e.g.
 
-$ aqua-registry create-pr-new-pkg cli/cli
+$ argd create-pr-new-pkg cli/cli
 
 This tool does the following things.
 

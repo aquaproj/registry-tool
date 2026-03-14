@@ -20,13 +20,13 @@ func (r *runner) Command() *cli.Command {
 	return &cli.Command{
 		Name:      "check-repo",
 		Usage:     `Check if GitHub Repository was transferred`,
-		UsageText: `$ aqua-registry check-repo <package name>`,
+		UsageText: `$ argd check-repo <package name>`,
 		Description: `Check if GitHub Repository is transferred.
 This command succeeds if the repository isn't transferred.
 
 e.g.
 
-$ aqua-registry check-repo Azure/aztfy
+$ argd check-repo Azure/aztfy
 Azure/aztfexport
 `,
 		Action: r.action,

@@ -23,8 +23,8 @@ import (
 // It supports both local mode (simple, no Docker) and full mode (Docker-based with tests).
 func Scaffold(ctx context.Context, logger *slog.Logger, cfg *Config) error {
 	if cfg.PkgName == "" {
-		return errors.New(`usage: $ aqua-registry scaffold <pkgname>
-e.g. $ aqua-registry scaffold cli/cli`)
+		return errors.New(`usage: $ argd scaffold <pkgname>
+e.g. $ argd scaffold cli/cli`)
 	}
 
 	// Strip https://github.com/ prefix if present

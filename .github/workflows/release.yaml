@@ -9,7 +9,7 @@ jobs:
     with:
       go-version-file: go.mod
       aqua_version: v2.57.0
-      go_licenses_package: ./cmd/aqua-registry
+      go_licenses_package: ./cmd/argd
     permissions:
       contents: write
       id-token: write
