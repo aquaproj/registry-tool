@@ -1,4 +1,4 @@
-package scaffold
+package docker
 
 import (
 	"bytes"
@@ -14,19 +14,24 @@ import (
 	"github.com/aquaproj/registry-tool/pkg/osexec"
 )
 
-// DockerManager manages Docker container operations.
-type DockerManager struct {
-	config ContainerConfig
+// Manager manages Docker container operations.
+type Manager struct {
+	config Config
 }
 
-// NewDockerManager creates a new DockerManager with the given configuration.
-func NewDockerManager(config ContainerConfig) *DockerManager {
-	return &DockerManager{config: config}
+// NewManager creates a new Manager with the given configuration.
+func NewManager(config Config) *Manager {
+	return &Manager{config: config}
+}
+
+// Config returns the container configuration.
+func (dm *Manager) Config() Config {
+	return dm.config
 }
 
 // EnsureContainer ensures the container is running.
 // If recreate is true, it will stop and remove the existing container first.
-func (dm *DockerManager) EnsureContainer(ctx context.Context, logger *slog.Logger, recreate bool) error {
+func (dm *Manager) EnsureContainer(ctx context.Context, logger *slog.Logger, recreate bool) error {
 	if recreate {
 		if err := dm.RemoveContainer(ctx, logger); err != nil {
 			return err
@@ -61,7 +66,7 @@ func (dm *DockerManager) EnsureContainer(ctx context.Context, logger *slog.Logge
 }
 
 // ContainerExists checks if the container exists.
-func (dm *DockerManager) ContainerExists(ctx context.Context, logger *slog.Logger) (bool, error) {
+func (dm *Manager) ContainerExists(ctx context.Context, logger *slog.Logger) (bool, error) {
 	logger.Info("checking if the container exists", "container_name", dm.config.Name)
 	cmd := exec.CommandContext(ctx, "docker", "ps", "-a", //nolint:gosec
 		"--filter", "name="+dm.config.Name,
@@ -83,7 +88,7 @@ func (dm *DockerManager) ContainerExists(ctx context.Context, logger *slog.Logge
 }
 
 // ContainerRunning checks if the container is running.
-func (dm *DockerManager) ContainerRunning(ctx context.Context, logger *slog.Logger) (bool, error) {
+func (dm *Manager) ContainerRunning(ctx context.Context, logger *slog.Logger) (bool, error) {
 	logger.Info("checking if the container is running", "container_name", dm.config.Name)
 	cmd := exec.CommandContext(ctx, "docker", "ps", "-a", //nolint:gosec
 		"--filter", "name="+dm.config.Name,
@@ -106,7 +111,7 @@ func (dm *DockerManager) ContainerRunning(ctx context.Context, logger *slog.Logg
 }
 
 // RemoveContainer stops and removes the container.
-func (dm *DockerManager) RemoveContainer(ctx context.Context, logger *slog.Logger) error {
+func (dm *Manager) RemoveContainer(ctx context.Context, logger *slog.Logger) error {
 	exists, err := dm.ContainerExists(ctx, logger)
 	if err != nil {
 		return err
@@ -134,7 +139,7 @@ func (dm *DockerManager) RemoveContainer(ctx context.Context, logger *slog.Logge
 }
 
 // Exec executes a command in the container.
-func (dm *DockerManager) Exec(ctx context.Context, logger *slog.Logger, env map[string]string, command ...string) error {
+func (dm *Manager) Exec(ctx context.Context, logger *slog.Logger, env map[string]string, command ...string) error {
 	args := []string{"exec"}
 	if dm.config.WorkingDir != "" {
 		args = append(args, "-w", dm.config.WorkingDir)
@@ -146,7 +151,7 @@ func (dm *DockerManager) Exec(ctx context.Context, logger *slog.Logger, env map[
 	args = append(args, command...)
 
 	cmd := exec.CommandContext(ctx, "docker", args...)
-	logger.Info("+ " + redactSecrets(cmd.String(), env))
+	logger.Info("+ " + RedactSecrets(cmd.String(), env))
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	osexec.SetCancel(logger, cmd)
@@ -157,12 +162,12 @@ func (dm *DockerManager) Exec(ctx context.Context, logger *slog.Logger, env map[
 }
 
 // ExecBash executes a bash command in the container.
-func (dm *DockerManager) ExecBash(ctx context.Context, logger *slog.Logger, bashCmd string) error {
+func (dm *Manager) ExecBash(ctx context.Context, logger *slog.Logger, bashCmd string) error {
 	return dm.Exec(ctx, logger, nil, "bash", "-c", bashCmd)
 }
 
 // CopyTo copies a file from the host to the container.
-func (dm *DockerManager) CopyTo(ctx context.Context, logger *slog.Logger, src, dst string) error {
+func (dm *Manager) CopyTo(ctx context.Context, logger *slog.Logger, src, dst string) error {
 	containerPath := dm.config.Name + ":" + dst
 	cmd := exec.CommandContext(ctx, "docker", "cp", src, containerPath)
 	logger.Info("+ " + cmd.String())
@@ -176,7 +181,7 @@ func (dm *DockerManager) CopyTo(ctx context.Context, logger *slog.Logger, src, d
 }
 
 // CopyFrom copies a file from the container to the host.
-func (dm *DockerManager) CopyFrom(ctx context.Context, logger *slog.Logger, src, dst string) error {
+func (dm *Manager) CopyFrom(ctx context.Context, logger *slog.Logger, src, dst string) error {
 	containerPath := dm.config.Name + ":" + src
 	cmd := exec.CommandContext(ctx, "docker", "cp", containerPath, dst)
 	logger.Info("+ " + cmd.String())
@@ -189,7 +194,7 @@ func (dm *DockerManager) CopyFrom(ctx context.Context, logger *slog.Logger, src,
 	return nil
 }
 
-func (dm *DockerManager) handleRunningContainer(ctx context.Context, logger *slog.Logger) error {
+func (dm *Manager) handleRunningContainer(ctx context.Context, logger *slog.Logger) error {
 	upToDate, err := dm.checkImageUpToDate(ctx, logger)
 	if err != nil {
 		return err
@@ -205,7 +210,7 @@ func (dm *DockerManager) handleRunningContainer(ctx context.Context, logger *slo
 	return dm.runContainer(ctx, logger)
 }
 
-func (dm *DockerManager) handleStoppedContainer(ctx context.Context, logger *slog.Logger) error {
+func (dm *Manager) handleStoppedContainer(ctx context.Context, logger *slog.Logger) error {
 	upToDate, err := dm.checkImageUpToDate(ctx, logger)
 	if err != nil {
 		return err
@@ -223,7 +228,7 @@ func (dm *DockerManager) handleStoppedContainer(ctx context.Context, logger *slo
 	return dm.runContainer(ctx, logger)
 }
 
-func (dm *DockerManager) ensureImage(ctx context.Context, logger *slog.Logger) error {
+func (dm *Manager) ensureImage(ctx context.Context, logger *slog.Logger) error {
 	notChanged, err := dm.dockerfileNotChanged()
 	if err != nil {
 		return err
@@ -236,7 +241,7 @@ func (dm *DockerManager) ensureImage(ctx context.Context, logger *slog.Logger) e
 	return dm.buildImage(ctx, logger)
 }
 
-func (dm *DockerManager) imageExists(ctx context.Context, logger *slog.Logger) bool {
+func (dm *Manager) imageExists(ctx context.Context, logger *slog.Logger) bool {
 	cmd := exec.CommandContext(ctx, "docker", "inspect", dm.config.Image) //nolint:gosec
 	cmd.Stdout = nil
 	cmd.Stderr = nil
@@ -244,7 +249,7 @@ func (dm *DockerManager) imageExists(ctx context.Context, logger *slog.Logger) b
 	return cmd.Run() == nil
 }
 
-func (dm *DockerManager) dockerfileNotChanged() (bool, error) {
+func (dm *Manager) dockerfileNotChanged() (bool, error) {
 	// Check if .build/Dockerfile exists
 	if _, err := os.Stat(".build/Dockerfile"); os.IsNotExist(err) {
 		return false, nil
@@ -262,9 +267,9 @@ func (dm *DockerManager) dockerfileNotChanged() (bool, error) {
 	return string(b1) == string(b2), nil
 }
 
-func (dm *DockerManager) buildImage(ctx context.Context, logger *slog.Logger) error {
+func (dm *Manager) buildImage(ctx context.Context, logger *slog.Logger) error {
 	// Copy aqua-policy.yaml to docker directory
-	if err := copyFile("aqua-policy.yaml", "docker/aqua-policy.yaml"); err != nil {
+	if err := CopyFile("aqua-policy.yaml", "docker/aqua-policy.yaml"); err != nil {
 		return fmt.Errorf("copy aqua-policy.yaml: %w", err)
 	}
 
@@ -278,17 +283,17 @@ func (dm *DockerManager) buildImage(ctx context.Context, logger *slog.Logger) er
 	}
 
 	// Save Dockerfile to .build for change detection
-	if err := os.MkdirAll(".build", dirPermission); err != nil {
+	if err := os.MkdirAll(".build", DirPermission); err != nil {
 		return fmt.Errorf("create .build directory: %w", err)
 	}
-	if err := copyFile("docker/Dockerfile", ".build/Dockerfile"); err != nil {
+	if err := CopyFile("docker/Dockerfile", ".build/Dockerfile"); err != nil {
 		return fmt.Errorf("copy Dockerfile to .build: %w", err)
 	}
 
 	return nil
 }
 
-func (dm *DockerManager) checkImageUpToDate(ctx context.Context, logger *slog.Logger) (bool, error) {
+func (dm *Manager) checkImageUpToDate(ctx context.Context, logger *slog.Logger) (bool, error) {
 	containerImageID, err := dm.getContainerImageID(ctx, logger)
 	if err != nil {
 		return false, err
@@ -302,7 +307,7 @@ func (dm *DockerManager) checkImageUpToDate(ctx context.Context, logger *slog.Lo
 	return containerImageID == imageID, nil
 }
 
-func (dm *DockerManager) getContainerImageID(ctx context.Context, logger *slog.Logger) (string, error) {
+func (dm *Manager) getContainerImageID(ctx context.Context, logger *slog.Logger) (string, error) {
 	cmd := exec.CommandContext(ctx, "docker", "inspect", dm.config.Name) //nolint:gosec
 	var stdout bytes.Buffer
 	cmd.Stdout = &stdout
@@ -324,7 +329,7 @@ func (dm *DockerManager) getContainerImageID(ctx context.Context, logger *slog.L
 	return result[0].Image, nil
 }
 
-func (dm *DockerManager) getImageID(ctx context.Context, logger *slog.Logger) (string, error) {
+func (dm *Manager) getImageID(ctx context.Context, logger *slog.Logger) (string, error) {
 	cmd := exec.CommandContext(ctx, "docker", "inspect", dm.config.Image) //nolint:gosec
 	var stdout bytes.Buffer
 	cmd.Stdout = &stdout
@@ -346,11 +351,11 @@ func (dm *DockerManager) getImageID(ctx context.Context, logger *slog.Logger) (s
 	return result[0].ID, nil
 }
 
-func (dm *DockerManager) runContainer(ctx context.Context, logger *slog.Logger) error {
+func (dm *Manager) runContainer(ctx context.Context, logger *slog.Logger) error {
 	args := []string{"run", "-d", "--name", dm.config.Name}
 
 	// Add --privileged for Podman on Linux
-	if runtime.GOOS == "linux" && isPodman(ctx, logger) {
+	if runtime.GOOS == "linux" && IsPodman(ctx, logger) {
 		args = append(args, "--privileged")
 	}
 
@@ -366,7 +371,7 @@ func (dm *DockerManager) runContainer(ctx context.Context, logger *slog.Logger) 
 	return nil
 }
 
-func (dm *DockerManager) startContainer(ctx context.Context, logger *slog.Logger) error {
+func (dm *Manager) startContainer(ctx context.Context, logger *slog.Logger) error {
 	cmd := exec.CommandContext(ctx, "docker", "start", dm.config.Name) //nolint:gosec
 	logger.Info("+ " + cmd.String())
 	cmd.Stdout = os.Stdout
@@ -378,15 +383,17 @@ func (dm *DockerManager) startContainer(ctx context.Context, logger *slog.Logger
 	return nil
 }
 
-func copyFile(src, dst string) error {
+// CopyFile copies a file from src to dst.
+func CopyFile(src, dst string) error {
 	data, err := os.ReadFile(src)
 	if err != nil {
 		return err //nolint:wrapcheck
 	}
-	return os.WriteFile(dst, data, filePermission) //nolint:wrapcheck,gosec
+	return os.WriteFile(dst, data, FilePermission) //nolint:wrapcheck,gosec
 }
 
-func redactSecrets(s string, env map[string]string) string {
+// RedactSecrets replaces secret values in a string with <REDACTED>.
+func RedactSecrets(s string, env map[string]string) string {
 	for _, v := range env {
 		if v != "" {
 			s = strings.ReplaceAll(s, v, "<REDACTED>")
@@ -395,7 +402,8 @@ func redactSecrets(s string, env map[string]string) string {
 	return s
 }
 
-func isPodman(ctx context.Context, logger *slog.Logger) bool {
+// IsPodman checks if Docker is actually Podman.
+func IsPodman(ctx context.Context, logger *slog.Logger) bool {
 	cmd := exec.CommandContext(ctx, "docker", "version")
 	var stdout bytes.Buffer
 	cmd.Stdout = &stdout

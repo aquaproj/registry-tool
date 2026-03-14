@@ -27,33 +27,6 @@ type Config struct {
 	ConfigPath string
 }
 
-// ContainerConfig holds Docker container configuration.
-type ContainerConfig struct {
-	Name       string
-	Image      string
-	WorkingDir string
-}
-
-const containerWorkingDir = "/workspace"
-
-// DefaultLinuxContainer returns the default Linux container configuration.
-func DefaultLinuxContainer() ContainerConfig {
-	return ContainerConfig{
-		Name:       "aqua-registry",
-		Image:      "aquaproj/aqua-registry",
-		WorkingDir: containerWorkingDir,
-	}
-}
-
-// DefaultWindowsContainer returns the default Windows container configuration.
-func DefaultWindowsContainer() ContainerConfig {
-	return ContainerConfig{
-		Name:       "aqua-registry-windows",
-		Image:      "aquaproj/aqua-registry",
-		WorkingDir: containerWorkingDir,
-	}
-}
-
 // Platform represents a target platform for testing.
 type Platform struct {
 	OS   string
