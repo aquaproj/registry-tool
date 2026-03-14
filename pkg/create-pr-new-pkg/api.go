@@ -21,9 +21,14 @@ import (
 var bodyTemplate []byte
 
 func CreatePRNewPkgs(ctx context.Context, logger *slog.Logger, pkgName string) error {
-	if pkgName == "" {
-		return errors.New(`usage: $ aqua-registry create-pr-new-pkg <pkgname>
-e.g. $ aqua-registry create-pr-new-pkg cli/cli`)
+	pkgName = strings.TrimPrefix(pkgName, "https://github.com/")
+	if err := checkDiffPackage(ctx); err != nil {
+		return err
+	}
+	var err error
+	pkgName, err = getPkgFromBranch(ctx, pkgName)
+	if err != nil {
+		return err
 	}
 	pkgDir := filepath.Join(append([]string{"pkgs"}, strings.Split(pkgName, "/")...)...)
 	rgFilePath := filepath.Join(pkgDir, "registry.yaml")
@@ -96,6 +101,43 @@ func getBody(pkgName, desc string) string {
 		return fmt.Sprintf(`[%s](https://github.com/%s): %s`, pkgName, repo, desc)
 	}
 	return fmt.Sprintf(`%s: %s`, pkgName, desc)
+}
+
+func checkDiffPackage(ctx context.Context) error {
+	cmd := exec.CommandContext(ctx, "git", "diff", "--quiet", "pkgs", "registry.yaml")
+	if err := cmd.Run(); err != nil {
+		return errors.New("there are unstaged changes in pkgs or registry.yaml")
+	}
+	cmd = exec.CommandContext(ctx, "git", "diff", "--cached", "--quiet", "pkgs", "registry.yaml")
+	if err := cmd.Run(); err != nil {
+		return errors.New("there are staged changes in pkgs or registry.yaml")
+	}
+	out, err := exec.CommandContext(ctx, "git", "ls-files", "--others", "--exclude-standard", "pkgs").Output()
+	if err != nil {
+		return fmt.Errorf("check untracked files in pkgs: %w", err)
+	}
+	if len(bytes.TrimSpace(out)) > 0 {
+		return errors.New("there are untracked files in pkgs")
+	}
+	return nil
+}
+
+func getPkgFromBranch(ctx context.Context, pkgName string) (string, error) {
+	out, err := exec.CommandContext(ctx, "git", "rev-parse", "--abbrev-ref", "HEAD").Output()
+	if err != nil {
+		return "", fmt.Errorf("get current branch: %w", err)
+	}
+	branch := strings.TrimSpace(string(out))
+	if pkgName != "" {
+		if branch != "feat/"+pkgName {
+			return "", fmt.Errorf("branch %q doesn't match the package name %q (expected branch feat/%s)", branch, pkgName, pkgName)
+		}
+		return pkgName, nil
+	}
+	if !strings.HasPrefix(branch, "feat/") {
+		return "", fmt.Errorf("branch %q doesn't have the prefix \"feat/\"", branch)
+	}
+	return strings.TrimPrefix(branch, "feat/"), nil
 }
 
 func command(ctx context.Context, cmdName string, args ...string) error {
