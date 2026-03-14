@@ -381,7 +381,7 @@ func copyFile(src, dst string) error {
 	if err != nil {
 		return err //nolint:wrapcheck
 	}
-	return os.WriteFile(dst, data, filePermission) //nolint:wrapcheck
+	return os.WriteFile(dst, data, filePermission) //nolint:wrapcheck,gosec
 }
 
 func redactSecrets(s string, env map[string]string) string {

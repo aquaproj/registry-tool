@@ -121,7 +121,7 @@ func request(ctx context.Context, httpClient *http.Client, repoOwner, repoName s
 	if err != nil {
 		return nil, fmt.Errorf("create a http request: %w", err)
 	}
-	resp, err := httpClient.Do(req) //nolint:gosec
+	resp, err := httpClient.Do(req)
 	if err != nil {
 		return nil, fmt.Errorf("send a http request: %w", err)
 	}
