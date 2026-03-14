@@ -10,6 +10,8 @@ import (
 	"os/exec"
 	"runtime"
 	"strings"
+
+	"github.com/aquaproj/registry-tool/pkg/osexec"
 )
 
 // DockerManager manages Docker container operations.
@@ -67,7 +69,7 @@ func (dm *DockerManager) ContainerExists(ctx context.Context, logger *slog.Logge
 	var stdout bytes.Buffer
 	cmd.Stdout = &stdout
 	cmd.Stderr = os.Stderr
-	setCancel(logger, cmd)
+	osexec.SetCancel(logger, cmd)
 	if err := cmd.Run(); err != nil {
 		return false, fmt.Errorf("docker ps: %w", err)
 	}
@@ -90,7 +92,7 @@ func (dm *DockerManager) ContainerRunning(ctx context.Context, logger *slog.Logg
 	var stdout bytes.Buffer
 	cmd.Stdout = &stdout
 	cmd.Stderr = os.Stderr
-	setCancel(logger, cmd)
+	osexec.SetCancel(logger, cmd)
 	if err := cmd.Run(); err != nil {
 		return false, fmt.Errorf("docker ps: %w", err)
 	}
@@ -117,14 +119,14 @@ func (dm *DockerManager) RemoveContainer(ctx context.Context, logger *slog.Logge
 	logger.Info("+ " + cmd.String())
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
-	setCancel(logger, cmd)
+	osexec.SetCancel(logger, cmd)
 	_ = cmd.Run() // Ignore error if container is not running
 
 	cmd = exec.CommandContext(ctx, "docker", "rm", dm.config.Name) //nolint:gosec
 	logger.Info("+ " + cmd.String())
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
-	setCancel(logger, cmd)
+	osexec.SetCancel(logger, cmd)
 	if err := cmd.Run(); err != nil {
 		return fmt.Errorf("docker rm: %w", err)
 	}
@@ -147,7 +149,7 @@ func (dm *DockerManager) Exec(ctx context.Context, logger *slog.Logger, env map[
 	logger.Info("+ " + redactSecrets(cmd.String(), env))
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
-	setCancel(logger, cmd)
+	osexec.SetCancel(logger, cmd)
 	if err := cmd.Run(); err != nil {
 		return fmt.Errorf("docker exec: %w", err)
 	}
@@ -166,7 +168,7 @@ func (dm *DockerManager) CopyTo(ctx context.Context, logger *slog.Logger, src, d
 	logger.Info("+ " + cmd.String())
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
-	setCancel(logger, cmd)
+	osexec.SetCancel(logger, cmd)
 	if err := cmd.Run(); err != nil {
 		return fmt.Errorf("docker cp to container: %w", err)
 	}
@@ -180,7 +182,7 @@ func (dm *DockerManager) CopyFrom(ctx context.Context, logger *slog.Logger, src,
 	logger.Info("+ " + cmd.String())
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
-	setCancel(logger, cmd)
+	osexec.SetCancel(logger, cmd)
 	if err := cmd.Run(); err != nil {
 		return fmt.Errorf("docker cp from container: %w", err)
 	}
@@ -238,7 +240,7 @@ func (dm *DockerManager) imageExists(ctx context.Context, logger *slog.Logger) b
 	cmd := exec.CommandContext(ctx, "docker", "inspect", dm.config.Image) //nolint:gosec
 	cmd.Stdout = nil
 	cmd.Stderr = nil
-	setCancel(logger, cmd)
+	osexec.SetCancel(logger, cmd)
 	return cmd.Run() == nil
 }
 
@@ -270,7 +272,7 @@ func (dm *DockerManager) buildImage(ctx context.Context, logger *slog.Logger) er
 	cmd := exec.CommandContext(ctx, "docker", "build", "-t", dm.config.Image, "docker") //nolint:gosec
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
-	setCancel(logger, cmd)
+	osexec.SetCancel(logger, cmd)
 	if err := cmd.Run(); err != nil {
 		return fmt.Errorf("docker build: %w", err)
 	}
@@ -305,7 +307,7 @@ func (dm *DockerManager) getContainerImageID(ctx context.Context, logger *slog.L
 	var stdout bytes.Buffer
 	cmd.Stdout = &stdout
 	cmd.Stderr = os.Stderr
-	setCancel(logger, cmd)
+	osexec.SetCancel(logger, cmd)
 	if err := cmd.Run(); err != nil {
 		return "", fmt.Errorf("docker inspect container: %w", err)
 	}
@@ -327,7 +329,7 @@ func (dm *DockerManager) getImageID(ctx context.Context, logger *slog.Logger) (s
 	var stdout bytes.Buffer
 	cmd.Stdout = &stdout
 	cmd.Stderr = os.Stderr
-	setCancel(logger, cmd)
+	osexec.SetCancel(logger, cmd)
 	if err := cmd.Run(); err != nil {
 		return "", fmt.Errorf("docker inspect image: %w", err)
 	}
@@ -357,7 +359,7 @@ func (dm *DockerManager) runContainer(ctx context.Context, logger *slog.Logger) 
 	cmd := exec.CommandContext(ctx, "docker", args...)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
-	setCancel(logger, cmd)
+	osexec.SetCancel(logger, cmd)
 	if err := cmd.Run(); err != nil {
 		return fmt.Errorf("docker run: %w", err)
 	}
@@ -369,7 +371,7 @@ func (dm *DockerManager) startContainer(ctx context.Context, logger *slog.Logger
 	logger.Info("+ " + cmd.String())
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
-	setCancel(logger, cmd)
+	osexec.SetCancel(logger, cmd)
 	if err := cmd.Run(); err != nil {
 		return fmt.Errorf("docker start: %w", err)
 	}
@@ -398,7 +400,7 @@ func isPodman(ctx context.Context, logger *slog.Logger) bool {
 	var stdout bytes.Buffer
 	cmd.Stdout = &stdout
 	cmd.Stderr = nil
-	setCancel(logger, cmd)
+	osexec.SetCancel(logger, cmd)
 	if err := cmd.Run(); err != nil {
 		return false
 	}

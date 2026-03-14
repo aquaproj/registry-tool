@@ -9,6 +9,8 @@ import (
 	"os"
 	"os/exec"
 	"strings"
+
+	"github.com/aquaproj/registry-tool/pkg/osexec"
 )
 
 // CheckPrerequisites checks if required commands are available.
@@ -28,7 +30,7 @@ func CheckPrerequisites(ctx context.Context, logger *slog.Logger) error {
 
 func checkCommand(ctx context.Context, logger *slog.Logger, name string) error {
 	cmd := exec.CommandContext(ctx, name, "--version")
-	setCancel(logger, cmd)
+	osexec.SetCancel(logger, cmd)
 	cmd.Stdout = nil
 	cmd.Stderr = nil
 	return cmd.Run() //nolint:wrapcheck
@@ -62,7 +64,7 @@ func gitDiffQuiet(ctx context.Context, logger *slog.Logger, path string) error {
 	cmd := exec.CommandContext(ctx, "git", "diff", "--quiet", path)
 	cmd.Stdout = nil
 	cmd.Stderr = nil
-	setCancel(logger, cmd)
+	osexec.SetCancel(logger, cmd)
 	return cmd.Run() //nolint:wrapcheck
 }
 
@@ -70,7 +72,7 @@ func gitDiffCachedQuiet(ctx context.Context, logger *slog.Logger, path string) e
 	cmd := exec.CommandContext(ctx, "git", "diff", "--cached", "--quiet", path)
 	cmd.Stdout = nil
 	cmd.Stderr = nil
-	setCancel(logger, cmd)
+	osexec.SetCancel(logger, cmd)
 	return cmd.Run() //nolint:wrapcheck
 }
 
@@ -79,7 +81,7 @@ func gitLsFilesOthers(ctx context.Context, logger *slog.Logger, path string) ([]
 	var stdout bytes.Buffer
 	cmd.Stdout = &stdout
 	cmd.Stderr = os.Stderr
-	setCancel(logger, cmd)
+	osexec.SetCancel(logger, cmd)
 	if err := cmd.Run(); err != nil {
 		return nil, fmt.Errorf("git ls-files: %w", err)
 	}

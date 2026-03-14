@@ -15,6 +15,7 @@ import (
 
 	genrg "github.com/aquaproj/registry-tool/pkg/generate-registry"
 	"github.com/aquaproj/registry-tool/pkg/initcmd"
+	"github.com/aquaproj/registry-tool/pkg/osexec"
 )
 
 const (
@@ -228,7 +229,7 @@ func runAquaGRInContainer(ctx context.Context, logger *slog.Logger, dm *DockerMa
 	buf := &bytes.Buffer{}
 	cmd.Stdout = buf
 	cmd.Stderr = os.Stderr
-	setCancel(logger, cmd)
+	osexec.SetCancel(logger, cmd)
 	logger.Info("+ " + redactSecrets(cmd.String(), env))
 	if err := cmd.Run(); err != nil {
 		return fmt.Errorf("docker exec: %w", err)
@@ -287,7 +288,7 @@ func aquaGR(ctx context.Context, logger *slog.Logger, pkgName, pkgFilePath, rgFi
 	cmd := exec.CommandContext(ctx, "aqua", append(args, pkgName)...) //nolint:gosec
 	cmd.Stdout = outFile
 	cmd.Stderr = os.Stderr
-	setCancel(logger, cmd)
+	osexec.SetCancel(logger, cmd)
 	logger.Info("+ " + cmd.String())
 	if err := cmd.Run(); err != nil {
 		return fmt.Errorf("execute a command: %w", err)
