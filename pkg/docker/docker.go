@@ -182,6 +182,30 @@ func (dm *Manager) Exec(ctx context.Context, logger *slog.Logger, env map[string
 	return nil
 }
 
+// ExecInteractive executes an interactive command in the container with stdin attached.
+func (dm *Manager) ExecInteractive(ctx context.Context, logger *slog.Logger, env map[string]string, command ...string) error {
+	args := []string{"exec", "-i", "-t"}
+	if dm.config.WorkingDir != "" {
+		args = append(args, "-w", dm.config.WorkingDir)
+	}
+	for k, v := range env {
+		args = append(args, "-e", k+"="+v)
+	}
+	args = append(args, dm.config.Name)
+	args = append(args, command...)
+
+	cmd := exec.CommandContext(ctx, "docker", args...)
+	logger.Info("+ " + RedactSecrets(cmd.String(), env))
+	cmd.Stdin = os.Stdin
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	osexec.SetCancel(logger, cmd)
+	if err := cmd.Run(); err != nil {
+		return fmt.Errorf("docker exec: %w", err)
+	}
+	return nil
+}
+
 // ExecBash executes a bash command in the container.
 func (dm *Manager) ExecBash(ctx context.Context, logger *slog.Logger, bashCmd string) error {
 	return dm.Exec(ctx, logger, nil, "bash", "-c", bashCmd)

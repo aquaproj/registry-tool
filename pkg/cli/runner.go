@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/aquaproj/registry-tool/pkg/cli/checkrepo"
+	connectcmd "github.com/aquaproj/registry-tool/pkg/cli/connect"
 	"github.com/aquaproj/registry-tool/pkg/cli/createprnewpkg"
 	"github.com/aquaproj/registry-tool/pkg/cli/gengr"
 	"github.com/aquaproj/registry-tool/pkg/cli/gflag"
@@ -45,6 +46,7 @@ func Run(ctx context.Context, logger *slogutil.Logger, env *urfave.Env) error {
 			patchchecksum.Command(logger.Logger),
 			checkrepo.Command(),
 			mv.Command(),
+			connectcmd.Command(logger.Logger),
 			removecmd.Command(logger.Logger),
 			removepackagecmd.Command(logger.Logger),
 			resolveconflict.Command(logger.Logger),
