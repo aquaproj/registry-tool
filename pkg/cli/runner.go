@@ -10,6 +10,7 @@ import (
 	"github.com/aquaproj/registry-tool/pkg/cli/initcmd"
 	"github.com/aquaproj/registry-tool/pkg/cli/mv"
 	"github.com/aquaproj/registry-tool/pkg/cli/patchchecksum"
+	removecmd "github.com/aquaproj/registry-tool/pkg/cli/remove"
 	"github.com/aquaproj/registry-tool/pkg/cli/resolveconflict"
 	"github.com/aquaproj/registry-tool/pkg/cli/scaffold"
 	startcmd "github.com/aquaproj/registry-tool/pkg/cli/start"
@@ -43,6 +44,7 @@ func Run(ctx context.Context, logger *slogutil.Logger, env *urfave.Env) error {
 			patchchecksum.Command(logger.Logger),
 			checkrepo.Command(),
 			mv.Command(),
+			removecmd.Command(logger.Logger),
 			resolveconflict.Command(logger.Logger),
 			startcmd.Command(logger.Logger),
 			stopcmd.Command(logger.Logger),
