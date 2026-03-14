@@ -20,40 +20,36 @@ import (
 //go:embed pr_template.md
 var bodyTemplate []byte
 
-func CreatePRNewPkgs(ctx context.Context, logger *slog.Logger, pkgNames ...string) error {
-	if len(pkgNames) == 0 {
-		return errors.New(`usage: $ aqua-registry create-pr-new-pkg <pkgname>...
+func CreatePRNewPkgs(ctx context.Context, logger *slog.Logger, pkgName string) error {
+	if pkgName == "" {
+		return errors.New(`usage: $ aqua-registry create-pr-new-pkg <pkgname>
 e.g. $ aqua-registry create-pr-new-pkg cli/cli`)
 	}
-	bodies := make([]string, len(pkgNames))
-	for i, pkgName := range pkgNames {
-		pkgDir := filepath.Join(append([]string{"pkgs"}, strings.Split(pkgName, "/")...)...)
-		rgFilePath := filepath.Join(pkgDir, "registry.yaml")
-		rgFile, err := os.Open(rgFilePath)
-		if err != nil {
-			return fmt.Errorf("open a file %s: %w", rgFilePath, err)
-		}
-		desc, err := func() (string, error) {
-			defer rgFile.Close()
-			return getDesc(rgFile)
-		}()
-		if err != nil {
-			return err
-		}
-		bodies[i] = getBody(pkgName, desc)
-		if err := command(ctx, "git", "add", "pkgs/"+pkgName, "registry.yaml"); err != nil {
-			return err
-		}
+	pkgDir := filepath.Join(append([]string{"pkgs"}, strings.Split(pkgName, "/")...)...)
+	rgFilePath := filepath.Join(pkgDir, "registry.yaml")
+	rgFile, err := os.Open(rgFilePath)
+	if err != nil {
+		return fmt.Errorf("open a file %s: %w", rgFilePath, err)
 	}
-	body := strings.Join(append(bodies, []string{ //nolint:makezero
+	desc, err := func() (string, error) {
+		defer rgFile.Close()
+		return getDesc(rgFile)
+	}()
+	if err != nil {
+		return err
+	}
+	if err := command(ctx, "git", "add", "pkgs/"+pkgName, "registry.yaml"); err != nil {
+		return err
+	}
+	prBody := strings.Join([]string{
+		getBody(pkgName, desc),
 		"",
-		"```console",
-		"$ aqua g -i " + strings.Join(pkgNames, " "),
+		"```sh",
+		"aqua g -i " + pkgName,
 		"```",
 		"",
 		string(bodyTemplate),
-	}...), "\n")
-	pkgName := pkgNames[0]
+	}, "\n")
 	branch := "feat/" + pkgName
 	if err := initcmd.Init(ctx); err != nil {
 		return err //nolint:wrapcheck
@@ -70,7 +66,7 @@ For details, please see the document`)
 			return err
 		}
 	}
-	if err := command(ctx, "aqua", "-c", "aqua/dev.yaml", "exec", "--", "gh", "pr", "create", "-w", "-t", "feat: add "+pkgName, "-b", body); err != nil {
+	if err := command(ctx, "aqua", "-c", "aqua/dev.yaml", "exec", "--", "gh", "pr", "create", "-w", "-t", "feat: add "+pkgName, "-b", prBody); err != nil {
 		return err
 	}
 	return nil
