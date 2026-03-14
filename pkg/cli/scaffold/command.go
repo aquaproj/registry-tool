@@ -26,35 +26,6 @@ const scaffoldDescription = `Scaffold a package.
 e.g.
 
 $ aqua-registry scaffold cli/cli
-
-This tool does the following things.
-
-## Full mode (default)
-
-1. Check prerequisites (docker, git, aqua)
-2. Check for uncommitted changes in pkgs directory
-3. Create/switch to feature branch (feat/{pkg})
-4. Start Linux container
-5. Scaffold configuration files in container
-6. Update registry.yaml
-7. Commit changes
-8. Run Linux/Darwin tests
-9. Start Windows container
-10. Run Windows tests
-
-## Local mode (--local)
-
-1. Scaffold configuration files
-2. Install packages for testing
-
---
-
-1. Create directories pkgs/<package name>
-2. Create pkgs/<package name>/pkg.yaml and pkgs/<package name>/registry.yaml
-3. Update registry.yaml
-4. Create or update aqua.yaml
-5. aqua g -i <package name>
-6. aqua i
 `
 
 func Command(logger *slog.Logger, gFlags *gflag.Flags) *cli.Command {
@@ -63,6 +34,7 @@ func Command(logger *slog.Logger, gFlags *gflag.Flags) *cli.Command {
 	}
 	return &cli.Command{
 		Name:        "scaffold",
+		Aliases:     []string{"s"},
 		Usage:       `Scaffold a package`,
 		UsageText:   `$ aqua-registry scaffold [options] <package name>`,
 		Description: scaffoldDescription,
