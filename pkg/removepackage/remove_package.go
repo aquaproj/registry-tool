@@ -13,7 +13,7 @@ import (
 func RemovePackage(ctx context.Context, logger *slog.Logger, pkgName string) error {
 	pkg, err := naming.Resolve(ctx, logger, pkgName)
 	if err != nil {
-		return err
+		return fmt.Errorf("resolve package name: %w", err)
 	}
 
 	linuxDM := docker.NewManager(docker.DefaultLinuxContainer())

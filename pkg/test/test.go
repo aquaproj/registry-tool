@@ -21,7 +21,7 @@ type Config struct {
 func Test(ctx context.Context, logger *slog.Logger, cfg *Config) error {
 	pkgName, err := naming.Resolve(ctx, logger, cfg.PkgName)
 	if err != nil {
-		return err
+		return fmt.Errorf("resolve package name: %w", err)
 	}
 
 	// Ensure Linux container
