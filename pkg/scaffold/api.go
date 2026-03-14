@@ -229,7 +229,7 @@ func runAquaGRInContainer(ctx context.Context, logger *slog.Logger, dm *DockerMa
 	cmd.Stdout = buf
 	cmd.Stderr = os.Stderr
 	setCancel(logger, cmd)
-	logger.Info("+ " + cmd.String())
+	logger.Info("+ " + redactSecrets(cmd.String(), env))
 	if err := cmd.Run(); err != nil {
 		return fmt.Errorf("docker exec: %w", err)
 	}
