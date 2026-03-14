@@ -14,6 +14,7 @@ import (
 	"strings"
 
 	"github.com/aquaproj/registry-tool/pkg/initcmd"
+	"github.com/aquaproj/registry-tool/pkg/osexec"
 	"gopkg.in/yaml.v3"
 )
 
@@ -22,11 +23,11 @@ var bodyTemplate []byte
 
 func CreatePRNewPkgs(ctx context.Context, logger *slog.Logger, pkgName string) error {
 	pkgName = strings.TrimPrefix(pkgName, "https://github.com/")
-	if err := checkDiffPackage(ctx); err != nil {
+	if err := checkDiffPackage(ctx, logger); err != nil {
 		return err
 	}
 	var err error
-	pkgName, err = getPkgFromBranch(ctx, pkgName)
+	pkgName, err = getPkgFromBranch(ctx, logger, pkgName)
 	if err != nil {
 		return err
 	}
@@ -103,16 +104,20 @@ func getBody(pkgName, desc string) string {
 	return fmt.Sprintf(`%s: %s`, pkgName, desc)
 }
 
-func checkDiffPackage(ctx context.Context) error {
+func checkDiffPackage(ctx context.Context, logger *slog.Logger) error {
 	cmd := exec.CommandContext(ctx, "git", "diff", "--quiet", "pkgs", "registry.yaml")
+	osexec.SetCancel(logger, cmd)
 	if err := cmd.Run(); err != nil {
 		return errors.New("there are unstaged changes in pkgs or registry.yaml")
 	}
 	cmd = exec.CommandContext(ctx, "git", "diff", "--cached", "--quiet", "pkgs", "registry.yaml")
+	osexec.SetCancel(logger, cmd)
 	if err := cmd.Run(); err != nil {
 		return errors.New("there are staged changes in pkgs or registry.yaml")
 	}
-	out, err := exec.CommandContext(ctx, "git", "ls-files", "--others", "--exclude-standard", "pkgs").Output()
+	cmd = exec.CommandContext(ctx, "git", "ls-files", "--others", "--exclude-standard", "pkgs")
+	osexec.SetCancel(logger, cmd)
+	out, err := cmd.Output()
 	if err != nil {
 		return fmt.Errorf("check untracked files in pkgs: %w", err)
 	}
@@ -122,8 +127,10 @@ func checkDiffPackage(ctx context.Context) error {
 	return nil
 }
 
-func getPkgFromBranch(ctx context.Context, pkgName string) (string, error) {
-	out, err := exec.CommandContext(ctx, "git", "rev-parse", "--abbrev-ref", "HEAD").Output()
+func getPkgFromBranch(ctx context.Context, logger *slog.Logger, pkgName string) (string, error) {
+	cmd := exec.CommandContext(ctx, "git", "rev-parse", "--abbrev-ref", "HEAD")
+	osexec.SetCancel(logger, cmd)
+	out, err := cmd.Output()
 	if err != nil {
 		return "", fmt.Errorf("get current branch: %w", err)
 	}

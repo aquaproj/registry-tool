@@ -10,6 +10,8 @@ import (
 	"path/filepath"
 	"strings"
 	"time"
+
+	"github.com/aquaproj/registry-tool/pkg/osexec"
 )
 
 // GitCheckout creates or switches to a feature branch for the package.
@@ -29,7 +31,7 @@ func branchExists(ctx context.Context, logger *slog.Logger, branch string) bool 
 	cmd := exec.CommandContext(ctx, "git", "show-ref", "--quiet", "refs/heads/"+branch) //nolint:gosec
 	cmd.Stdout = nil
 	cmd.Stderr = nil
-	setCancel(logger, cmd)
+	osexec.SetCancel(logger, cmd)
 	return cmd.Run() == nil
 }
 
@@ -37,7 +39,7 @@ func gitCheckoutBranch(ctx context.Context, logger *slog.Logger, branch string) 
 	cmd := exec.CommandContext(ctx, "git", "checkout", branch)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
-	setCancel(logger, cmd)
+	osexec.SetCancel(logger, cmd)
 	logger.Info("+ " + cmd.String())
 	if err := cmd.Run(); err != nil {
 		return fmt.Errorf("git checkout %s: %w", branch, err)
@@ -54,7 +56,7 @@ func createBranchFromUpstream(ctx context.Context, logger *slog.Logger, branch s
 	logger.Info("+ " + cmd.String())
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
-	setCancel(logger, cmd)
+	osexec.SetCancel(logger, cmd)
 	if err := cmd.Run(); err != nil {
 		return fmt.Errorf("git remote add: %w", err)
 	}
@@ -65,7 +67,7 @@ func createBranchFromUpstream(ctx context.Context, logger *slog.Logger, branch s
 		logger.Info("+ " + rmCmd.String())
 		rmCmd.Stdout = os.Stdout
 		rmCmd.Stderr = os.Stderr
-		setCancel(logger, rmCmd)
+		osexec.SetCancel(logger, rmCmd)
 		_ = rmCmd.Run()
 	}()
 
@@ -74,7 +76,7 @@ func createBranchFromUpstream(ctx context.Context, logger *slog.Logger, branch s
 	logger.Info("+ " + cmd.String())
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
-	setCancel(logger, cmd)
+	osexec.SetCancel(logger, cmd)
 	if err := cmd.Run(); err != nil {
 		return fmt.Errorf("git fetch: %w", err)
 	}
@@ -84,7 +86,7 @@ func createBranchFromUpstream(ctx context.Context, logger *slog.Logger, branch s
 	logger.Info("+ " + cmd.String())
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
-	setCancel(logger, cmd)
+	osexec.SetCancel(logger, cmd)
 	if err := cmd.Run(); err != nil {
 		return fmt.Errorf("git checkout -b: %w", err)
 	}
@@ -100,7 +102,7 @@ func GitCommit(ctx context.Context, logger *slog.Logger, pkgName string) error {
 	cmd := exec.CommandContext(ctx, "git", "add", "registry.yaml", pkgDir)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
-	setCancel(logger, cmd)
+	osexec.SetCancel(logger, cmd)
 	if err := cmd.Run(); err != nil {
 		return fmt.Errorf("git add: %w", err)
 	}
@@ -112,7 +114,7 @@ func GitCommit(ctx context.Context, logger *slog.Logger, pkgName string) error {
 	logger.Info("+ " + cmd.String())
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
-	setCancel(logger, cmd)
+	osexec.SetCancel(logger, cmd)
 	if err := cmd.Run(); err != nil {
 		return fmt.Errorf("git commit: %w", err)
 	}
@@ -126,7 +128,7 @@ func GetCurrentBranch(ctx context.Context, logger *slog.Logger) (string, error) 
 	var stdout bytes.Buffer
 	cmd.Stdout = &stdout
 	cmd.Stderr = os.Stderr
-	setCancel(logger, cmd)
+	osexec.SetCancel(logger, cmd)
 	if err := cmd.Run(); err != nil {
 		return "", fmt.Errorf("git rev-parse: %w", err)
 	}
