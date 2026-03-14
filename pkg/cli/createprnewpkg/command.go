@@ -11,6 +11,7 @@ import (
 func Command(logger *slog.Logger) *cli.Command {
 	return &cli.Command{
 		Name:      "create-pr-new-pkg",
+		Aliases:   []string{"new"},
 		Usage:     `Create a pull request to add new packages`,
 		UsageText: `aqua-registry create-pr-new-pkg <package name> [<package name> ...]`,
 		Description: `Create a pull request to add new packages.
