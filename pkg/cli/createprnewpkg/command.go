@@ -27,7 +27,7 @@ This tool does the following things.
 4. Open a web browser to create a request with GitHub CLI
 `,
 		Action: func(ctx context.Context, cmd *cli.Command) error {
-			return newpkg.CreatePRNewPkgs(ctx, logger, cmd.Args().Slice()...)
+			return newpkg.CreatePRNewPkgs(ctx, logger, cmd.Args().First())
 		},
 	}
 }
