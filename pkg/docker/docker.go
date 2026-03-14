@@ -138,6 +138,27 @@ func (dm *Manager) RemoveContainer(ctx context.Context, logger *slog.Logger) err
 	return nil
 }
 
+// StopContainer stops the container if it is running.
+func (dm *Manager) StopContainer(ctx context.Context, logger *slog.Logger) error {
+	running, err := dm.ContainerRunning(ctx, logger)
+	if err != nil {
+		return err
+	}
+	if !running {
+		return nil
+	}
+
+	cmd := exec.CommandContext(ctx, "docker", "stop", "-t", "1", dm.config.Name) //nolint:gosec
+	logger.Info("+ " + cmd.String())
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	osexec.SetCancel(logger, cmd)
+	if err := cmd.Run(); err != nil {
+		return fmt.Errorf("docker stop: %w", err)
+	}
+	return nil
+}
+
 // Exec executes a command in the container.
 func (dm *Manager) Exec(ctx context.Context, logger *slog.Logger, env map[string]string, command ...string) error {
 	args := []string{"exec"}
