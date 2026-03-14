@@ -12,6 +12,7 @@ import (
 	"github.com/aquaproj/registry-tool/pkg/cli/patchchecksum"
 	"github.com/aquaproj/registry-tool/pkg/cli/resolveconflict"
 	"github.com/aquaproj/registry-tool/pkg/cli/scaffold"
+	startcmd "github.com/aquaproj/registry-tool/pkg/cli/start"
 	"github.com/suzuki-shunsuke/slog-util/slogutil"
 	"github.com/suzuki-shunsuke/urfave-cli-v3-util/urfave"
 	"github.com/urfave/cli/v3"
@@ -41,6 +42,7 @@ func Run(ctx context.Context, logger *slogutil.Logger, env *urfave.Env) error {
 			checkrepo.Command(),
 			mv.Command(),
 			resolveconflict.Command(logger.Logger),
+			startcmd.Command(logger.Logger),
 		},
 	}).Run(ctx, env.Args)
 }

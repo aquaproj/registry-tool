@@ -13,14 +13,10 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/aquaproj/registry-tool/pkg/docker"
 	genrg "github.com/aquaproj/registry-tool/pkg/generate-registry"
 	"github.com/aquaproj/registry-tool/pkg/initcmd"
 	"github.com/aquaproj/registry-tool/pkg/osexec"
-)
-
-const (
-	dirPermission  os.FileMode = 0o775
-	filePermission os.FileMode = 0o644
 )
 
 // Scaffold is the main entry point for the scaffold command.
@@ -47,7 +43,7 @@ func scaffoldLocal(ctx context.Context, logger *slog.Logger, cfg *Config) error 
 	pkgFile := filepath.Join(pkgDir, "pkg.yaml")
 	rgFile := filepath.Join(pkgDir, "registry.yaml")
 
-	if err := os.MkdirAll(pkgDir, dirPermission); err != nil {
+	if err := os.MkdirAll(pkgDir, docker.DirPermission); err != nil {
 		return fmt.Errorf("create directories: %w", err)
 	}
 
@@ -87,8 +83,8 @@ func scaffoldFull(ctx context.Context, logger *slog.Logger, cfg *Config) error {
 	}
 
 	logger.Info("Starting Linux container")
-	linuxContainer := DefaultLinuxContainer()
-	linuxDM := NewDockerManager(linuxContainer)
+	linuxContainer := docker.DefaultLinuxContainer()
+	linuxDM := docker.NewManager(linuxContainer)
 	if err := linuxDM.EnsureContainer(ctx, logger, cfg.Recreate); err != nil {
 		return fmt.Errorf("failed to ensure Linux container: %w", err)
 	}
@@ -114,15 +110,15 @@ func scaffoldFull(ctx context.Context, logger *slog.Logger, cfg *Config) error {
 	return nil
 }
 
-func runTests(ctx context.Context, logger *slog.Logger, cfg *Config, linuxDM *DockerManager, pkgName string) error {
+func runTests(ctx context.Context, logger *slog.Logger, cfg *Config, linuxDM *docker.Manager, pkgName string) error {
 	logger.Info("Running Linux/Darwin tests")
 	if err := RunLinuxDarwinTests(ctx, logger, linuxDM, pkgName); err != nil {
 		return fmt.Errorf("Linux/Darwin tests failed: %w", err)
 	}
 
 	logger.Info("Starting a container for Windows")
-	windowsContainer := DefaultWindowsContainer()
-	windowsDM := NewDockerManager(windowsContainer)
+	windowsContainer := docker.DefaultWindowsContainer()
+	windowsDM := docker.NewManager(windowsContainer)
 	if err := windowsDM.EnsureContainer(ctx, logger, cfg.Recreate); err != nil {
 		return fmt.Errorf("failed to ensure Windows container: %w", err)
 	}
@@ -136,12 +132,12 @@ func runTests(ctx context.Context, logger *slog.Logger, cfg *Config, linuxDM *Do
 }
 
 // scaffoldInContainer runs aqua gr inside the Docker container.
-func scaffoldInContainer(ctx context.Context, logger *slog.Logger, dm *DockerManager, cfg *Config) error {
+func scaffoldInContainer(ctx context.Context, logger *slog.Logger, dm *docker.Manager, cfg *Config) error {
 	pkgName := cfg.PkgName
 	pkgDir := filepath.Join(append([]string{"pkgs"}, strings.Split(pkgName, "/")...)...)
 
 	// Create local package directory
-	if err := os.MkdirAll(pkgDir, dirPermission); err != nil {
+	if err := os.MkdirAll(pkgDir, docker.DirPermission); err != nil {
 		return fmt.Errorf("create directories: %w", err)
 	}
 
@@ -159,16 +155,16 @@ func scaffoldInContainer(ctx context.Context, logger *slog.Logger, dm *DockerMan
 	}
 
 	// Copy results back from container
-	if err := dm.CopyFrom(ctx, logger, dm.config.WorkingDir+"/pkg.yaml", filepath.Join(pkgDir, "pkg.yaml")); err != nil {
+	if err := dm.CopyFrom(ctx, logger, dm.Config().WorkingDir+"/pkg.yaml", filepath.Join(pkgDir, "pkg.yaml")); err != nil {
 		return fmt.Errorf("copy pkg.yaml from container: %w", err)
 	}
-	if err := dm.CopyTo(ctx, logger, filepath.Join(pkgDir, "registry.yaml"), dm.config.WorkingDir+"/registry.yaml"); err != nil {
+	if err := dm.CopyTo(ctx, logger, filepath.Join(pkgDir, "registry.yaml"), dm.Config().WorkingDir+"/registry.yaml"); err != nil {
 		return fmt.Errorf("copy registry.yaml from container: %w", err)
 	}
 
 	// Copy scaffold config to package directory if provided
 	if cfg.ConfigPath != "" {
-		if err := copyFile(cfg.ConfigPath, filepath.Join(pkgDir, "scaffold.yaml")); err != nil {
+		if err := docker.CopyFile(cfg.ConfigPath, filepath.Join(pkgDir, "scaffold.yaml")); err != nil {
 			return fmt.Errorf("copy scaffold config to pkgs: %w", err)
 		}
 	}
@@ -176,9 +172,9 @@ func scaffoldInContainer(ctx context.Context, logger *slog.Logger, dm *DockerMan
 	return nil
 }
 
-func copyScaffoldConfig(ctx context.Context, logger *slog.Logger, dm *DockerManager, cfg *Config, pkgDir string) error {
+func copyScaffoldConfig(ctx context.Context, logger *slog.Logger, dm *docker.Manager, cfg *Config, pkgDir string) error {
 	if cfg.ConfigPath != "" {
-		if err := dm.CopyTo(ctx, logger, cfg.ConfigPath, dm.config.WorkingDir+"/scaffold.yaml"); err != nil {
+		if err := dm.CopyTo(ctx, logger, cfg.ConfigPath, dm.Config().WorkingDir+"/scaffold.yaml"); err != nil {
 			return fmt.Errorf("copy scaffold config to container: %w", err)
 		}
 		return nil
@@ -187,14 +183,14 @@ func copyScaffoldConfig(ctx context.Context, logger *slog.Logger, dm *DockerMana
 	scaffoldConfig := filepath.Join(pkgDir, "scaffold.yaml")
 	if _, err := os.Stat(scaffoldConfig); err == nil {
 		logger.Info("using scaffold config", "path", scaffoldConfig)
-		if err := dm.CopyTo(ctx, logger, scaffoldConfig, dm.config.WorkingDir+"/scaffold.yaml"); err != nil {
+		if err := dm.CopyTo(ctx, logger, scaffoldConfig, dm.Config().WorkingDir+"/scaffold.yaml"); err != nil {
 			return fmt.Errorf("copy scaffold config to container: %w", err)
 		}
 	}
 	return nil
 }
 
-func runAquaGRInContainer(ctx context.Context, logger *slog.Logger, dm *DockerManager, cfg *Config, pkgDir string) error {
+func runAquaGRInContainer(ctx context.Context, logger *slog.Logger, dm *docker.Manager, cfg *Config, pkgDir string) error {
 	token, err := getGitHubToken(ctx, logger)
 	if err != nil {
 		return fmt.Errorf("get a GitHub access token: %w", err)
@@ -218,11 +214,11 @@ func runAquaGRInContainer(ctx context.Context, logger *slog.Logger, dm *DockerMa
 	grCmd = append(grCmd, cfg.PkgName)
 
 	args := make([]string, 0, 3+2*len(env)+1+len(grCmd))
-	args = append(args, "exec", "-w", containerWorkingDir)
+	args = append(args, "exec", "-w", docker.ContainerWorkingDir)
 	for k, v := range env {
 		args = append(args, "-e", k+"="+v)
 	}
-	args = append(args, dm.config.Name)
+	args = append(args, dm.Config().Name)
 	args = append(args, grCmd...)
 
 	cmd := exec.CommandContext(ctx, "docker", args...)
@@ -230,7 +226,7 @@ func runAquaGRInContainer(ctx context.Context, logger *slog.Logger, dm *DockerMa
 	cmd.Stdout = buf
 	cmd.Stderr = os.Stderr
 	osexec.SetCancel(logger, cmd)
-	logger.Info("+ " + redactSecrets(cmd.String(), env))
+	logger.Info("+ " + docker.RedactSecrets(cmd.String(), env))
 	if err := cmd.Run(); err != nil {
 		return fmt.Errorf("docker exec: %w", err)
 	}

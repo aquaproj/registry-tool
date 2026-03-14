@@ -5,17 +5,19 @@ import (
 	"fmt"
 	"log/slog"
 	"path/filepath"
+
+	"github.com/aquaproj/registry-tool/pkg/docker"
 )
 
 // RunTests runs aqua install tests on the specified platforms.
-func RunTests(ctx context.Context, logger *slog.Logger, dm *DockerManager, pkgName string, platforms []Platform) error {
+func RunTests(ctx context.Context, logger *slog.Logger, dm *docker.Manager, pkgName string, platforms []Platform) error {
 	pkgDir := filepath.Join("pkgs", pkgName)
 
 	// Copy package files to container
-	if err := dm.CopyTo(ctx, logger, filepath.Join(pkgDir, "pkg.yaml"), dm.config.WorkingDir+"/pkg.yaml"); err != nil {
+	if err := dm.CopyTo(ctx, logger, filepath.Join(pkgDir, "pkg.yaml"), dm.Config().WorkingDir+"/pkg.yaml"); err != nil {
 		return fmt.Errorf("copy pkg.yaml to container: %w", err)
 	}
-	if err := dm.CopyTo(ctx, logger, filepath.Join(pkgDir, "registry.yaml"), dm.config.WorkingDir+"/registry.yaml"); err != nil {
+	if err := dm.CopyTo(ctx, logger, filepath.Join(pkgDir, "registry.yaml"), dm.Config().WorkingDir+"/registry.yaml"); err != nil {
 		return fmt.Errorf("copy registry.yaml to container: %w", err)
 	}
 
@@ -41,11 +43,11 @@ func RunTests(ctx context.Context, logger *slog.Logger, dm *DockerManager, pkgNa
 }
 
 // RunLinuxDarwinTests runs tests for Linux and Darwin platforms.
-func RunLinuxDarwinTests(ctx context.Context, logger *slog.Logger, dm *DockerManager, pkgName string) error {
+func RunLinuxDarwinTests(ctx context.Context, logger *slog.Logger, dm *docker.Manager, pkgName string) error {
 	return RunTests(ctx, logger, dm, pkgName, LinuxDarwinPlatforms())
 }
 
 // RunWindowsTests runs tests for Windows platforms.
-func RunWindowsTests(ctx context.Context, logger *slog.Logger, dm *DockerManager, pkgName string) error {
+func RunWindowsTests(ctx context.Context, logger *slog.Logger, dm *docker.Manager, pkgName string) error {
 	return RunTests(ctx, logger, dm, pkgName, WindowsPlatforms())
 }
