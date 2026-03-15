@@ -14,6 +14,9 @@ jobs:
       - run: docfresh -v
         env:
           AQUA_GITHUB_TOKEN: ${{github.token}}
+      - run: argd -v
+        env:
+          AQUA_GITHUB_TOKEN: ${{github.token}}
       - run: docfresh run USAGE.md
       - run: npm i -g prettier
       - run: prettier -w .
