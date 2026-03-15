@@ -12,7 +12,7 @@ func Command() *cli.Command {
 		Name:      "generate-registry",
 		Aliases:   []string{"gr"},
 		Usage:     `Update registry.yaml`,
-		UsageText: `aqua-registry gr`,
+		UsageText: `argd gr`,
 		Description: `Update registry.yaml
 
 This command updates registry.yaml on the repository root directory.

@@ -13,12 +13,12 @@ func Command(logger *slog.Logger) *cli.Command {
 		Name:      "create-pr-new-pkg",
 		Aliases:   []string{"new"},
 		Usage:     `Create a pull request to add new packages`,
-		UsageText: `aqua-registry create-pr-new-pkg <package name> [<package name> ...]`,
+		UsageText: `argd new <package name> [<package name> ...]`,
 		Description: `Create a pull request to add new packages.
 
 e.g.
 
-$ argd create-pr-new-pkg cli/cli
+$ argd new cli/cli
 
 This tool does the following things.
 

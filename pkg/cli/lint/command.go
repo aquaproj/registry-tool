@@ -13,7 +13,7 @@ func Command(logger *slog.Logger) *cli.Command {
 		Name:      "lint",
 		Aliases:   []string{"l"},
 		Usage:     "Lint a package",
-		UsageText: "aqua-registry lint [<package name> or pkgs/**/pkg.yaml or pkgs/**/registry.yaml] ...",
+		UsageText: "argd lint [<package name> or pkgs/**/pkg.yaml or pkgs/**/registry.yaml] ...",
 		Action: func(ctx context.Context, cmd *cli.Command) error {
 			return lintpkg.Lint(ctx, logger, cmd.Args().Slice())
 		},

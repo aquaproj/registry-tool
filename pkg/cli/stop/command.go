@@ -12,7 +12,7 @@ func Command(logger *slog.Logger) *cli.Command {
 	return &cli.Command{
 		Name:      "stop",
 		Usage:     "Stop Docker containers",
-		UsageText: "aqua-registry stop",
+		UsageText: "argd stop",
 		Action: func(ctx context.Context, _ *cli.Command) error {
 			return stop.Stop(ctx, logger)
 		},
