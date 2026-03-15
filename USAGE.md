@@ -8,6 +8,12 @@ command:
   hide_command: true
 code_block: false
 -->
+Mar 15 12:48:37.819 INF download and unarchive the package program=aqua version=2.57.0 env=linux/amd64 exe_name=argd package_name=aquaproj/registry-tool package_version=v0.4.1 registry=standard
+Mar 15 12:48:38.006 INF verify a package with slsa-verifier program=aqua version=2.57.0 env=linux/amd64 exe_name=argd package_name=aquaproj/registry-tool package_version=v0.4.1 registry=standard
+Verified build using builder "https://github.com/slsa-framework/slsa-github-generator/.github/workflows/generator_generic_slsa3.yml@refs/tags/v2.1.0" at commit bc2e5e8765c243da1b357748b0c9702f81acbcc0
+Verifying artifact /tmp/582711359: PASSED
+
+PASSED: SLSA verification passed
 ```console
 $ aqua-registry --help
 NAME:
@@ -15,6 +21,9 @@ NAME:
 
 USAGE:
    aqua-registry [global options] [command [command options]]
+
+VERSION:
+   0.4.1
 
 COMMANDS:
    scaffold, s             Scaffold a package
@@ -39,6 +48,7 @@ COMMANDS:
 GLOBAL OPTIONS:
    --log-level string  log level [$AQUA_LOG_LEVEL]
    --help, -h          show help
+   --version, -v       print the version
 ```
 
 ## aqua-registry scaffold
@@ -78,14 +88,14 @@ NAME:
    aqua-registry create-pr-new-pkg - Create a pull request to add new packages
 
 USAGE:
-   argd new <package name> [<package name> ...]
+   aqua-registry create-pr-new-pkg <package name> [<package name> ...]
 
 DESCRIPTION:
    Create a pull request to add new packages.
 
    e.g.
 
-   $ argd new cli/cli
+   $ argd create-pr-new-pkg cli/cli
 
    This tool does the following things.
 
@@ -107,7 +117,7 @@ NAME:
    aqua-registry generate-registry - Update registry.yaml
 
 USAGE:
-   argd gr
+   aqua-registry gr
 
 DESCRIPTION:
    Update registry.yaml
@@ -214,7 +224,7 @@ NAME:
    aqua-registry connect - Connect to a Docker container with an interactive shell
 
 USAGE:
-   argd connect [<os>] [<arch>]
+   aqua-registry connect [<os>] [<arch>]
 
 OPTIONS:
    --help, -h  show help
@@ -228,7 +238,7 @@ NAME:
    aqua-registry lint - Lint a package
 
 USAGE:
-   argd lint [<package name> or pkgs/**/pkg.yaml or pkgs/**/registry.yaml] ...
+   aqua-registry lint [<package name> or pkgs/**/pkg.yaml or pkgs/**/registry.yaml] ...
 
 OPTIONS:
    --help, -h  show help
@@ -242,7 +252,7 @@ NAME:
    aqua-registry remove - Remove Docker containers
 
 USAGE:
-   argd remove
+   aqua-registry remove
 
 OPTIONS:
    --help, -h  show help
@@ -256,7 +266,7 @@ NAME:
    aqua-registry remove-package - Remove a package from Docker containers
 
 USAGE:
-   argd remove-package [<package name>]
+   aqua-registry remove-package [<package name>]
 
 OPTIONS:
    --help, -h  show help
@@ -270,7 +280,7 @@ NAME:
    aqua-registry resolve-conflict - Resolve registry.yaml merge conflict with main
 
 USAGE:
-   argd resolve-conflict <PR number>
+   aqua-registry resolve-conflict <PR number>
 
 OPTIONS:
    --help, -h  show help
@@ -284,7 +294,7 @@ NAME:
    aqua-registry start - Start Docker containers
 
 USAGE:
-   argd start [-r]
+   aqua-registry start [-r]
 
 OPTIONS:
    --recreate, -r  Recreate the containers
@@ -299,7 +309,7 @@ NAME:
    aqua-registry stop - Stop Docker containers
 
 USAGE:
-   argd stop
+   aqua-registry stop
 
 OPTIONS:
    --help, -h  show help
@@ -313,7 +323,7 @@ NAME:
    aqua-registry test - Test a package in Docker containers
 
 USAGE:
-   argd test [-r] [<package name>]
+   aqua-registry test [-r] [<package name>]
 
 OPTIONS:
    --recreate, -r  Recreate the containers
