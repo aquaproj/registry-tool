@@ -17,7 +17,7 @@ USAGE:
    aqua-registry [global options] [command [command options]]
 
 VERSION:
-   0.4.1
+   0.5.0
 
 COMMANDS:
    scaffold, s             Scaffold a package
@@ -28,7 +28,6 @@ COMMANDS:
    check-repo              Check if GitHub Repository was transferred
    mv                      Rename a package
    connect, con            Connect to a Docker container with an interactive shell
-   lint, l                 Lint a package
    remove, rm              Remove Docker containers
    remove-package, rmp     Remove a package from Docker containers
    resolve-conflict        Resolve registry.yaml merge conflict with main
@@ -82,14 +81,14 @@ NAME:
    aqua-registry create-pr-new-pkg - Create a pull request to add new packages
 
 USAGE:
-   aqua-registry create-pr-new-pkg <package name> [<package name> ...]
+   argd new <package name> [<package name> ...]
 
 DESCRIPTION:
    Create a pull request to add new packages.
 
    e.g.
 
-   $ argd create-pr-new-pkg cli/cli
+   $ argd new cli/cli
 
    This tool does the following things.
 
@@ -111,7 +110,7 @@ NAME:
    aqua-registry generate-registry - Update registry.yaml
 
 USAGE:
-   aqua-registry gr
+   argd gr
 
 DESCRIPTION:
    Update registry.yaml
@@ -218,21 +217,7 @@ NAME:
    aqua-registry connect - Connect to a Docker container with an interactive shell
 
 USAGE:
-   aqua-registry connect [<os>] [<arch>]
-
-OPTIONS:
-   --help, -h  show help
-```
-
-## aqua-registry lint
-
-```console
-$ aqua-registry lint --help
-NAME:
-   aqua-registry lint - Lint a package
-
-USAGE:
-   aqua-registry lint [<package name> or pkgs/**/pkg.yaml or pkgs/**/registry.yaml] ...
+   argd connect [<os>] [<arch>]
 
 OPTIONS:
    --help, -h  show help
@@ -246,7 +231,7 @@ NAME:
    aqua-registry remove - Remove Docker containers
 
 USAGE:
-   aqua-registry remove
+   argd remove
 
 OPTIONS:
    --help, -h  show help
@@ -260,7 +245,7 @@ NAME:
    aqua-registry remove-package - Remove a package from Docker containers
 
 USAGE:
-   aqua-registry remove-package [<package name>]
+   argd remove-package [<package name>]
 
 OPTIONS:
    --help, -h  show help
@@ -274,7 +259,7 @@ NAME:
    aqua-registry resolve-conflict - Resolve registry.yaml merge conflict with main
 
 USAGE:
-   aqua-registry resolve-conflict <PR number>
+   argd resolve-conflict <PR number>
 
 OPTIONS:
    --help, -h  show help
@@ -288,7 +273,7 @@ NAME:
    aqua-registry start - Start Docker containers
 
 USAGE:
-   aqua-registry start [-r]
+   argd start [-r]
 
 OPTIONS:
    --recreate, -r  Recreate the containers
@@ -303,7 +288,7 @@ NAME:
    aqua-registry stop - Stop Docker containers
 
 USAGE:
-   aqua-registry stop
+   argd stop
 
 OPTIONS:
    --help, -h  show help
@@ -317,7 +302,7 @@ NAME:
    aqua-registry test - Test a package in Docker containers
 
 USAGE:
-   aqua-registry test [-r] [<package name>]
+   argd test [-r] [<package name>]
 
 OPTIONS:
    --recreate, -r  Recreate the containers
