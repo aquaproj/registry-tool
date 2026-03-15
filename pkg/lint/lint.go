@@ -54,6 +54,84 @@ func Lint(ctx context.Context, logger *slog.Logger, pkgName string) error {
 	if len(registryCfg.PackageInfos) == 0 {
 		return slogerr.With(errors.New("packages is empty"), "file", registryFile) //nolint:wrapcheck
 	}
+	if len(registryCfg.PackageInfos) > 1 {
+		return slogerr.With(errors.New("packages must include only one package"), "file", registryFile) //nolint:wrapcheck
+	}
+	pkgInfo := registryCfg.PackageInfos[0]
+	if pkgName != pkgInfo.GetName() {
+		return slogerr.With( //nolint:wrapcheck
+			errors.New("the package name in registry.yaml does not match the given package name"),
+			"file", registryFile,
+			"package_name", pkgName,
+			"package_name_in_registry", pkgInfo.GetName())
+	}
+	for _, pkg := range cfg.Packages {
+		if pkg.Name != pkgName {
+			return slogerr.With( //nolint:wrapcheck
+				errors.New("package name mismatch"),
+				"file", pkgFile,
+				"package_name", pkgName,
+				"package_name_in_pkg_yaml", pkg.Name,
+			)
+		}
+	}
+	if pkgInfo.VersionConstraints != "" && pkgInfo.VersionConstraints != "false" {
+		return slogerr.With(
+			errors.New(`the top level version_constraints must be either empty or "false"`),
+			"file", registryFile,
+			"version_constraints", pkgInfo.VersionConstraints,
+		)
+	}
+	if err := validateFiles(pkgInfo); err != nil {
+		return slogerr.With(err, "file", registryFile) //nolint:wrapcheck
+	}
 
+	if pkgInfo.RepoOwner != "" {
+		if pkgInfo.RepoName == "" {
+			return errors.New("repo_name must be specified when repo_owner is specified")
+		}
+		repoFullName := pkgInfo.RepoOwner + "/" + pkgInfo.RepoName
+		if !strings.Contains(pkgName, ".") && !(pkgName == repoFullName || strings.HasPrefix(pkgName, repoFullName+"/")) {
+			return slogerr.With(
+				errors.New("package name must start with repository full name"),
+				"package_name", pkgName,
+				"repo_owner", pkgInfo.RepoOwner,
+				"repo_name", pkgInfo.RepoName,
+				"file", registryFile,
+			)
+		}
+	}
+	return nil
+}
+
+func validateFiles(pkgInfo *registry.PackageInfo) error {
+	files := pkgInfo.Files
+	for _, ov := range pkgInfo.Overrides {
+		files = append(files, ov.Files...)
+	}
+	for _, vov := range pkgInfo.VersionOverrides {
+		files = append(files, vov.Files...)
+		for _, ov := range vov.Overrides {
+			files = append(files, ov.Files...)
+		}
+	}
+	for _, file := range files {
+		if err := validateFile(file); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func validateFile(file *registry.File) error {
+	if strings.HasSuffix(file.Name, ".exe") {
+		return errors.New(".files[].name must not end with .exe. Remove .exe from name")
+	}
+	if file.Name == file.Src {
+		return errors.New("omit .files[].src if it's same with .files[].name")
+	}
+	if strings.HasSuffix(file.Src, ".exe") {
+		return errors.New(".files[].src must not end with .exe. Remove .exe from src")
+	}
 	return nil
 }
