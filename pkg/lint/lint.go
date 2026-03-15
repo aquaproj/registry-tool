@@ -39,8 +39,29 @@ func Lint(ctx context.Context, logger *slog.Logger, pkgName string) error {
 		return slogerr.With(errors.New("packages is empty"), "file", pkgFile) //nolint:wrapcheck
 	}
 
-	registryFile := filepath.Join(pkgDir, "registry.yaml")
+	if err := lintPkgYAML(pkgName, pkgFile, cfg); err != nil {
+		return err
+	}
 
+	registryFile := filepath.Join(pkgDir, "registry.yaml")
+	return lintRegistryYAML(pkgName, registryFile)
+}
+
+func lintPkgYAML(pkgName, pkgFile string, cfg aqua.Config) error {
+	for _, pkg := range cfg.Packages {
+		if pkg.Name != pkgName {
+			return slogerr.With( //nolint:wrapcheck
+				errors.New("package name mismatch"),
+				"file", pkgFile,
+				"package_name", pkgName,
+				"package_name_in_pkg_yaml", pkg.Name,
+			)
+		}
+	}
+	return nil
+}
+
+func lintRegistryYAML(pkgName, registryFile string) error {
 	rb, err := os.ReadFile(registryFile)
 	if err != nil {
 		return fmt.Errorf("read %s: %w", registryFile, err)
@@ -65,18 +86,12 @@ func Lint(ctx context.Context, logger *slog.Logger, pkgName string) error {
 			"package_name", pkgName,
 			"package_name_in_registry", pkgInfo.GetName())
 	}
-	for _, pkg := range cfg.Packages {
-		if pkg.Name != pkgName {
-			return slogerr.With( //nolint:wrapcheck
-				errors.New("package name mismatch"),
-				"file", pkgFile,
-				"package_name", pkgName,
-				"package_name_in_pkg_yaml", pkg.Name,
-			)
-		}
-	}
+	return validatePkgInfo(pkgName, registryFile, pkgInfo)
+}
+
+func validatePkgInfo(pkgName, registryFile string, pkgInfo *registry.PackageInfo) error {
 	if pkgInfo.VersionConstraints != "" && pkgInfo.VersionConstraints != "false" {
-		return slogerr.With(
+		return slogerr.With( //nolint:wrapcheck
 			errors.New(`the top level version_constraints must be either empty or "false"`),
 			"file", registryFile,
 			"version_constraints", pkgInfo.VersionConstraints,
@@ -91,8 +106,8 @@ func Lint(ctx context.Context, logger *slog.Logger, pkgName string) error {
 			return errors.New("repo_name must be specified when repo_owner is specified")
 		}
 		repoFullName := pkgInfo.RepoOwner + "/" + pkgInfo.RepoName
-		if !strings.Contains(pkgName, ".") && !(pkgName == repoFullName || strings.HasPrefix(pkgName, repoFullName+"/")) {
-			return slogerr.With(
+		if !strings.Contains(pkgName, ".") && pkgName != repoFullName && !strings.HasPrefix(pkgName, repoFullName+"/") {
+			return slogerr.With( //nolint:wrapcheck
 				errors.New("package name must start with repository full name"),
 				"package_name", pkgName,
 				"repo_owner", pkgInfo.RepoOwner,
