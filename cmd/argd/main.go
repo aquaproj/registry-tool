@@ -8,5 +8,5 @@ import (
 var version = ""
 
 func main() {
-	urfave.Main("aqua-registry", version, cli.Run)
+	urfave.Main("argd", version, cli.Run)
 }
