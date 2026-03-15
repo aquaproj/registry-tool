@@ -10,6 +10,7 @@ import (
 	"strings"
 
 	"github.com/aquaproj/aqua/v2/pkg/config/aqua"
+	"github.com/aquaproj/aqua/v2/pkg/config/registry"
 	"github.com/aquaproj/registry-tool/pkg/naming"
 	"github.com/suzuki-shunsuke/slog-error/slogerr"
 	"gopkg.in/yaml.v3"
@@ -35,7 +36,23 @@ func Lint(ctx context.Context, logger *slog.Logger, pkgName string) error {
 	}
 
 	if len(cfg.Packages) == 0 {
-		return slogerr.With(errors.New("packages is empty"), "file", pkgFile)
+		return slogerr.With(errors.New("packages is empty"), "file", pkgFile) //nolint:wrapcheck
+	}
+
+	registryFile := filepath.Join(pkgDir, "registry.yaml")
+
+	rb, err := os.ReadFile(registryFile)
+	if err != nil {
+		return fmt.Errorf("read %s: %w", registryFile, err)
+	}
+
+	var registryCfg registry.Config
+	if err := yaml.Unmarshal(rb, &registryCfg); err != nil {
+		return fmt.Errorf("parse %s: %w", registryFile, err)
+	}
+
+	if len(registryCfg.PackageInfos) == 0 {
+		return slogerr.With(errors.New("packages is empty"), "file", registryFile) //nolint:wrapcheck
 	}
 
 	return nil
