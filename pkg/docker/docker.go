@@ -439,8 +439,13 @@ func CopyFile(src, dst string) error {
 
 // RedactSecrets replaces secret values in a string with <REDACTED>.
 func RedactSecrets(s string, env map[string]string) string {
-	for _, v := range env {
-		if v != "" {
+	secretEnvs := map[string]struct{}{
+		"GITHUB_TOKEN":      {},
+		"AQUA_GITHUB_TOKEN": {},
+		"GH_TOKEN":          {},
+	}
+	for k, v := range env {
+		if _, ok := secretEnvs[k]; ok && v != "" {
 			s = strings.ReplaceAll(s, v, "<REDACTED>")
 		}
 	}

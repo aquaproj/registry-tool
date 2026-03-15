@@ -15,6 +15,7 @@ import (
 
 	"github.com/aquaproj/registry-tool/pkg/docker"
 	genrg "github.com/aquaproj/registry-tool/pkg/generate-registry"
+	"github.com/aquaproj/registry-tool/pkg/github"
 	"github.com/aquaproj/registry-tool/pkg/initcmd"
 	"github.com/aquaproj/registry-tool/pkg/osexec"
 )
@@ -30,10 +31,15 @@ e.g. $ argd scaffold cli/cli`)
 	// Strip https://github.com/ prefix if present
 	cfg.PkgName = strings.TrimPrefix(cfg.PkgName, "https://github.com/")
 
+	githubToken, err := github.GetAccessToken(ctx, logger)
+	if err != nil {
+		return err
+	}
+
 	if cfg.Local {
 		return scaffoldLocal(ctx, logger, cfg)
 	}
-	return scaffoldFull(ctx, logger, cfg)
+	return scaffoldFull(ctx, logger, cfg, githubToken)
 }
 
 // scaffoldLocal runs the simple local scaffold without Docker.
@@ -64,7 +70,7 @@ func scaffoldLocal(ctx context.Context, logger *slog.Logger, cfg *Config) error 
 }
 
 // scaffoldFull runs the full scaffold workflow with Docker containers and tests.
-func scaffoldFull(ctx context.Context, logger *slog.Logger, cfg *Config) error {
+func scaffoldFull(ctx context.Context, logger *slog.Logger, cfg *Config, githubToken string) error {
 	pkgName := cfg.PkgName
 
 	if err := CheckPrerequisites(ctx, logger); err != nil {
@@ -90,7 +96,7 @@ func scaffoldFull(ctx context.Context, logger *slog.Logger, cfg *Config) error {
 	}
 
 	logger.Info("Running scaffold in container")
-	if err := scaffoldInContainer(ctx, logger, linuxDM, cfg); err != nil {
+	if err := scaffoldInContainer(ctx, logger, linuxDM, cfg, githubToken); err != nil {
 		return fmt.Errorf("scaffold in container failed: %w", err)
 	}
 
@@ -104,15 +110,15 @@ func scaffoldFull(ctx context.Context, logger *slog.Logger, cfg *Config) error {
 		return fmt.Errorf("git commit failed: %w", err)
 	}
 
-	if err := runTests(ctx, logger, cfg, linuxDM, pkgName); err != nil {
+	if err := runTests(ctx, logger, cfg, linuxDM, pkgName, githubToken); err != nil {
 		return err
 	}
 	return nil
 }
 
-func runTests(ctx context.Context, logger *slog.Logger, cfg *Config, linuxDM *docker.Manager, pkgName string) error {
+func runTests(ctx context.Context, logger *slog.Logger, cfg *Config, linuxDM *docker.Manager, pkgName, githubToken string) error {
 	logger.Info("Running Linux/Darwin tests")
-	if err := RunLinuxDarwinTests(ctx, logger, linuxDM, pkgName); err != nil {
+	if err := RunLinuxDarwinTests(ctx, logger, linuxDM, pkgName, githubToken); err != nil {
 		return fmt.Errorf("Linux/Darwin tests failed: %w", err)
 	}
 
@@ -124,7 +130,7 @@ func runTests(ctx context.Context, logger *slog.Logger, cfg *Config, linuxDM *do
 	}
 
 	logger.Info("Running Windows tests")
-	if err := RunWindowsTests(ctx, logger, windowsDM, pkgName); err != nil {
+	if err := RunWindowsTests(ctx, logger, windowsDM, pkgName, githubToken); err != nil {
 		return fmt.Errorf("windows tests failed: %w", err)
 	}
 
@@ -132,7 +138,7 @@ func runTests(ctx context.Context, logger *slog.Logger, cfg *Config, linuxDM *do
 }
 
 // scaffoldInContainer runs aqua gr inside the Docker container.
-func scaffoldInContainer(ctx context.Context, logger *slog.Logger, dm *docker.Manager, cfg *Config) error {
+func scaffoldInContainer(ctx context.Context, logger *slog.Logger, dm *docker.Manager, cfg *Config, githubToken string) error {
 	pkgName := cfg.PkgName
 	pkgDir := filepath.Join(append([]string{"pkgs"}, strings.Split(pkgName, "/")...)...)
 
@@ -150,7 +156,7 @@ func scaffoldInContainer(ctx context.Context, logger *slog.Logger, dm *docker.Ma
 		return fmt.Errorf("remove existing pkg.yaml in the container if it exists: %w", err)
 	}
 
-	if err := runAquaGRInContainer(ctx, logger, dm, cfg, pkgDir); err != nil {
+	if err := runAquaGRInContainer(ctx, logger, dm, cfg, pkgDir, githubToken); err != nil {
 		return err
 	}
 
@@ -190,15 +196,11 @@ func copyScaffoldConfig(ctx context.Context, logger *slog.Logger, dm *docker.Man
 	return nil
 }
 
-func runAquaGRInContainer(ctx context.Context, logger *slog.Logger, dm *docker.Manager, cfg *Config, pkgDir string) error {
-	token, err := getGitHubToken(ctx, logger)
-	if err != nil {
-		return fmt.Errorf("get a GitHub access token: %w", err)
-	}
+func runAquaGRInContainer(ctx context.Context, logger *slog.Logger, dm *docker.Manager, cfg *Config, pkgDir, githubToken string) error {
 	var env map[string]string
-	if token != "" {
+	if githubToken != "" {
 		env = map[string]string{
-			"GITHUB_TOKEN": token,
+			"AQUA_GITHUB_TOKEN": githubToken,
 		}
 	}
 	grCmd := []string{"aqua", "gr", "--out-testdata", "pkg.yaml"}

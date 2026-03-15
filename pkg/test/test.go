@@ -7,6 +7,7 @@ import (
 
 	"github.com/aquaproj/registry-tool/pkg/docker"
 	genrg "github.com/aquaproj/registry-tool/pkg/generate-registry"
+	"github.com/aquaproj/registry-tool/pkg/github"
 	"github.com/aquaproj/registry-tool/pkg/naming"
 	"github.com/aquaproj/registry-tool/pkg/scaffold"
 )
@@ -24,6 +25,11 @@ func Test(ctx context.Context, logger *slog.Logger, cfg *Config) error {
 		return fmt.Errorf("resolve package name: %w", err)
 	}
 
+	githubToken, err := github.GetAccessToken(ctx, logger)
+	if err != nil {
+		return fmt.Errorf("get a GitHub access token: %w", err)
+	}
+
 	// Ensure Linux container
 	linuxDM := docker.NewManager(docker.DefaultLinuxContainer())
 	if err := linuxDM.EnsureContainer(ctx, logger, cfg.Recreate); err != nil {
@@ -32,7 +38,7 @@ func Test(ctx context.Context, logger *slog.Logger, cfg *Config) error {
 
 	// Run Linux/Darwin tests
 	logger.Info("Running Linux/Darwin tests")
-	if err := scaffold.RunLinuxDarwinTests(ctx, logger, linuxDM, pkgName); err != nil {
+	if err := scaffold.RunLinuxDarwinTests(ctx, logger, linuxDM, pkgName, githubToken); err != nil {
 		return fmt.Errorf("Linux/Darwin tests failed: %w", err)
 	}
 
@@ -44,7 +50,7 @@ func Test(ctx context.Context, logger *slog.Logger, cfg *Config) error {
 
 	// Run Windows tests
 	logger.Info("Running Windows tests")
-	if err := scaffold.RunWindowsTests(ctx, logger, windowsDM, pkgName); err != nil {
+	if err := scaffold.RunWindowsTests(ctx, logger, windowsDM, pkgName, githubToken); err != nil {
 		return fmt.Errorf("windows tests failed: %w", err)
 	}
 

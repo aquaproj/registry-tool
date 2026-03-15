@@ -10,7 +10,7 @@ import (
 )
 
 // RunTests runs aqua install tests on the specified platforms.
-func RunTests(ctx context.Context, logger *slog.Logger, dm *docker.Manager, pkgName string, platforms []Platform) error {
+func RunTests(ctx context.Context, logger *slog.Logger, dm *docker.Manager, pkgName, githubToken string, platforms []Platform) error {
 	pkgDir := filepath.Join("pkgs", pkgName)
 
 	// Copy package files to container
@@ -30,8 +30,9 @@ func RunTests(ctx context.Context, logger *slog.Logger, dm *docker.Manager, pkgN
 		}
 
 		env := map[string]string{
-			"AQUA_GOOS":   p.OS,
-			"AQUA_GOARCH": p.Arch,
+			"AQUA_GOOS":         p.OS,
+			"AQUA_GOARCH":       p.Arch,
+			"AQUA_GITHUB_TOKEN": githubToken,
 		}
 
 		if err := dm.Exec(ctx, logger, env, "aqua", "i"); err != nil {
@@ -43,11 +44,11 @@ func RunTests(ctx context.Context, logger *slog.Logger, dm *docker.Manager, pkgN
 }
 
 // RunLinuxDarwinTests runs tests for Linux and Darwin platforms.
-func RunLinuxDarwinTests(ctx context.Context, logger *slog.Logger, dm *docker.Manager, pkgName string) error {
-	return RunTests(ctx, logger, dm, pkgName, LinuxDarwinPlatforms())
+func RunLinuxDarwinTests(ctx context.Context, logger *slog.Logger, dm *docker.Manager, pkgName, githubToken string) error {
+	return RunTests(ctx, logger, dm, pkgName, githubToken, LinuxDarwinPlatforms())
 }
 
 // RunWindowsTests runs tests for Windows platforms.
-func RunWindowsTests(ctx context.Context, logger *slog.Logger, dm *docker.Manager, pkgName string) error {
-	return RunTests(ctx, logger, dm, pkgName, WindowsPlatforms())
+func RunWindowsTests(ctx context.Context, logger *slog.Logger, dm *docker.Manager, pkgName, githubToken string) error {
+	return RunTests(ctx, logger, dm, pkgName, githubToken, WindowsPlatforms())
 }
