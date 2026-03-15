@@ -32,7 +32,7 @@ func Connect(ctx context.Context, logger *slog.Logger, osName, arch string) erro
 	}
 
 	// Run aqua i -l as a workaround
-	if err := dm.Exec(ctx, logger, env, "aqua", "i", "-l"); err != nil {
+	if err := dm.Command(ctx, logger, env, "aqua", "i", "-l").Run(); err != nil {
 		return fmt.Errorf("run aqua i -l: %w", err)
 	}
 

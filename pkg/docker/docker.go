@@ -159,8 +159,8 @@ func (dm *Manager) StopContainer(ctx context.Context, logger *slog.Logger) error
 	return nil
 }
 
-// Exec executes a command in the container.
-func (dm *Manager) Exec(ctx context.Context, logger *slog.Logger, env map[string]string, command ...string) error {
+// Command executes a command in the container.
+func (dm *Manager) Command(ctx context.Context, logger *slog.Logger, env map[string]string, command ...string) *exec.Cmd {
 	args := []string{"exec"}
 	if dm.config.WorkingDir != "" {
 		args = append(args, "-w", dm.config.WorkingDir)
@@ -176,10 +176,7 @@ func (dm *Manager) Exec(ctx context.Context, logger *slog.Logger, env map[string
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	osexec.SetCancel(logger, cmd)
-	if err := cmd.Run(); err != nil {
-		return fmt.Errorf("docker exec: %w", err)
-	}
-	return nil
+	return cmd
 }
 
 // ExecInteractive executes an interactive command in the container with stdin attached.
@@ -208,7 +205,10 @@ func (dm *Manager) ExecInteractive(ctx context.Context, logger *slog.Logger, env
 
 // ExecBash executes a bash command in the container.
 func (dm *Manager) ExecBash(ctx context.Context, logger *slog.Logger, bashCmd string) error {
-	return dm.Exec(ctx, logger, nil, "bash", "-c", bashCmd)
+	if err := dm.Command(ctx, logger, nil, "bash", "-c", bashCmd).Run(); err != nil {
+		return fmt.Errorf("docker exec bash: %w", err)
+	}
+	return nil
 }
 
 // CopyTo copies a file from the host to the container.
@@ -439,8 +439,13 @@ func CopyFile(src, dst string) error {
 
 // RedactSecrets replaces secret values in a string with <REDACTED>.
 func RedactSecrets(s string, env map[string]string) string {
-	for _, v := range env {
-		if v != "" {
+	secretEnvs := map[string]struct{}{
+		"GITHUB_TOKEN":      {},
+		"AQUA_GITHUB_TOKEN": {},
+		"GH_TOKEN":          {},
+	}
+	for k, v := range env {
+		if _, ok := secretEnvs[k]; ok && v != "" {
 			s = strings.ReplaceAll(s, v, "<REDACTED>")
 		}
 	}
