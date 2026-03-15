@@ -16,7 +16,47 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-func Lint(ctx context.Context, logger *slog.Logger, pkgName string) error {
+func Lint(ctx context.Context, logger *slog.Logger, args []string) error {
+	for _, arg := range args {
+		if err := lint(ctx, logger, arg); err != nil {
+			return slogerr.With(err, "arg", arg) //nolint:wrapcheck
+		}
+	}
+	return nil
+}
+
+func lint(ctx context.Context, logger *slog.Logger, arg string) error {
+	base := filepath.Base(arg)
+	switch base {
+	case "registry.yaml":
+		dir := filepath.ToSlash(filepath.Dir(arg))
+		pkgName, ok := strings.CutPrefix(dir, "pkgs/")
+		if !ok {
+			return nil
+		}
+		if err := lintRegistryYAML(pkgName, arg); err != nil {
+			return err
+		}
+	case "pkg.yaml":
+		dir := filepath.ToSlash(filepath.Dir(arg))
+		pkgName, ok := strings.CutPrefix(dir, "pkgs/")
+		if !ok {
+			return nil
+		}
+		if err := lintPkgYAML(pkgName, arg); err != nil {
+			return err
+		}
+	case "scaffold.yaml":
+		return nil
+	default:
+		if err := lintPackage(ctx, logger, arg); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func lintPackage(ctx context.Context, logger *slog.Logger, pkgName string) error {
 	pkgName, err := naming.Resolve(ctx, logger, pkgName)
 	if err != nil {
 		return fmt.Errorf("resolve package name: %w", err)
@@ -25,6 +65,15 @@ func Lint(ctx context.Context, logger *slog.Logger, pkgName string) error {
 	pkgDir := filepath.Join(append([]string{"pkgs"}, strings.Split(pkgName, "/")...)...)
 	pkgFile := filepath.Join(pkgDir, "pkg.yaml")
 
+	if err := lintPkgYAML(pkgName, pkgFile); err != nil {
+		return err
+	}
+
+	registryFile := filepath.Join(pkgDir, "registry.yaml")
+	return lintRegistryYAML(pkgName, registryFile)
+}
+
+func lintPkgYAML(pkgName, pkgFile string) error {
 	b, err := os.ReadFile(pkgFile)
 	if err != nil {
 		return fmt.Errorf("read %s: %w", pkgFile, err)
@@ -38,16 +87,6 @@ func Lint(ctx context.Context, logger *slog.Logger, pkgName string) error {
 	if len(cfg.Packages) == 0 {
 		return slogerr.With(errors.New("packages is empty"), "file", pkgFile) //nolint:wrapcheck
 	}
-
-	if err := lintPkgYAML(pkgName, pkgFile, cfg); err != nil {
-		return err
-	}
-
-	registryFile := filepath.Join(pkgDir, "registry.yaml")
-	return lintRegistryYAML(pkgName, registryFile)
-}
-
-func lintPkgYAML(pkgName, pkgFile string, cfg aqua.Config) error {
 	for _, pkg := range cfg.Packages {
 		if pkg.Name != pkgName {
 			return slogerr.With( //nolint:wrapcheck
