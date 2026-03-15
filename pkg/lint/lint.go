@@ -101,14 +101,17 @@ func validatePkgInfo(pkgName, registryFile string, pkgInfo *registry.PackageInfo
 		return slogerr.With(err, "file", registryFile) //nolint:wrapcheck
 	}
 
-	if pkgInfo.RepoOwner != "" {
-		if pkgInfo.RepoName == "" {
-			return errors.New("repo_name must be specified when repo_owner is specified")
+	repoFullName := pkgInfo.RepoOwner + "/" + pkgInfo.RepoName
+	if !strings.Contains(pkgName, ".") {
+		if pkgInfo.RepoOwner == "" {
+			return errors.New("repo_owner must be specified if package name doesn't include period")
 		}
-		repoFullName := pkgInfo.RepoOwner + "/" + pkgInfo.RepoName
-		if !strings.Contains(pkgName, ".") && pkgName != repoFullName && !strings.HasPrefix(pkgName, repoFullName+"/") {
+		if pkgInfo.RepoName == "" {
+			return errors.New("if package name doesn't include period, repo_name must be specified")
+		}
+		if pkgName != repoFullName && !strings.HasPrefix(pkgName, repoFullName+"/") {
 			return slogerr.With( //nolint:wrapcheck
-				errors.New("package name must start with repository full name"),
+				errors.New("package name must start with repository full name if package name doesn't include period"),
 				"package_name", pkgName,
 				"repo_owner", pkgInfo.RepoOwner,
 				"repo_name", pkgInfo.RepoName,
@@ -116,6 +119,15 @@ func validatePkgInfo(pkgName, registryFile string, pkgInfo *registry.PackageInfo
 			)
 		}
 	}
+	if pkgInfo.Name == repoFullName {
+		return slogerr.With( //nolint:wrapcheck
+			errors.New("omit .name if it's same with repo_owner/repo_name"),
+			"repo_owner", pkgInfo.RepoOwner,
+			"repo_name", pkgInfo.RepoName,
+			"file", registryFile,
+		)
+	}
+
 	return nil
 }
 
