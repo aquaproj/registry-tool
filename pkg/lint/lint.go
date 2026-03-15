@@ -11,6 +11,7 @@ import (
 
 	"github.com/aquaproj/aqua/v2/pkg/config/aqua"
 	"github.com/aquaproj/registry-tool/pkg/naming"
+	"github.com/suzuki-shunsuke/slog-error/slogerr"
 	"gopkg.in/yaml.v3"
 )
 
@@ -34,7 +35,7 @@ func Lint(ctx context.Context, logger *slog.Logger, pkgName string) error {
 	}
 
 	if len(cfg.Packages) == 0 {
-		return errors.New("packages is empty")
+		return slogerr.With(errors.New("packages is empty"), "file", pkgFile)
 	}
 
 	return nil
