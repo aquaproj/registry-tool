@@ -11,6 +11,9 @@ jobs:
       - uses: suzuki-shunsuke/go-autofix-action@2a159c8f21af356c29ee26d76821b5c15956c1d6 # v0.1.11
         with:
           aqua_version: v2.57.0
+      - run: docfresh -v
+        env:
+          AQUA_GITHUB_TOKEN: ${{github.token}}
       - run: docfresh run USAGE.md
       - run: npm i -g prettier
       - run: prettier -w .
