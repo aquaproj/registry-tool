@@ -13,7 +13,7 @@ func Command(logger *slog.Logger) *cli.Command {
 		Name:      "remove",
 		Aliases:   []string{"rm"},
 		Usage:     "Remove Docker containers",
-		UsageText: "aqua-registry remove",
+		UsageText: "argd remove",
 		Action: func(ctx context.Context, _ *cli.Command) error {
 			return remove.Remove(ctx, logger)
 		},

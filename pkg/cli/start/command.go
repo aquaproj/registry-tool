@@ -13,7 +13,7 @@ func Command(logger *slog.Logger) *cli.Command {
 	return &cli.Command{
 		Name:      "start",
 		Usage:     "Start Docker containers",
-		UsageText: "aqua-registry start [-r]",
+		UsageText: "argd start [-r]",
 		Flags: []cli.Flag{
 			&cli.BoolFlag{
 				Name:        "recreate",

@@ -14,7 +14,7 @@ func Command(logger *slog.Logger) *cli.Command {
 		Name:      "test",
 		Aliases:   []string{"t"},
 		Usage:     "Test a package in Docker containers",
-		UsageText: "aqua-registry test [-r] [<package name>]",
+		UsageText: "argd test [-r] [<package name>]",
 		Flags: []cli.Flag{
 			&cli.BoolFlag{
 				Name:        "recreate",
