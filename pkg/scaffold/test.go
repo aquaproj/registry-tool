@@ -35,7 +35,7 @@ func RunTests(ctx context.Context, logger *slog.Logger, dm *docker.Manager, pkgN
 			"AQUA_GITHUB_TOKEN": githubToken,
 		}
 
-		if err := dm.Exec(ctx, logger, env, "aqua", "i"); err != nil {
+		if err := dm.Command(ctx, logger, env, "aqua", "i").Run(); err != nil {
 			return fmt.Errorf("test failed for %s/%s: %w", p.OS, p.Arch, err)
 		}
 	}

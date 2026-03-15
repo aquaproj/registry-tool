@@ -33,7 +33,7 @@ e.g. $ argd scaffold cli/cli`)
 
 	githubToken, err := github.GetAccessToken(ctx, logger)
 	if err != nil {
-		return err
+		return fmt.Errorf("get github access token: %w", err)
 	}
 
 	if cfg.Local {
@@ -215,20 +215,10 @@ func runAquaGRInContainer(ctx context.Context, logger *slog.Logger, dm *docker.M
 	}
 	grCmd = append(grCmd, cfg.PkgName)
 
-	args := make([]string, 0, 3+2*len(env)+1+len(grCmd))
-	args = append(args, "exec", "-w", docker.ContainerWorkingDir)
-	for k, v := range env {
-		args = append(args, "-e", k+"="+v)
-	}
-	args = append(args, dm.Config().Name)
-	args = append(args, grCmd...)
-
-	cmd := exec.CommandContext(ctx, "docker", args...)
+	cmd := dm.Command(ctx, logger, env, grCmd...)
 	buf := &bytes.Buffer{}
 	cmd.Stdout = buf
-	cmd.Stderr = os.Stderr
-	osexec.SetCancel(logger, cmd)
-	logger.Info("+ " + docker.RedactSecrets(cmd.String(), env))
+
 	if err := cmd.Run(); err != nil {
 		return fmt.Errorf("docker exec: %w", err)
 	}

@@ -30,7 +30,7 @@ func RemovePackage(ctx context.Context, logger *slog.Logger, pkgName string) err
 }
 
 func removeFromContainer(ctx context.Context, logger *slog.Logger, dm *docker.Manager, pkg string) error {
-	if err := dm.Exec(ctx, logger, nil, "aqua", "rm", pkg); err != nil {
+	if err := dm.Command(ctx, logger, nil, "aqua", "rm", pkg).Run(); err != nil {
 		return fmt.Errorf("aqua rm: %w", err)
 	}
 	if err := dm.ExecBash(ctx, logger, "! test -f aqua-checksums.json || rm aqua-checksums.json"); err != nil {
