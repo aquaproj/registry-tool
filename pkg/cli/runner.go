@@ -9,7 +9,6 @@ import (
 	"github.com/aquaproj/registry-tool/pkg/cli/gengr"
 	"github.com/aquaproj/registry-tool/pkg/cli/gflag"
 	"github.com/aquaproj/registry-tool/pkg/cli/initcmd"
-	lintcmd "github.com/aquaproj/registry-tool/pkg/cli/lint"
 	"github.com/aquaproj/registry-tool/pkg/cli/mv"
 	"github.com/aquaproj/registry-tool/pkg/cli/patchchecksum"
 	removecmd "github.com/aquaproj/registry-tool/pkg/cli/remove"
@@ -48,7 +47,6 @@ func Run(ctx context.Context, logger *slogutil.Logger, env *urfave.Env) error {
 			checkrepo.Command(),
 			mv.Command(),
 			connectcmd.Command(logger.Logger),
-			lintcmd.Command(logger.Logger),
 			removecmd.Command(logger.Logger),
 			removepackagecmd.Command(logger.Logger),
 			resolveconflict.Command(logger.Logger),
