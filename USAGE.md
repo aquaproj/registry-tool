@@ -8,12 +8,6 @@ command:
   hide_command: true
 code_block: false
 -->
-Mar 15 12:49:27.068 INF download and unarchive the package program=aqua version=2.57.0 env=linux/amd64 exe_name=argd package_name=aquaproj/registry-tool package_version=v0.4.1 registry=standard
-Mar 15 12:49:27.453 INF verify a package with slsa-verifier program=aqua version=2.57.0 env=linux/amd64 exe_name=argd package_name=aquaproj/registry-tool package_version=v0.4.1 registry=standard
-Verified build using builder "https://github.com/slsa-framework/slsa-github-generator/.github/workflows/generator_generic_slsa3.yml@refs/tags/v2.1.0" at commit bc2e5e8765c243da1b357748b0c9702f81acbcc0
-Verifying artifact /tmp/319323891: PASSED
-
-PASSED: SLSA verification passed
 ```console
 $ aqua-registry --help
 NAME:
