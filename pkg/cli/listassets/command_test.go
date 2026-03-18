@@ -9,30 +9,6 @@ import (
 	"github.com/aquaproj/aqua/v2/pkg/github"
 )
 
-func Test_parseRepo(t *testing.T) {
-	t.Parallel()
-	tests := []struct {
-		name  string
-		repo  string
-		isErr bool
-	}{
-		{name: "valid", repo: "owner/repo"},
-		{name: "no slash", repo: "repo", isErr: true},
-		{name: "too many slashes", repo: "a/b/c", isErr: true},
-		{name: "empty owner", repo: "/repo", isErr: true},
-		{name: "empty name", repo: "owner/", isErr: true},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			t.Parallel()
-			_, _, err := parseRepo(tt.repo)
-			if (err != nil) != tt.isErr {
-				t.Fatalf("parseRepo(%q) error = %v, wantErr %v", tt.repo, err, tt.isErr)
-			}
-		})
-	}
-}
-
 type mockGH struct {
 	release *github.RepositoryRelease
 	pages   [][]*github.ReleaseAsset
@@ -41,7 +17,7 @@ type mockGH struct {
 }
 
 func (m *mockGH) GetReleaseByTag(context.Context, string, string, string) (*github.RepositoryRelease, *github.Response, error) {
-	return m.release, nil, m.relErr
+	return m.release, &github.Response{}, m.relErr
 }
 
 func (m *mockGH) ListReleaseAssets(_ context.Context, _, _ string, _ int64, opts *github.ListOptions) ([]*github.ReleaseAsset, *github.Response, error) {
@@ -50,9 +26,13 @@ func (m *mockGH) ListReleaseAssets(_ context.Context, _, _ string, _ int64, opts
 	}
 	idx := opts.Page - 1
 	if idx < 0 || idx >= len(m.pages) {
-		return nil, nil, nil
+		return nil, &github.Response{}, nil
 	}
-	return m.pages[idx], nil, nil
+	var nextPage int
+	if idx+1 < len(m.pages) {
+		nextPage = opts.Page + 1
+	}
+	return m.pages[idx], &github.Response{NextPage: nextPage}, nil
 }
 
 func Test_listAssets(t *testing.T) {
@@ -91,4 +71,39 @@ func Test_listAssets(t *testing.T) {
 			t.Fatalf("unexpected error: %v", err)
 		}
 	})
+}
+
+func Test_repoFromPkgName(t *testing.T) {
+	t.Parallel()
+	tests := []struct {
+		name      string
+		pkg       string
+		wantOwner string
+		wantRepo  string
+		isErr     bool
+	}{
+		{name: "simple", pkg: "cli/cli", wantOwner: "cli", wantRepo: "cli"},
+		{name: "extra segments", pkg: "DeNA/unity-meta-check/gh-action", wantOwner: "DeNA", wantRepo: "unity-meta-check"},
+		{name: "github.com prefix", pkg: "github.com/zeromicro/go-zero/tools/goctl", wantOwner: "zeromicro", wantRepo: "go-zero"},
+		{name: "https github URL", pkg: "https://github.com/cli/cli", wantOwner: "cli", wantRepo: "cli"},
+		{name: "non-github domain", pkg: "gitlab.com/gitlab-org/cli", isErr: true},
+		{name: "single segment", pkg: "foo", isErr: true},
+		{name: "empty owner", pkg: "/repo", isErr: true},
+		{name: "empty name", pkg: "owner/", isErr: true},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			owner, repo, err := repoFromPkgName(tt.pkg)
+			if (err != nil) != tt.isErr {
+				t.Fatalf("repoFromPkgName(%q) error = %v, wantErr %v", tt.pkg, err, tt.isErr)
+			}
+			if err != nil {
+				return
+			}
+			if owner != tt.wantOwner || repo != tt.wantRepo {
+				t.Fatalf("repoFromPkgName(%q) = (%q, %q), want (%q, %q)", tt.pkg, owner, repo, tt.wantOwner, tt.wantRepo)
+			}
+		})
+	}
 }
