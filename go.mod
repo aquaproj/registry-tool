@@ -3,7 +3,7 @@ module github.com/aquaproj/registry-tool
 go 1.26.1
 
 require (
-	github.com/aquaproj/aqua/v2 v2.57.0
+	github.com/aquaproj/aqua/v2 v2.57.1
 	github.com/goccy/go-yaml v1.19.2
 	github.com/spf13/afero v1.15.0
 	github.com/suzuki-shunsuke/ghtkn-go-sdk v0.2.2
