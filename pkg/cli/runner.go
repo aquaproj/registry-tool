@@ -6,6 +6,7 @@ import (
 	"github.com/aquaproj/registry-tool/pkg/cli/checkrepo"
 	connectcmd "github.com/aquaproj/registry-tool/pkg/cli/connect"
 	"github.com/aquaproj/registry-tool/pkg/cli/createprnewpkg"
+	"github.com/aquaproj/registry-tool/pkg/cli/fix"
 	"github.com/aquaproj/registry-tool/pkg/cli/gengr"
 	"github.com/aquaproj/registry-tool/pkg/cli/gflag"
 	"github.com/aquaproj/registry-tool/pkg/cli/initcmd"
@@ -48,6 +49,7 @@ func Run(ctx context.Context, logger *slogutil.Logger, env *urfave.Env) error {
 			listassetscmd.Command(logger.Logger),
 			checkrepo.Command(),
 			mv.Command(),
+			fix.Command(logger.Logger),
 			connectcmd.Command(logger.Logger),
 			removecmd.Command(logger.Logger),
 			removepackagecmd.Command(logger.Logger),

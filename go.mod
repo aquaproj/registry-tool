@@ -7,6 +7,7 @@ require (
 	github.com/goccy/go-yaml v1.19.2
 	github.com/spf13/afero v1.15.0
 	github.com/suzuki-shunsuke/ghtkn-go-sdk v0.2.2
+	github.com/suzuki-shunsuke/go-yamledit v0.0.1
 	github.com/suzuki-shunsuke/slog-error v0.2.2
 	github.com/suzuki-shunsuke/slog-util v0.3.2
 	github.com/suzuki-shunsuke/urfave-cli-v3-util v0.2.3
@@ -55,5 +56,5 @@ require (
 	golang.org/x/sync v0.20.0 // indirect
 	golang.org/x/sys v0.42.0 // indirect
 	golang.org/x/term v0.37.0 // indirect
-	golang.org/x/text v0.29.0 // indirect
+	golang.org/x/text v0.32.0 // indirect
 )
