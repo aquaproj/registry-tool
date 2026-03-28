@@ -11,7 +11,6 @@ require (
 	github.com/suzuki-shunsuke/slog-util v0.3.2
 	github.com/suzuki-shunsuke/urfave-cli-v3-util v0.2.3
 	github.com/urfave/cli/v3 v3.7.0
-	gopkg.in/yaml.v2 v2.4.0
 	gopkg.in/yaml.v3 v3.0.1
 )
 
