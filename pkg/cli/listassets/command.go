@@ -20,7 +20,7 @@ type ghClient interface {
 func repoFromPkgName(name string) (string, string, error) {
 	name = strings.TrimPrefix(name, "https://github.com/")
 	name = strings.TrimPrefix(name, "github.com/")
-	parts := strings.SplitN(name, "/", 3) //nolint:mnd
+	parts := strings.SplitN(name, "/", 3)                   //nolint:mnd
 	if len(parts) < 2 || parts[0] == "" || parts[1] == "" { //nolint:mnd
 		return "", "", fmt.Errorf("package name %q does not contain owner/repo", name)
 	}
