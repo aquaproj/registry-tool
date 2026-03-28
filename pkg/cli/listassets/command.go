@@ -74,7 +74,7 @@ func Command(logger *slog.Logger) *cli.Command {
 			case 1:
 				pkgName, err := naming.Resolve(ctx, logger, "")
 				if err != nil {
-					return err
+					return fmt.Errorf("resolve package name: %w", err)
 				}
 				owner, name, err = repoFromPkgName(pkgName)
 				if err != nil {
