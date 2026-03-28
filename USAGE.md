@@ -17,7 +17,7 @@ USAGE:
    aqua-registry [global options] [command [command options]]
 
 VERSION:
-   0.5.0
+   0.5.1
 
 COMMANDS:
    scaffold, s             Scaffold a package
@@ -25,8 +25,10 @@ COMMANDS:
    generate-registry, gr   Update registry.yaml
    init                    Create configuration files
    patch-checksum          Patch a checksum configuration
+   list-assets, lsa        List release assets of a GitHub Release
    check-repo              Check if GitHub Repository was transferred
    mv                      Rename a package
+   fix                     Fix a package
    connect, con            Connect to a Docker container with an interactive shell
    remove, rm              Remove Docker containers
    remove-package, rmp     Remove a package from Docker containers
@@ -168,6 +170,20 @@ OPTIONS:
    --help, -h  show help
 ```
 
+## aqua-registry list-assets
+
+```console
+$ aqua-registry list-assets --help
+NAME:
+   aqua-registry list-assets - List release assets of a GitHub Release
+
+USAGE:
+   argd list-assets [owner/repo] <version>
+
+OPTIONS:
+   --help, -h  show help
+```
+
 ## aqua-registry check-repo
 
 ```console
@@ -204,6 +220,20 @@ USAGE:
 
 DESCRIPTION:
    Rename a package.
+
+OPTIONS:
+   --help, -h  show help
+```
+
+## aqua-registry fix
+
+```console
+$ aqua-registry fix --help
+NAME:
+   aqua-registry fix - Fix a package
+
+USAGE:
+   argd fix [<package name> or pkgs/**/pkg.yaml or pkgs/**/registry.yaml] ...
 
 OPTIONS:
    --help, -h  show help
