@@ -132,6 +132,8 @@ github.com/suzuki-shunsuke/go-retryablehttp v0.7.8-2 h1:oOeDLYiW+X/8XC2/Wu3U3rQ0
 github.com/suzuki-shunsuke/go-retryablehttp v0.7.8-2/go.mod h1:fRVZ62p4iY8BxyyhZQ++grjQIDzWtRK02mHQapxm4Kk=
 github.com/suzuki-shunsuke/go-yamledit v0.0.1 h1:Zn+591OeNB/e8/5qQbgaHwfPvAWpeH3vSAICSUirGuY=
 github.com/suzuki-shunsuke/go-yamledit v0.0.1/go.mod h1:fQ9STTI+noUZ2VZ4qY44d6DSvfPFzE4YhaSTUGhKdq4=
+github.com/suzuki-shunsuke/go-yamledit v0.0.2 h1:au/T9mriPDNOVHbc/iZ3JIgqgaWS1xAsw8ouXnlFSg0=
+github.com/suzuki-shunsuke/go-yamledit v0.0.2/go.mod h1:fQ9STTI+noUZ2VZ4qY44d6DSvfPFzE4YhaSTUGhKdq4=
 github.com/suzuki-shunsuke/slog-error v0.2.2 h1:z8rymlIlZcMA+ERnnhVigQ0Q+X0pxKqBfDzSIyGh6vU=
 github.com/suzuki-shunsuke/slog-error v0.2.2/go.mod h1:w45QyO2G0uiEuo9hhrcLqqRl3hmYon9jGgq9CrCxxOY=
 github.com/suzuki-shunsuke/slog-util v0.3.2 h1:P4sc/swT8rwmmKDfMrh9GR+AzYJhJdW3BSxZXYBURuY=
