@@ -7,6 +7,9 @@ type Config struct {
 	Name       string
 	Image      string
 	WorkingDir string
+	// Dockerfile is the file name under docker/ used to build the image.
+	// If empty, "Dockerfile" is used.
+	Dockerfile string
 }
 
 const (
@@ -33,5 +36,17 @@ func DefaultWindowsContainer() Config {
 		Name:       "aqua-registry-windows",
 		Image:      "aquaproj/aqua-registry",
 		WorkingDir: ContainerWorkingDir,
+	}
+}
+
+// DefaultAlpineContainer returns the default Alpine (musl) Linux container configuration.
+// It is used when registry.yaml contains packages with `key: libc` variants
+// to verify both musl and gnu libc paths.
+func DefaultAlpineContainer() Config {
+	return Config{
+		Name:       "aqua-registry-alpine",
+		Image:      "aquaproj/aqua-registry-alpine",
+		WorkingDir: ContainerWorkingDir,
+		Dockerfile: "Dockerfile-alpine",
 	}
 }

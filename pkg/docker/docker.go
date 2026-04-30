@@ -8,6 +8,7 @@ import (
 	"log/slog"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"runtime"
 	"strings"
 
@@ -294,20 +295,29 @@ func (dm *Manager) imageExists(ctx context.Context, logger *slog.Logger) bool {
 	return cmd.Run() == nil
 }
 
+func (dm *Manager) dockerfileName() string {
+	if dm.config.Dockerfile == "" {
+		return "Dockerfile"
+	}
+	return dm.config.Dockerfile
+}
+
 func (dm *Manager) dockerfileNotChanged() (bool, error) {
-	// Check if .build/Dockerfile exists
-	if _, err := os.Stat(".build/Dockerfile"); os.IsNotExist(err) {
+	name := dm.dockerfileName()
+	srcPath := filepath.Join("docker", name)
+	cachePath := filepath.Join(".build", name)
+
+	if _, err := os.Stat(cachePath); os.IsNotExist(err) {
 		return false, nil
 	}
 
-	// Compare docker/Dockerfile with .build/Dockerfile
-	b1, err := os.ReadFile("docker/Dockerfile")
+	b1, err := os.ReadFile(srcPath)
 	if err != nil {
-		return false, fmt.Errorf("read docker/Dockerfile: %w", err)
+		return false, fmt.Errorf("read %s: %w", srcPath, err)
 	}
-	b2, err := os.ReadFile(".build/Dockerfile")
+	b2, err := os.ReadFile(cachePath)
 	if err != nil {
-		return false, fmt.Errorf("read .build/Dockerfile: %w", err)
+		return false, fmt.Errorf("read %s: %w", cachePath, err)
 	}
 	return string(b1) == string(b2), nil
 }
@@ -318,8 +328,10 @@ func (dm *Manager) buildImage(ctx context.Context, logger *slog.Logger) error {
 		return fmt.Errorf("copy aqua-policy.yaml: %w", err)
 	}
 
-	// Build Docker image
-	cmd := exec.CommandContext(ctx, "docker", "build", "-t", dm.config.Image, "docker") //nolint:gosec
+	name := dm.dockerfileName()
+	src := filepath.Join("docker", name)
+
+	cmd := exec.CommandContext(ctx, "docker", "build", "-t", dm.config.Image, "-f", src, "docker") //nolint:gosec
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	osexec.SetCancel(logger, cmd)
@@ -327,12 +339,11 @@ func (dm *Manager) buildImage(ctx context.Context, logger *slog.Logger) error {
 		return fmt.Errorf("docker build: %w", err)
 	}
 
-	// Save Dockerfile to .build for change detection
 	if err := os.MkdirAll(".build", DirPermission); err != nil {
 		return fmt.Errorf("create .build directory: %w", err)
 	}
-	if err := CopyFile("docker/Dockerfile", ".build/Dockerfile"); err != nil {
-		return fmt.Errorf("copy Dockerfile to .build: %w", err)
+	if err := CopyFile(src, filepath.Join(".build", name)); err != nil {
+		return fmt.Errorf("copy %s to .build: %w", name, err)
 	}
 
 	return nil

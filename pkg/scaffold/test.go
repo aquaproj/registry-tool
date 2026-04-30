@@ -48,6 +48,12 @@ func RunLinuxDarwinTests(ctx context.Context, logger *slog.Logger, dm *docker.Ma
 	return RunTests(ctx, logger, dm, pkgName, githubToken, LinuxDarwinPlatforms())
 }
 
+// RunLinuxTests runs tests for Linux platforms only.
+// Intended for the Alpine (musl) container so libc-specific assets are exercised.
+func RunLinuxTests(ctx context.Context, logger *slog.Logger, dm *docker.Manager, pkgName, githubToken string) error {
+	return RunTests(ctx, logger, dm, pkgName, githubToken, LinuxPlatforms())
+}
+
 // RunWindowsTests runs tests for Windows platforms.
 func RunWindowsTests(ctx context.Context, logger *slog.Logger, dm *docker.Manager, pkgName, githubToken string) error {
 	return RunTests(ctx, logger, dm, pkgName, githubToken, WindowsPlatforms())

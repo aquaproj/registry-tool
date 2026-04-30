@@ -4,10 +4,12 @@ import (
 	"context"
 	"fmt"
 	"log/slog"
+	"path/filepath"
 
 	"github.com/aquaproj/registry-tool/pkg/docker"
 	genrg "github.com/aquaproj/registry-tool/pkg/generate-registry"
 	"github.com/aquaproj/registry-tool/pkg/github"
+	"github.com/aquaproj/registry-tool/pkg/libc"
 	"github.com/aquaproj/registry-tool/pkg/naming"
 	"github.com/aquaproj/registry-tool/pkg/scaffold"
 )
@@ -42,6 +44,10 @@ func Test(ctx context.Context, logger *slog.Logger, cfg *Config) error {
 		return fmt.Errorf("Linux/Darwin tests failed: %w", err)
 	}
 
+	if err := runAlpineTestsIfNeeded(ctx, logger, cfg.Recreate, pkgName, githubToken); err != nil {
+		return err
+	}
+
 	// Ensure Windows container
 	windowsDM := docker.NewManager(docker.DefaultWindowsContainer())
 	if err := windowsDM.EnsureContainer(ctx, logger, cfg.Recreate); err != nil {
@@ -60,5 +66,26 @@ func Test(ctx context.Context, logger *slog.Logger, cfg *Config) error {
 		return fmt.Errorf("update registry.yaml: %w", err)
 	}
 
+	return nil
+}
+
+// runAlpineTestsIfNeeded runs Linux tests on the Alpine container when
+// pkgs/<pkgName>/registry.yaml has any variant with `key: libc`.
+func runAlpineTestsIfNeeded(ctx context.Context, logger *slog.Logger, recreate bool, pkgName, githubToken string) error {
+	hasLibc, err := libc.HasVariant(filepath.Join("pkgs", pkgName, "registry.yaml"))
+	if err != nil {
+		return fmt.Errorf("check libc variant: %w", err)
+	}
+	if !hasLibc {
+		return nil
+	}
+	logger.Info("key: libc detected, running tests on Alpine")
+	alpineDM := docker.NewManager(docker.DefaultAlpineContainer())
+	if err := alpineDM.EnsureContainer(ctx, logger, recreate); err != nil {
+		return fmt.Errorf("ensure Alpine container: %w", err)
+	}
+	if err := scaffold.RunLinuxTests(ctx, logger, alpineDM, pkgName, githubToken); err != nil {
+		return fmt.Errorf("alpine Linux tests failed: %w", err)
+	}
 	return nil
 }

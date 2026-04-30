@@ -34,6 +34,15 @@ func LinuxDarwinPlatforms() []Platform {
 	}
 }
 
+// LinuxPlatforms returns the Linux platforms for testing.
+// Used for the Alpine (musl) container path where libc differentiation matters.
+func LinuxPlatforms() []Platform {
+	return []Platform{
+		{OS: "linux", Arch: "amd64"},
+		{OS: "linux", Arch: "arm64"},
+	}
+}
+
 // WindowsPlatforms returns the Windows platforms for testing.
 func WindowsPlatforms() []Platform {
 	return []Platform{
