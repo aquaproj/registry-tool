@@ -18,6 +18,13 @@ type Config struct {
 	ConfigPath string
 }
 
+const (
+	osLinux   = "linux"
+	osDarwin  = "darwin"
+	archAmd64 = "amd64"
+	archArm64 = "arm64"
+)
+
 // Platform represents a target platform for testing.
 type Platform struct {
 	OS   string
@@ -27,10 +34,10 @@ type Platform struct {
 // LinuxDarwinPlatforms returns the Linux and Darwin platforms for testing.
 func LinuxDarwinPlatforms() []Platform {
 	return []Platform{
-		{OS: "linux", Arch: "amd64"},
-		{OS: "linux", Arch: "arm64"},
-		{OS: "darwin", Arch: "amd64"},
-		{OS: "darwin", Arch: "arm64"},
+		{OS: osLinux, Arch: archAmd64},
+		{OS: osLinux, Arch: archArm64},
+		{OS: osDarwin, Arch: archAmd64},
+		{OS: osDarwin, Arch: archArm64},
 	}
 }
 
@@ -38,15 +45,15 @@ func LinuxDarwinPlatforms() []Platform {
 // Used for the Alpine (musl) container path where libc differentiation matters.
 func LinuxPlatforms() []Platform {
 	return []Platform{
-		{OS: "linux", Arch: "amd64"},
-		{OS: "linux", Arch: "arm64"},
+		{OS: osLinux, Arch: archAmd64},
+		{OS: osLinux, Arch: archArm64},
 	}
 }
 
 // WindowsPlatforms returns the Windows platforms for testing.
 func WindowsPlatforms() []Platform {
 	return []Platform{
-		{OS: "windows", Arch: "amd64"},
-		{OS: "windows", Arch: "arm64"},
+		{OS: "windows", Arch: archAmd64},
+		{OS: "windows", Arch: archArm64},
 	}
 }
