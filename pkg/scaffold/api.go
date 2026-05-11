@@ -59,7 +59,7 @@ func scaffoldLocal(ctx context.Context, logger *slog.Logger, cfg *Config) error 
 	}
 
 	logger.Info("updating registry.yaml")
-	if err := genrg.GenerateRegistry(); err != nil {
+	if err := genrg.GenerateRegistry(ctx); err != nil {
 		return fmt.Errorf("update registry.yaml: %w", err)
 	}
 
@@ -102,7 +102,7 @@ func scaffoldFull(ctx context.Context, logger *slog.Logger, cfg *Config, githubT
 	}
 
 	logger.Info("Updating registry.yaml")
-	if err := genrg.GenerateRegistry(); err != nil {
+	if err := genrg.GenerateRegistry(ctx); err != nil {
 		return fmt.Errorf("update registry.yaml: %w", err)
 	}
 
