@@ -8,7 +8,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
-	"sort"
+	"slices"
 	"strings"
 )
 
@@ -18,8 +18,15 @@ const rHeader = `---
 packages:
 `
 
+// registryFile is a discovered pkgs/<pkg>/registry.yaml. Dir is precomputed so
+// the sort comparator does not recompute filepath.Dir on every comparison.
+type registryFile struct {
+	Path string
+	Dir  string
+}
+
 func GenerateRegistry(ctx context.Context) error {
-	registryFilePaths, err := listRegistryFiles(ctx)
+	files, err := listRegistryFiles(ctx)
 	if err != nil {
 		return err
 	}
@@ -31,8 +38,8 @@ func GenerateRegistry(ctx context.Context) error {
 	if _, err := rgFile.WriteString(rHeader); err != nil {
 		return fmt.Errorf("write a header to registry.yaml: %w", err)
 	}
-	for _, registryFilePath := range registryFilePaths {
-		lines, err := readRegistryFile(registryFilePath)
+	for _, f := range files {
+		lines, err := readRegistryFile(f.Path)
 		if err != nil {
 			return fmt.Errorf("read a registry.yaml: %w", err)
 		}
@@ -43,9 +50,9 @@ func GenerateRegistry(ctx context.Context) error {
 	return nil
 }
 
-func listRegistryFiles(ctx context.Context) ([]string, error) {
+func listRegistryFiles(ctx context.Context) ([]registryFile, error) {
 	canonical := canonicalCaseMap(ctx)
-	registryFilePaths := []string{}
+	files := []registryFile{}
 	if err := filepath.WalkDir("pkgs", func(p string, d fs.DirEntry, err error) error {
 		if err != nil {
 			if d == nil {
@@ -53,21 +60,22 @@ func listRegistryFiles(ctx context.Context) ([]string, error) {
 			}
 			return nil
 		}
-		if filepath.Base(p) == "registry.yaml" {
-			slash := filepath.ToSlash(p)
-			if c, ok := canonical[strings.ToLower(slash)]; ok {
-				slash = c
-			}
-			registryFilePaths = append(registryFilePaths, slash)
+		if filepath.Base(p) != "registry.yaml" {
+			return nil
 		}
+		slash := filepath.ToSlash(p)
+		if c, ok := canonical[strings.ToLower(slash)]; ok {
+			slash = c
+		}
+		files = append(files, registryFile{Path: slash, Dir: filepath.Dir(slash)})
 		return nil
 	}); err != nil {
 		return nil, fmt.Errorf("find registry.yaml in the directory pkgs: %w", err)
 	}
-	sort.Slice(registryFilePaths, func(i, j int) bool {
-		return filepath.Dir(registryFilePaths[i]) < filepath.Dir(registryFilePaths[j])
+	slices.SortFunc(files, func(a, b registryFile) int {
+		return strings.Compare(a.Dir, b.Dir)
 	})
-	return registryFilePaths, nil
+	return files, nil
 }
 
 // canonicalCaseMap returns a lower-cased path → git-recorded path mapping for
