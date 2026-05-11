@@ -8,8 +8,6 @@ type Config struct {
 	Cmds string
 	// Limit is the maximum number of versions to generate
 	Limit int
-	// Local runs in local mode without Docker
-	Local bool
 	// Recreate forces recreation of Docker containers
 	Recreate bool
 	// NoCreateBranch skips creating a git branch

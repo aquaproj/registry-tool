@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"log/slog"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -16,13 +15,11 @@ import (
 	"github.com/aquaproj/registry-tool/pkg/docker"
 	genrg "github.com/aquaproj/registry-tool/pkg/generate-registry"
 	"github.com/aquaproj/registry-tool/pkg/github"
-	"github.com/aquaproj/registry-tool/pkg/initcmd"
 	"github.com/aquaproj/registry-tool/pkg/libc"
-	"github.com/aquaproj/registry-tool/pkg/osexec"
 )
 
 // Scaffold is the main entry point for the scaffold command.
-// It supports both local mode (simple, no Docker) and full mode (Docker-based with tests).
+// It runs the Docker-based scaffold workflow with tests.
 func Scaffold(ctx context.Context, logger *slog.Logger, cfg *Config) error {
 	if cfg.PkgName == "" {
 		return errors.New(`usage: $ argd scaffold <pkgname>
@@ -37,37 +34,7 @@ e.g. $ argd scaffold cli/cli`)
 		return fmt.Errorf("get github access token: %w", err)
 	}
 
-	if cfg.Local {
-		return scaffoldLocal(ctx, logger, cfg)
-	}
 	return scaffoldFull(ctx, logger, cfg, githubToken)
-}
-
-// scaffoldLocal runs the simple local scaffold without Docker.
-func scaffoldLocal(ctx context.Context, logger *slog.Logger, cfg *Config) error {
-	pkgName := cfg.PkgName
-	pkgDir := filepath.Join(append([]string{"pkgs"}, strings.Split(pkgName, "/")...)...)
-	pkgFile := filepath.Join(pkgDir, "pkg.yaml")
-	rgFile := filepath.Join(pkgDir, "registry.yaml")
-
-	if err := os.MkdirAll(pkgDir, docker.DirPermission); err != nil {
-		return fmt.Errorf("create directories: %w", err)
-	}
-
-	if err := aquaGR(ctx, logger, pkgName, pkgFile, rgFile, cfg.Cmds, cfg.Limit, cfg.ConfigPath); err != nil {
-		return err
-	}
-
-	logger.Info("updating registry.yaml")
-	if err := genrg.GenerateRegistry(ctx); err != nil {
-		return fmt.Errorf("update registry.yaml: %w", err)
-	}
-
-	if err := initcmd.Init(ctx); err != nil {
-		return err //nolint:wrapcheck
-	}
-
-	return nil
 }
 
 // scaffoldFull runs the full scaffold workflow with Docker containers and tests.
@@ -274,40 +241,4 @@ func writeRegistryYAML(path string, data []byte) error {
 func fileExists(path string) bool {
 	_, err := os.Stat(path)
 	return err == nil
-}
-
-func aquaGR(ctx context.Context, logger *slog.Logger, pkgName, pkgFilePath, rgFilePath, cmds string, limit int, configPath string) error {
-	outFile, err := os.Create(rgFilePath)
-	if err != nil {
-		return fmt.Errorf("create a file %s: %w", rgFilePath, err)
-	}
-	defer outFile.Close()
-
-	if _, err := outFile.WriteString("# yaml-language-server: $schema=https://raw.githubusercontent.com/aquaproj/aqua/main/json-schema/registry.json\n"); err != nil {
-		return fmt.Errorf("write a code comment for yaml-language-server: %w", err)
-	}
-
-	args := []string{"gr", "-out-testdata", pkgFilePath}
-
-	if cmds != "" {
-		args = append(args, "-cmd", cmds)
-	}
-	if limit != 0 {
-		s := strconv.Itoa(limit)
-		args = append(args, "-limit", s)
-	}
-	if configPath != "" {
-		args = append(args, "-c", configPath)
-	}
-
-	cmd := exec.CommandContext(ctx, "aqua", append(args, pkgName)...) //nolint:gosec
-	cmd.Stdout = outFile
-	cmd.Stderr = os.Stderr
-	osexec.SetCancel(logger, cmd)
-	logger.Info("+ " + cmd.String())
-	if err := cmd.Run(); err != nil {
-		return fmt.Errorf("execute a command: %w", err)
-	}
-
-	return nil
 }
