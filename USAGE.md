@@ -17,7 +17,7 @@ USAGE:
    aqua-registry [global options] [command [command options]]
 
 VERSION:
-   0.5.3
+   0.5.4
 
 COMMANDS:
    scaffold, s             Scaffold a package
@@ -68,7 +68,6 @@ OPTIONS:
    --deep                      This flag was deprecated and had no meaning from aqua v2.15.0. This flag will be removed in aqua v3.0.0. https://github.com/aquaproj/aqua/issues/2351
    --cmd string                A list of commands joined with single quotes ','
    --limit int, -l int         the maximum number of versions (default: 0)
-   --local                     Run in local mode without Docker (simple scaffold only)
    --recreate, -r              Recreate Docker containers
    --no-create-branch, -B      Don't create a git branch
    --config string, -c string  Path to scaffold.yaml configuration file
