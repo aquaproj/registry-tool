@@ -16,7 +16,6 @@ type scaffoldFlags struct {
 	Config         string
 	Limit          int
 	Deep           bool
-	Local          bool
 	Recreate       bool
 	NoCreateBranch bool
 }
@@ -50,7 +49,6 @@ func Command(logger *slog.Logger, gFlags *gflag.Flags) *cli.Command {
 				PkgName:        pkgName,
 				Cmds:           flags.Cmd,
 				Limit:          flags.Limit,
-				Local:          flags.Local,
 				Recreate:       flags.Recreate,
 				NoCreateBranch: flags.NoCreateBranch,
 				ConfigPath:     flags.Config,
@@ -78,11 +76,6 @@ func scaffoldCLIFlags(flags *scaffoldFlags) []cli.Flag {
 			Aliases:     []string{"l"},
 			Usage:       "the maximum number of versions",
 			Destination: &flags.Limit,
-		},
-		&cli.BoolFlag{
-			Name:        "local",
-			Usage:       "Run in local mode without Docker (simple scaffold only)",
-			Destination: &flags.Local,
 		},
 		&cli.BoolFlag{
 			Name:        "recreate",
