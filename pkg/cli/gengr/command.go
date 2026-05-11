@@ -20,8 +20,8 @@ Don't edit it manually, and if you update registry.yaml in the pkgs directory, d
 
 No argument is needed.
 `,
-		Action: func(context.Context, *cli.Command) error {
-			return genrg.GenerateRegistry()
+		Action: func(ctx context.Context, _ *cli.Command) error {
+			return genrg.GenerateRegistry(ctx)
 		},
 	}
 }

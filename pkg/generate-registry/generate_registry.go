@@ -2,9 +2,11 @@ package genrg
 
 import (
 	"bufio"
+	"context"
 	"fmt"
 	"io/fs"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"sort"
 	"strings"
@@ -16,8 +18,8 @@ const rHeader = `---
 packages:
 `
 
-func GenerateRegistry() error {
-	registryFilePaths, err := listRegistryFiles()
+func GenerateRegistry(ctx context.Context) error {
+	registryFilePaths, err := listRegistryFiles(ctx)
 	if err != nil {
 		return err
 	}
@@ -41,7 +43,8 @@ func GenerateRegistry() error {
 	return nil
 }
 
-func listRegistryFiles() ([]string, error) {
+func listRegistryFiles(ctx context.Context) ([]string, error) {
+	canonical := canonicalCaseMap(ctx)
 	registryFilePaths := []string{}
 	if err := filepath.WalkDir("pkgs", func(p string, d fs.DirEntry, err error) error {
 		if err != nil {
@@ -51,16 +54,41 @@ func listRegistryFiles() ([]string, error) {
 			return nil
 		}
 		if filepath.Base(p) == "registry.yaml" {
-			registryFilePaths = append(registryFilePaths, p)
+			slash := filepath.ToSlash(p)
+			if c, ok := canonical[strings.ToLower(slash)]; ok {
+				slash = c
+			}
+			registryFilePaths = append(registryFilePaths, slash)
 		}
 		return nil
 	}); err != nil {
 		return nil, fmt.Errorf("find registry.yaml in the directory pkgs: %w", err)
 	}
 	sort.Slice(registryFilePaths, func(i, j int) bool {
-		return filepath.ToSlash(filepath.Dir(registryFilePaths[i])) < filepath.ToSlash(filepath.Dir(registryFilePaths[j]))
+		return filepath.Dir(registryFilePaths[i]) < filepath.Dir(registryFilePaths[j])
 	})
 	return registryFilePaths, nil
+}
+
+// canonicalCaseMap returns a lower-cased path → git-recorded path mapping for
+// every file tracked under pkgs/. On case-insensitive filesystems (APFS, NTFS)
+// the working tree may surface a different case than git's index, which would
+// otherwise make registry.yaml ordering depend on the contributor's machine.
+// Returns nil if git is unavailable or pkgs/ is not tracked.
+func canonicalCaseMap(ctx context.Context) map[string]string {
+	out, err := exec.CommandContext(ctx, "git", "ls-files", "-z", "--", "pkgs").Output()
+	if err != nil {
+		return nil
+	}
+	s := strings.TrimRight(string(out), "\x00")
+	if s == "" {
+		return nil
+	}
+	m := make(map[string]string)
+	for p := range strings.SplitSeq(s, "\x00") {
+		m[strings.ToLower(p)] = p
+	}
+	return m
 }
 
 func readRegistryFile(registryFilePath string) ([]string, error) {

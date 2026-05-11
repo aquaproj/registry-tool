@@ -62,7 +62,7 @@ func Test(ctx context.Context, logger *slog.Logger, cfg *Config) error {
 
 	// Update registry.yaml
 	logger.Info("Updating registry.yaml")
-	if err := genrg.GenerateRegistry(); err != nil {
+	if err := genrg.GenerateRegistry(ctx); err != nil {
 		return fmt.Errorf("update registry.yaml: %w", err)
 	}
 
