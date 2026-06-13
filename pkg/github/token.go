@@ -17,10 +17,21 @@ func GetAccessToken(ctx context.Context, logger *slog.Logger) (string, error) {
 	if token := os.Getenv("GITHUB_TOKEN"); token != "" {
 		return token, nil
 	}
-	if os.Getenv("AQUA_GHTKN_ENABLED") != "true" {
+	ghtknEnabled, err := ghtkn.Enabled(&ghtkn.InputEnabled{
+		Envs: []string{
+			"AQUA_GHTKN_ENABLED",
+		},
+	})
+	if err != nil {
+		return "", fmt.Errorf("check ghtkn enabled: %w", err)
+	}
+	if !ghtknEnabled {
 		return "", nil
 	}
-	client := ghtkn.New()
+	client, err := ghtkn.New()
+	if err != nil {
+		return "", fmt.Errorf("create ghtkn client: %w", err)
+	}
 	token, _, err := client.Get(ctx, logger, &ghtkn.InputGet{})
 	if err != nil {
 		return "", fmt.Errorf("get a github access token by ghtkn SDK: %w", err)

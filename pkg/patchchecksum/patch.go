@@ -33,7 +33,10 @@ func PatchChecksum(ctx context.Context, logger *slog.Logger, configFilePath stri
 		return fmt.Errorf("parse configuration file as YAML: %w", err)
 	}
 
-	ghClient := github.New(ctx, logger)
+	ghClient, err := github.New(ctx, logger)
+	if err != nil {
+		return fmt.Errorf("create github client: %w", err)
+	}
 	size := len(cfg.PackageInfos)
 	pkgsAST, err := GetPackagesAST(file)
 	if err != nil {
