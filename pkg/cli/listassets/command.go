@@ -84,7 +84,11 @@ func Command(logger *slog.Logger) *cli.Command {
 			default:
 				return errors.New("usage: argd list-assets [owner/repo] <version>")
 			}
-			return listAssets(ctx, github.New(ctx, logger), owner, name, version)
+			gh, err := github.New(ctx, logger)
+			if err != nil {
+				return fmt.Errorf("create github client: %w", err)
+			}
+			return listAssets(ctx, gh, owner, name, version)
 		},
 	}
 }
