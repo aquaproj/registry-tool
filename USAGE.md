@@ -17,7 +17,7 @@ USAGE:
    aqua-registry [global options] [command [command options]]
 
 VERSION:
-   0.5.4
+   0.5.5
 
 COMMANDS:
    scaffold, s             Scaffold a package
@@ -346,7 +346,7 @@ NAME:
    aqua-registry version - Show version
 
 USAGE:
-   aqua-registry version
+   aqua-registry version [options]
 
 OPTIONS:
    --json, -j  Output version in JSON format
@@ -361,7 +361,7 @@ NAME:
    aqua-registry completion - Output shell completion script for bash, zsh, fish, or Powershell
 
 USAGE:
-   aqua-registry completion
+   aqua-registry completion [command [command options]]
 
 DESCRIPTION:
    Output shell completion script for bash, zsh, fish, or Powershell.
@@ -379,6 +379,68 @@ DESCRIPTION:
    # Powershell
    Output the script to path/to/autocomplete/aqua-registry.ps1 an run it.
 
+
+COMMANDS:
+   bash  Output bash completion script
+   zsh   Output zsh completion script
+   fish  Output fish completion script
+   pwsh  Output pwsh completion script
+
+OPTIONS:
+   --help, -h  show help
+```
+
+### completion bash
+
+```console
+$ completion bash --help
+NAME:
+   aqua-registry completion bash - Output bash completion script
+
+USAGE:
+   aqua-registry completion bash [options]
+
+OPTIONS:
+   --help, -h  show help
+```
+
+### completion zsh
+
+```console
+$ completion zsh --help
+NAME:
+   aqua-registry completion zsh - Output zsh completion script
+
+USAGE:
+   aqua-registry completion zsh [options]
+
+OPTIONS:
+   --help, -h  show help
+```
+
+### completion fish
+
+```console
+$ completion fish --help
+NAME:
+   aqua-registry completion fish - Output fish completion script
+
+USAGE:
+   aqua-registry completion fish [options]
+
+OPTIONS:
+   --help, -h  show help
+```
+
+### completion pwsh
+
+```console
+$ completion pwsh --help
+NAME:
+   aqua-registry completion pwsh - Output pwsh completion script
+
+USAGE:
+   aqua-registry completion pwsh [options]
 
 OPTIONS:
    --help, -h  show help
