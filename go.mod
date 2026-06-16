@@ -7,7 +7,7 @@ require (
 	github.com/goccy/go-yaml v1.19.2
 	github.com/google/go-cmp v0.7.0
 	github.com/spf13/afero v1.15.0
-	github.com/suzuki-shunsuke/ghtkn-go-sdk v0.3.0
+	github.com/suzuki-shunsuke/ghtkn-go-sdk v0.3.1
 	github.com/suzuki-shunsuke/go-yamledit v0.0.5
 	github.com/suzuki-shunsuke/slog-error v0.2.2
 	github.com/suzuki-shunsuke/slog-util v0.3.2
@@ -54,6 +54,6 @@ require (
 	golang.org/x/oauth2 v0.36.0 // indirect
 	golang.org/x/sync v0.21.0 // indirect
 	golang.org/x/sys v0.46.0 // indirect
-	golang.org/x/term v0.43.0 // indirect
+	golang.org/x/term v0.44.0 // indirect
 	golang.org/x/text v0.32.0 // indirect
 )
