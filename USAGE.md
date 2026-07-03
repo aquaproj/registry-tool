@@ -381,38 +381,10 @@ DESCRIPTION:
 
 
 COMMANDS:
-   fish  Output fish completion script
-   pwsh  Output pwsh completion script
    bash  Output bash completion script
    zsh   Output zsh completion script
-
-OPTIONS:
-   --help, -h  show help
-```
-
-### completion fish
-
-```console
-$ completion fish --help
-NAME:
-   aqua-registry completion fish - Output fish completion script
-
-USAGE:
-   aqua-registry completion fish [options]
-
-OPTIONS:
-   --help, -h  show help
-```
-
-### completion pwsh
-
-```console
-$ completion pwsh --help
-NAME:
-   aqua-registry completion pwsh - Output pwsh completion script
-
-USAGE:
-   aqua-registry completion pwsh [options]
+   fish  Output fish completion script
+   pwsh  Output pwsh completion script
 
 OPTIONS:
    --help, -h  show help
@@ -441,6 +413,34 @@ NAME:
 
 USAGE:
    aqua-registry completion zsh [options]
+
+OPTIONS:
+   --help, -h  show help
+```
+
+### completion fish
+
+```console
+$ completion fish --help
+NAME:
+   aqua-registry completion fish - Output fish completion script
+
+USAGE:
+   aqua-registry completion fish [options]
+
+OPTIONS:
+   --help, -h  show help
+```
+
+### completion pwsh
+
+```console
+$ completion pwsh --help
+NAME:
+   aqua-registry completion pwsh - Output pwsh completion script
+
+USAGE:
+   aqua-registry completion pwsh [options]
 
 OPTIONS:
    --help, -h  show help
