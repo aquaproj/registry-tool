@@ -26,33 +26,33 @@
       "algorithm": "sha256"
     },
     {
-      "id": "github_release/github.com/aquaproj/registry-tool/v0.5.5/argd_darwin_amd64.tar.gz",
-      "checksum": "BA7BA289C297A2BD8A7D57C0D95CCBE3DC3C89EE032151D447C54CFA81C3957C",
+      "id": "github_release/github.com/aquaproj/registry-tool/v0.5.6/argd_darwin_amd64.tar.gz",
+      "checksum": "85272A6BB568B541C6D24CEBF82FE1AC0ED3950DD63AE4DC0DFD3E27604C9110",
       "algorithm": "sha256"
     },
     {
-      "id": "github_release/github.com/aquaproj/registry-tool/v0.5.5/argd_darwin_arm64.tar.gz",
-      "checksum": "C240B597B7B7A6F3E5F224B3D5E454BE74141365FDB2414E656A0CE3FA445E17",
+      "id": "github_release/github.com/aquaproj/registry-tool/v0.5.6/argd_darwin_arm64.tar.gz",
+      "checksum": "E1F11C25F1DFC5FD518B8127C258C2E0FADCC2208528A56B6848EA097789657E",
       "algorithm": "sha256"
     },
     {
-      "id": "github_release/github.com/aquaproj/registry-tool/v0.5.5/argd_linux_amd64.tar.gz",
-      "checksum": "A55C1107AE12B3CB254181F7B30F0938C2944C8EC1DB9042FA102F2D213D5264",
+      "id": "github_release/github.com/aquaproj/registry-tool/v0.5.6/argd_linux_amd64.tar.gz",
+      "checksum": "DFB1AD00115632DCB103CB0C16C5358D403B5B44BF6D5912F693383DCC211429",
       "algorithm": "sha256"
     },
     {
-      "id": "github_release/github.com/aquaproj/registry-tool/v0.5.5/argd_linux_arm64.tar.gz",
-      "checksum": "0E71B0D7F775D80323AB7BBD1C72335801BE6651C64D73CDE8309C74A9BCC9EA",
+      "id": "github_release/github.com/aquaproj/registry-tool/v0.5.6/argd_linux_arm64.tar.gz",
+      "checksum": "B16DFEAC5EBC48E78BEC22761A62CBE03657C7D163ACDD66BE90FEC3CA93D6C2",
       "algorithm": "sha256"
     },
     {
-      "id": "github_release/github.com/aquaproj/registry-tool/v0.5.5/argd_windows_amd64.tar.gz",
-      "checksum": "9073CE57C61F07C09CF42560C6B0D88ABC2D156D5A9CB0414395EDA75AD733DB",
+      "id": "github_release/github.com/aquaproj/registry-tool/v0.5.6/argd_windows_amd64.tar.gz",
+      "checksum": "9F13BE39644C0B146143CD4CCD076A308645FB11916A8A756EA7901357228AEB",
       "algorithm": "sha256"
     },
     {
-      "id": "github_release/github.com/aquaproj/registry-tool/v0.5.5/argd_windows_arm64.tar.gz",
-      "checksum": "74C23A5F5A97B6515697903FB55A44BE68F016FEFE30652B739C16865ED8DB56",
+      "id": "github_release/github.com/aquaproj/registry-tool/v0.5.6/argd_windows_arm64.tar.gz",
+      "checksum": "D4A63C9E433DA6AD8639C4D719723FAEB36785E8B069BE63BE6270BC24C21B55",
       "algorithm": "sha256"
     },
     {
