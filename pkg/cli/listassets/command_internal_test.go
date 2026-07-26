@@ -37,8 +37,7 @@ func (m *mockGH) ListReleaseAssets(_ context.Context, _, _ string, _ int64, opts
 
 func Test_listAssets(t *testing.T) {
 	t.Parallel()
-	id := int64(1)
-	rel := &github.RepositoryRelease{ID: &id}
+	rel := &github.RepositoryRelease{ID: 1}
 
 	t.Run("release error", func(t *testing.T) {
 		t.Parallel()
