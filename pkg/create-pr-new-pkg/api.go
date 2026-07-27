@@ -64,7 +64,7 @@ func CreatePRNewPkgs(ctx context.Context, logger *slog.Logger, pkgName string) e
 	if err := commandStderr(ctx, io.MultiWriter(os.Stderr, stderr), "git", "push", "origin", branch); err != nil {
 		if strings.Contains(stderr.String(), "returned error: 403") {
 			logger.With(
-				"doc", "https://aquaproj.github.io/docs/products/aqua-registry/contributing#cmdx-new-fails-to-push-a-commit-to-the-origin",
+				"doc", "https://github.com/aquaproj/aqua-registry/blob/main/docs/troubleshooting.md",
 			).Warn(`you don't have the permission to push commits to the origin.
 Please fork aquaproj/aqua-registry and fix the origin url to your fork repository.
 For details, please see the document`)
