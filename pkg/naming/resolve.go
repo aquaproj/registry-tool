@@ -10,6 +10,7 @@ import (
 	"github.com/aquaproj/registry-tool/pkg/scaffold"
 )
 
+// Resolve resolves package name from the current branch, or from the given package name.
 func Resolve(ctx context.Context, logger *slog.Logger, pkgName string) (string, error) {
 	if pkgName != "" {
 		return strings.TrimPrefix(pkgName, "https://github.com/"), nil
