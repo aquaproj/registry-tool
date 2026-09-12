@@ -6,8 +6,10 @@ linters:
     - err113
     - exhaustive
     - exhaustruct
+    - exhaustruct_v5
     - godot
     - godox
+    - gomodguard
     - ireturn
     - lll
     - mnd

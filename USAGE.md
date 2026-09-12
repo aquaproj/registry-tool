@@ -17,7 +17,7 @@ USAGE:
    aqua-registry [global options] [command [command options]]
 
 VERSION:
-   0.5.7
+   0.5.8
 
 COMMANDS:
    scaffold, s             Scaffold a package
@@ -377,7 +377,7 @@ DESCRIPTION:
    aqua-registry completion fish > ~/.config/fish/completions/aqua-registry.fish
 
    # Powershell
-   Output the script to path/to/autocomplete/aqua-registry.ps1 an run it.
+   Output the script to path/to/autocomplete/aqua-registry.ps1 and run it.
 
 
 COMMANDS:

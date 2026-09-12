@@ -4,6 +4,8 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"io"
+	"strings"
 	"testing"
 
 	"github.com/aquaproj/aqua/v2/pkg/github"
@@ -38,17 +40,20 @@ func (m *mockGH) ListReleaseAssets(_ context.Context, _, _ string, _ int64, opts
 func Test_listAssets(t *testing.T) {
 	t.Parallel()
 	rel := &github.RepositoryRelease{ID: 1}
+	uploaded := func(name string) *github.ReleaseAsset {
+		return &github.ReleaseAsset{Name: &name, State: new(assetStateUploaded)}
+	}
 
 	t.Run("release error", func(t *testing.T) {
 		t.Parallel()
-		err := listAssets(context.Background(), &mockGH{relErr: errors.New("not found")}, "o", "r", "v1")
+		err := listAssets(context.Background(), io.Discard, &mockGH{relErr: errors.New("not found")}, "o", "r", "v1")
 		if err == nil {
 			t.Fatal("expected error")
 		}
 	})
 	t.Run("list error", func(t *testing.T) {
 		t.Parallel()
-		err := listAssets(context.Background(), &mockGH{release: rel, listErr: errors.New("fail")}, "o", "r", "v1")
+		err := listAssets(context.Background(), io.Discard, &mockGH{release: rel, listErr: errors.New("fail")}, "o", "r", "v1")
 		if err == nil {
 			t.Fatal("expected error")
 		}
@@ -57,17 +62,39 @@ func Test_listAssets(t *testing.T) {
 		t.Parallel()
 		page1 := make([]*github.ReleaseAsset, 100) //nolint:mnd
 		for i := range page1 {
-			n := fmt.Sprintf("a%d", i)
-			page1[i] = &github.ReleaseAsset{Name: &n}
+			page1[i] = uploaded(fmt.Sprintf("a%d", i))
 		}
-		n := "last"
-		page2 := []*github.ReleaseAsset{{Name: &n}}
-		err := listAssets(context.Background(), &mockGH{
+		page2 := []*github.ReleaseAsset{uploaded("last")}
+		stdout := &strings.Builder{}
+		err := listAssets(context.Background(), stdout, &mockGH{
 			release: rel,
 			pages:   [][]*github.ReleaseAsset{page1, page2},
 		}, "o", "r", "v1")
 		if err != nil {
 			t.Fatalf("unexpected error: %v", err)
+		}
+		if lines := strings.Count(stdout.String(), "\n"); lines != 101 {
+			t.Fatalf("listAssets() printed %d assets, want 101", lines)
+		}
+	})
+	t.Run("ignore incomplete assets", func(t *testing.T) {
+		t.Parallel()
+		stdout := &strings.Builder{}
+		err := listAssets(context.Background(), stdout, &mockGH{
+			release: rel,
+			pages: [][]*github.ReleaseAsset{
+				{
+					uploaded("foo_linux_amd64.tar.gz"),
+					// An interrupted upload. It isn't downloadable, so it must not be listed.
+					{Name: new("foo_darwin_amd64.tar.gz"), State: new("starter")},
+				},
+			},
+		}, "o", "r", "v1")
+		if err != nil {
+			t.Fatalf("unexpected error: %v", err)
+		}
+		if got, want := stdout.String(), "foo_linux_amd64.tar.gz\n"; got != want {
+			t.Fatalf("listAssets() printed %q, want %q", got, want)
 		}
 	})
 }
