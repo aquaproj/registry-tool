@@ -49,9 +49,6 @@ const (
     version: v1.0.0
 `
 	latestVersionCommentsWant = `packages:
-  # Keep the reason for selecting this release.
-  # This explanation intentionally spans multiple lines.
-  # Keep the latest version note too.
   - name: owner/repo@v1.0.1
   - name: owner/repo
     version: v1.0.0
@@ -67,15 +64,11 @@ const (
     version: v1.0.0
 `
 	defaultRegistryCommentsWant = `packages:
-  # Keep the reason for using the default registry.
-  # This explanation intentionally spans multiple lines.
-  # Keep the registry note too.
   - name: owner/repo@v1.0.1
-  # Keep the old registry note too.
   - name: owner/repo
     version: v1.0.0
 `
-	omittedFieldCommentsSource = `packages:
+	emptyFieldCommentsSource = `packages:
   - name: owner/repo
     description: "" # Keep the latest description note.
     registry: standard # Keep the latest registry note.
@@ -84,24 +77,22 @@ const (
   - name: owner/repo@v1.0.0
     description: "" # Keep the empty description note.
 `
-	omittedFieldCommentsWant = `packages:
-  # Keep the latest description note.
-  # Keep the latest registry note.
-  # Keep the empty vars note.
-  # Keep the latest version note.
+	emptyFieldCommentsWant = `packages:
   - name: owner/repo@v1.0.1
-  # Keep the empty description note.
+    description: "" # Keep the latest description note.
+    vars: {} # Keep the empty vars note.
   - name: owner/repo
     version: v1.0.0
+    description: "" # Keep the empty description note.
 `
 	reconstructedSource = `packages:
 - name: owner/repo@v2.0.0
 - name: owner/repo@v1.0.0 # Keep this comment.
 `
 	reconstructedWant = `packages:
-  - name: owner/repo@v2.0.0
-  - name: owner/repo # Keep this comment.
-    version: v1.0.0
+- name: owner/repo@v2.0.0
+- name: owner/repo # Keep this comment.
+  version: v1.0.0
 `
 	standaloneCommentsSource = `packages:
   - name: owner/repo@v2.0.0
@@ -233,10 +224,10 @@ func TestFixPkgYAML(t *testing.T) {
 	tests := []pkgYAMLTestCase{
 		{name: "expands old package short syntax idempotently", source: shortSyntaxSource, want: shortSyntaxWant},
 		{name: "uses short syntax only for the latest package", source: longSyntaxSource, want: longSyntaxWant},
-		{name: "preserves comments from the latest version field", source: latestVersionCommentsSource, want: latestVersionCommentsWant},
-		{name: "preserves comments from default registry fields", source: defaultRegistryCommentsSource, want: defaultRegistryCommentsWant},
-		{name: "preserves comments from omitted empty fields", source: omittedFieldCommentsSource, want: omittedFieldCommentsWant},
-		{name: "reconstructs YAML and preserves comments", source: reconstructedSource, want: reconstructedWant},
+		{name: "drops comments on the removed version field", source: latestVersionCommentsSource, want: latestVersionCommentsWant},
+		{name: "drops comments on the removed registry field", source: defaultRegistryCommentsSource, want: defaultRegistryCommentsWant},
+		{name: "preserves comments on empty fields", source: emptyFieldCommentsSource, want: emptyFieldCommentsWant},
+		{name: "preserves the original indentation", source: reconstructedSource, want: reconstructedWant},
 		{name: "preserves multi-line standalone comments", source: standaloneCommentsSource, want: standaloneCommentsWant},
 		{name: "preserves old package entry details", source: preservedDetailsSource, want: preservedDetailsWant},
 		{name: "quotes ambiguous versions", source: ambiguousVersionsSource, want: ambiguousVersionsWant},
