@@ -4,9 +4,11 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/aquaproj/aqua/v2/pkg/config/aqua"
 	"github.com/goccy/go-yaml"
+	"github.com/goccy/go-yaml/ast"
 	"github.com/suzuki-shunsuke/go-yamledit/yamledit"
 )
 
@@ -66,34 +68,76 @@ func (p *pkgYAML) actions() ([]yamledit.Action, error) {
 			return nil, fmt.Errorf("packages[%d].version must be specified", i)
 		}
 		actions = append(actions, yamledit.MapAction(
-			fmt.Sprintf("$.packages[%d]", i), packageActions(i, pkg)...))
+			fmt.Sprintf("$.packages[%d]", i), packageAction(i, pkg)))
 	}
 	return actions, nil
 }
 
-// packageActions normalizes a package.
+// packageAction normalizes a package.
 // The first package is the latest version, and the others are old versions.
-func packageActions(idx int, pkg *aqua.Package) []yamledit.MappingNodeAction {
-	var removed []any
-	if pkg.Registry == aqua.RegistryTypeStandard {
-		// standard is the default registry, so the field is redundant.
-		removed = append(removed, "registry")
-	}
-	if idx != 0 {
-		return []yamledit.MappingNodeAction{
-			yamledit.RemoveKeys(removed...),
-			yamledit.SetKey("name", packageName(pkg.Name), nil),
-			yamledit.SetKey("version", pkg.Version, &yamledit.SetKeyOption{
-				InsertLocations: []*yamledit.InsertLocation{{AfterKey: "name"}},
-			}),
+func packageAction(idx int, pkg *aqua.Package) yamledit.MappingNodeAction {
+	return yamledit.EditMapAction(func(m *yamledit.Map[any, any]) error {
+		version := packageVersion(m, pkg)
+		var actions []yamledit.MappingNodeAction
+		if pkg.Registry == aqua.RegistryTypeStandard {
+			// standard is the default registry, so the field is redundant.
+			actions = append(actions, yamledit.RemoveKeys("registry"))
 		}
+		if idx == 0 {
+			// The latest package uses the short syntax `<name>@<version>`.
+			actions = append(actions,
+				yamledit.RemoveKeys("version"),
+				yamledit.SetKey("name", packageName(pkg.Name+"@"+version), nil))
+		} else {
+			actions = append(actions,
+				yamledit.SetKey("name", packageName(pkg.Name), nil),
+				yamledit.SetKey("version", version, &yamledit.SetKeyOption{
+					InsertLocations: []*yamledit.InsertLocation{{AfterKey: "name"}},
+				}))
+		}
+		for _, action := range actions {
+			if err := action.Run(m.Node); err != nil {
+				return fmt.Errorf("normalize a package: %w", err)
+			}
+		}
+		return nil
+	})
+}
+
+// packageVersion returns the version as it is written in the file.
+// Aqua decodes the version field into a string, so an unquoted version such as
+// 1.10 or 010 would come back as 1.1 or 8. The scalar token keeps the original
+// text, and quoting it on output makes Aqua read it correctly too.
+// If the name has the short syntax, the version is a part of the name and Aqua
+// ignores the version field, so the decoded version is used as it is.
+func packageVersion(m *yamledit.Map[any, any], pkg *aqua.Package) string {
+	name, ok := m.Map["name"]
+	if !ok {
+		return pkg.Version
 	}
-	// The latest package uses the short syntax, so the version field is removed.
-	removed = append(removed, "version")
-	return []yamledit.MappingNodeAction{
-		yamledit.RemoveKeys(removed...),
-		yamledit.SetKey("name", packageName(pkg.Name+"@"+pkg.Version), nil),
+	if strings.Contains(scalarText(name.Node.Value), "@") {
+		return pkg.Version
 	}
+	version, ok := m.Map["version"]
+	if !ok {
+		return pkg.Version
+	}
+	if text := scalarText(version.Node.Value); text != "" {
+		return text
+	}
+	return pkg.Version
+}
+
+// scalarText returns the text of a scalar node without quotes.
+func scalarText(node ast.Node) string {
+	if node == nil {
+		return ""
+	}
+	tk := node.GetToken()
+	if tk == nil {
+		return ""
+	}
+	return tk.Value
 }
 
 // packageName keeps a package name unquoted if it is valid as a plain scalar.

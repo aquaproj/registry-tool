@@ -189,6 +189,39 @@ const (
   - name: owner/repo
     version: v0.8.0
 `
+	numericVersionsSource = `packages:
+  - name: owner/repo@v2.0.0
+  - name: owner/repo
+    version: 1.10
+  - name: owner/repo
+    version: 4.20
+  - name: owner/repo
+    version: 010
+  - name: owner/repo
+    version: 0x10
+`
+	numericVersionsWant = `packages:
+  - name: owner/repo@v2.0.0
+  - name: owner/repo
+    version: "1.10"
+  - name: owner/repo
+    version: "4.20"
+  - name: owner/repo
+    version: "010"
+  - name: owner/repo
+    version: "0x10"
+`
+	numericLatestVersionSource = `packages:
+  - name: owner/repo
+    version: 1.10
+  - name: owner/repo
+    version: 1.0
+`
+	numericLatestVersionWant = `packages:
+  - name: owner/repo@1.10
+  - name: owner/repo
+    version: "1.0"
+`
 	quotedGoPackageSource = `packages:
   - name: "_go/sigsum.org/sigsum-go#cmd/sigsum-key@v0.9.1"
 `
@@ -234,6 +267,8 @@ func TestFixPkgYAML(t *testing.T) {
 		{name: "normalizes line endings", source: mixedLineEndingsSource, want: mixedLineEndingsWant},
 		{name: "uses Aqua short syntax parsing", source: aquaShortSyntaxSource, want: aquaShortSyntaxWant},
 		{name: "uses Aqua package parsing semantics", source: aquaPackageSemanticsSource, want: aquaPackageSemanticsWant},
+		{name: "keeps the literal text of unquoted numeric versions", source: numericVersionsSource, want: numericVersionsWant},
+		{name: "keeps the literal text of an unquoted numeric latest version", source: numericLatestVersionSource, want: numericLatestVersionWant},
 		{name: "formats a Go package name without quotes", source: quotedGoPackageSource, want: goPackageWant},
 		{name: "rejects a non-mapping package entry", source: unsupportedEntrySource, wantError: "parse pkg.yaml"},
 		{name: "rejects a non-sequence packages value", source: nonSequencePackages, wantError: "parse pkg.yaml"},
