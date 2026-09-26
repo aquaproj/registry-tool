@@ -11,7 +11,7 @@ require (
 	github.com/suzuki-shunsuke/go-yamledit v0.0.5
 	github.com/suzuki-shunsuke/slog-error v0.2.2
 	github.com/suzuki-shunsuke/slog-util v0.3.2
-	github.com/suzuki-shunsuke/urfave-cli-v3-util v0.2.3
+	github.com/suzuki-shunsuke/urfave-cli-v3-util v0.2.4
 	github.com/urfave/cli/v3 v3.13.0
 	gopkg.in/yaml.v3 v3.0.1
 )
