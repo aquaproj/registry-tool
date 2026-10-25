@@ -12,6 +12,8 @@ jobs:
       go-version-file: go.mod
       aqua_version: v2.65.2
       go_licenses_package: ./cmd/argd
+      packslip: true
+      packslip_bin: argd
     permissions:
       contents: write
       id-token: write
