@@ -15,7 +15,7 @@ workflows:
         - 'actions/setup-node@v7.1.0'
         - 'aquaproj/aqua-installer@v4.1.1'
         - 'autofix-ci/action@v1.3.4'
-        - 'suzuki-shunsuke/download-npm-package-action@v0.0.3'
+        - 'suzuki-shunsuke/download-npm-package-action@v0.0.4'
     '.github/workflows/workflow_call_test.yaml': []
 dependencies:
     'actions/checkout@v7.0.1':
@@ -48,9 +48,9 @@ dependencies:
         commit: 'sha1-83c4a4a3b228afcf6dbf79d793c742de182de31e'
         owner_id: 13323303
         repo_id: 944510424
-    'suzuki-shunsuke/download-npm-package-action@v0.0.3':
-        ref: 'v0.0.3'
-        commit: 'sha1-356be7a431f3fe7ff4a3a61e3dedb3a571f954e7'
+    'suzuki-shunsuke/download-npm-package-action@v0.0.4':
+        ref: 'v0.0.4'
+        commit: 'sha1-cd93d0e45a1804793f6daaf4c24bf55ccf12f494'
         owner_id: 13323303
         repo_id: 1419297158
         uses:
