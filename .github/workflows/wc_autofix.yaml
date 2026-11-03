@@ -20,7 +20,7 @@ jobs:
   npm:
     # Install prettier through Takumi Guard, which requires id-token: write.
     # The fix job must not have id-token: write.
-    uses: suzuki-shunsuke/download-npm-package-action/.github/workflows/download.yaml@356be7a431f3fe7ff4a3a61e3dedb3a571f954e7 # v0.0.3
+    uses: suzuki-shunsuke/download-npm-package-action/.github/workflows/download.yaml@cd93d0e45a1804793f6daaf4c24bf55ccf12f494 # v0.0.4
     permissions:
       contents: read
       id-token: write
@@ -56,7 +56,7 @@ jobs:
           node-version-file: .node-version
       # Use only prettier restored from the artifact.
       - name: Restore prettier
-        uses: suzuki-shunsuke/download-npm-package-action/restore@356be7a431f3fe7ff4a3a61e3dedb3a571f954e7 # v0.0.3
+        uses: suzuki-shunsuke/download-npm-package-action/restore@cd93d0e45a1804793f6daaf4c24bf55ccf12f494 # v0.0.4
         with:
           working_directory: .github/prettier
           artifact_name: node_modules-prettier
